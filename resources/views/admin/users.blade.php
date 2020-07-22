@@ -30,6 +30,7 @@
                     </th>
                     <th class="text-center" style="width: 80px;">Name</th>
                     <th class="d-none d-sm-table-cell" style="width: 30%;">Email</th>
+                    <th style="width: 15%;">Role</th>
                     <th style="width: 15%;">Created_at</th>
                     <th class="text-center" style="width: 100px;">Actions</th>
                 </tr>
@@ -46,17 +47,20 @@
                         @endif
                     </td>
                     <td class="font-w600 font-size-sm">
-                        <a href="be_pages_generic_blank.html">{{ $user->name }}</a>
+                    <a href="{{route('admin.user.show', $user->id)}}">{{ $user->name }}</a>
                     </td>
                     <td class="d-none d-sm-table-cell font-size-sm">
                     <em class="text-muted">{{$user->email}}</em>
+                    </td>
+                    <td class="d-none d-sm-table-cell">
+                        <span class="badge badge-warning">{{ count($user->getRoleNames()) > 0 ? implode(",", $user->getRoleNames()->toArray()) : "no role" }}</span>
                     </td>
                     <td class="d-none d-sm-table-cell">
                         <span class="badge badge-success">{{ $user->created_at }}</span>
                     </td>
                     <td class="text-center">
                         <div class="btn-group">
-                        <a href="{{route('admin.user.show', $user->id)}}"  class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="show" data-original-title="Show">
+                            <a href="{{route('admin.user.show', $user->id)}}"  class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="show" data-original-title="Show">
                                 <i class="far fa-eye"></i>
                             </a>
                             <a href="{{route('admin.user.edit', $user->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="edit" data-original-title="Edit">
@@ -94,6 +98,14 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Email address</label>
                         <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="val-skill">Roles <span class="text-danger">*</span></label>
+                        <select type="text" name="roles[]" class="form-control" multiple="" id="val-skill" name="val-skill">
+                            @foreach($roles as $role)
+                                <option value="{{$role->id}}">{{ $role->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Password</label>

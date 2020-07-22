@@ -6,8 +6,21 @@
     <div class="block m-3">
         <div class="block-header">
             <h3 class="block-title">Dynamic Table <small>Export Buttons</small></h3>
+            <div class="block-options">
+                <a href="{{route('admin.product.create')}}" class="btn-block-option">
+                    <i class="fa fa-cart-plus"></i>
+                </button>
+                <button type="button" class="btn-block-option">
+                    <i class="si si-settings"></i>
+                </button>
+            </div>
         </div>
         <div class="block-content block-content-full">
+            @if(Session::has('msg'))
+                <div class="alert alert-info">
+                    {{Session::get('msg')}}
+                </div>
+            @endif
             <!-- DataTables init on table by adding .js-dataTable-buttons class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _es6/pages/be_tables_datatables.js -->
             <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
                 <thead>
@@ -20,6 +33,7 @@
                         <th style="width: 15%;">Currency</th>
                         <th style="width: 15%;">Is_published</th>
                         <th style="width: 15%;">Created_at</th>
+                        <th style="width: 15%;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,7 +42,7 @@
                         <td class="text-center font-size-sm">{{ $product->id }}</td>
                         <td class="text-center font-size-sm"><img src="{{ asset('storage/'.$product->images->first()->image) }}" alt="Product image" width="52" style="border-radius: 20%"></td>
                         <td class="font-w600 font-size-sm">
-                            <a href="be_pages_generic_blank.html">{{ $product->title }}</a>
+                            <a href="{{route('admin.product.show', $product->id)}}">{{ $product->title }}</a>
                         </td>
                         <td class="d-none d-sm-table-cell font-size-sm">
                         <em class="text-muted">{{$product->price}}</em>
@@ -44,6 +58,19 @@
                         </td>
                         <td>
                             <em class="text-muted font-size-sm">{{ $product->created_at }}</em>
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a href="{{route('admin.product.show', $product->id)}}"  class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="show" data-original-title="Show">
+                                    <i class="far fa-eye"></i>
+                                </a>
+                                <a href="{{route('admin.product.edit', $product->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="edit" data-original-title="Edit">
+                                    <i class="fa fa-fw fa-pencil-alt"></i>
+                                </a>
+                                <a href="{{route('admin.product.delete', $product->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="delete" data-original-title="Delete">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     @endforeach

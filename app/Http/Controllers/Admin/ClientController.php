@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UserRequest;
 use App\Models\Product;
+
+use Spatie\Permission\Models\Role;
 use App\User;
 
 class ClientController extends Controller
@@ -27,7 +29,8 @@ class ClientController extends Controller
     public function users()
     {
         $users = User::all();
-        return view('admin.users', compact('users'));
+        $roles = Role::all();
+        return view('admin.users', compact('users', 'roles'));
     }
 
     /**
@@ -37,7 +40,8 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view('admin.create');
+        $roles = Role::all();
+        return view('user.create', compact('roles'));
     }
 
     /**
@@ -53,6 +57,7 @@ class ClientController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
+        $user->assignRole($request->roles);
         Session::flash('msg', 'User '.$user->name.', successfully saved.');
         return redirect()->back();
     }
@@ -65,7 +70,7 @@ class ClientController extends Controller
      */
     public function show(User $user)
     {
-        dd($user->toArray());
+        return view('user.show', compact('user'));
     }
 
     /**
@@ -76,7 +81,8 @@ class ClientController extends Controller
      */
     public function edit(User $user)
     {
-        dd($user->toArray());
+        $roles = Role::all();
+        return view('user.edit', compact('user', 'roles'));
     }
 
     /**
@@ -86,9 +92,22 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        // dd($user->toArray(), $request->all());
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if(isset($request->password)) {
+            $user->password = $request->password;
+        }
+        if(count($request->roles) > 0) {
+            foreach($request->roles as $role) {
+                $user->roles()->sync($role);
+            }
+        }
+        $user->save(); 
+        return redirect()->route('admin.users');
+
     }
 
     /**

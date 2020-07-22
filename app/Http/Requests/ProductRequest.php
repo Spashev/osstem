@@ -31,7 +31,6 @@ class ProductRequest extends FormRequest
             'quantity' => 'required', 
             'description' => 'required|string|min:3', 
             'images' => 'required',
-            'is_published' => 'required',
             'code' => 'required'
         ];
     }

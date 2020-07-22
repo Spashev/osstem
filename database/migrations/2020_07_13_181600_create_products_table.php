@@ -17,6 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('price')->default(0);
+            $table->text('description');
             $table->string('code');
             $table->integer('quantity')->default(0);
             $table->string('currency')->default('KZT');

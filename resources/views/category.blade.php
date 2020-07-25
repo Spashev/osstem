@@ -14,6 +14,7 @@
                         <th style="width: 80px;">ID</th>
                         <th style="width: 80px;">Name</th>
                         <th class="d-none d-sm-table-cell" style="width: 30%;">Code</th>
+                        <th class="d-none d-sm-table-cell" style="width: 30%;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,6 +26,19 @@
                             </td>
                             <td class="d-none d-sm-table-cell">
                                 <span class="badge badge-success">{{ $category->code }}</span>
+                            </td>
+                            <td class="d-none d-sm-table-cell">
+                                <div class="btn-group">
+                                    <a href="{{route('admin.category.show', $category->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="show" data-original-title="Show">
+                                        <i class="far fa-eye"></i>
+                                    </a>
+                                    <a href="{{route('admin.category.edit', $category->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="edit" data-original-title="Edit">
+                                        <i class="fa fa-fw fa-pencil-alt"></i>
+                                    </a>
+                                    <a href="{{route('admin.category.delete', $category->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="delete" data-original-title="Delete">
+                                        <i class="fa fa-fw fa-times"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

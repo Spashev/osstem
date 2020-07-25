@@ -10,7 +10,9 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::middleware(['auth','is_admin'])->prefix('~admin')->namespace('Admin')->name('admin.')->group(function () {
+Route::post('~admin/login', 'Admin\LoginController@login')->name('login.admin');
+Route::view('~admin/login', 'admin.login')->name('admin.login');
+Route::middleware(['admin_auth','is_admin'])->prefix('~admin')->namespace('Admin')->name('admin.')->group(function () {
     Route::get('/','AdminController@index')->name('index');
     // User
     Route::get('/users', 'ClientController@users')->name('users');
@@ -22,6 +24,9 @@ Route::middleware(['auth','is_admin'])->prefix('~admin')->namespace('Admin')->na
     Route::get('/user/{user}/delete', 'ClientController@destroy')->name('user.delete');
     // Category
     Route::get('/categories', 'CategoryController@index')->name('category');
+    Route::get('/category/{category}/delete', 'CategoryController@delete')->name('category.delete');
+    Route::get('/category/{category}/edit', 'CategoryController@edit')->name('category.edit');
+    Route::get('/category/{category}/show', 'CategoryController@show')->name('category.show');
     Route::get('/category/create', 'CategoryController@create')->name('category.create');
     Route::post('/category/create', 'CategoryController@store')->name('category.store');
     // Order

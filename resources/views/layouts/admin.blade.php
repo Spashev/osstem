@@ -491,14 +491,8 @@
                     <ul class="nav-main">
                         <li class="nav-main-heading">SYSTEM COMPONENTS</li>
                         <li class="nav-main-item">
-                            <a class="nav-main-link active" href="{{route('admin.index')}}">
-                                <i class="nav-main-link-icon si si-speedometer"></i>
-                                <span class="nav-main-link-name">Dashboard-CRM</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                                <i class="fa fa-users-cog mr-2"></i>
+                                <i class="fa fa-users mr-2"></i>
                                 <span class="nav-main-link-name">Users</span>
                             </a>
                             <ul class="nav-main-submenu">
@@ -539,13 +533,13 @@
                         </li>
                         <li class="nav-main-item">
                         <a class="nav-main-link" href="{{ route('admin.orders') }}">
-                                <i class="fa fa-hand-holding-usd mr-2"></i>
+                                <i class="fa fa-paper-plane mr-2"></i>
                                 <span class="nav-main-link-name">Orders</span>
                             </a>
                         </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                                <i class="fa fa-shopping-cart mr-2"></i>
+                                <i class="fa fa-clipboard-list mr-2"></i>
                                 <span class="nav-main-link-name">Category</span>
                             </a>
                             <ul class="nav-main-submenu">

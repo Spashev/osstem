@@ -9,7 +9,7 @@
             <div class="block-options">
                 <a href="{{route('admin.product.create')}}" class="btn-block-option">
                     <i class="fa fa-cart-plus"></i>
-                </button>
+                </a>
                 <button type="button" class="btn-block-option">
                     <i class="si si-settings"></i>
                 </button>

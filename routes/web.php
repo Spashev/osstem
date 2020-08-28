@@ -39,4 +39,10 @@ Route::middleware(['admin_auth','is_admin'])->prefix('~admin')->namespace('Admin
     Route::put('/product/{product}/edit', 'ProductController@update')->name('product.update');
     Route::get('/product/{product}/show', 'ProductController@show')->name('product.show');
     Route::get('/product/{product}/delete', 'ProductController@destroy')->name('product.delete');
+    //Roles
+    Route::get('/roles', 'RoleController@index')->name('roles');
+
+    //Excel
+    Route::get('excel', 'ExcelController@index')->name('excel');
+    Route::post('excel/upload', 'ExcelController@upload')->name('excel.upload');
 });

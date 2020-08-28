@@ -49,7 +49,7 @@
 
                     <!-- User Info -->
                     <div class="ml-2">
-                        <a class="link-fx text-dark font-w600" href="javascript:void(0)">Adam McCoy</a>
+                    <a class="link-fx text-dark font-w600" href="javascript:void(0)">{{Auth::user()->name}}</a>
                     </div>
                     <!-- END User Info -->
 
@@ -59,6 +59,7 @@
                         <i class="fa fa-fw fa-times text-danger"></i>
                     </a>
                     <!-- END Close Side Overlay -->
+                    
                 </div>
                 <!-- END Side Header -->
 
@@ -483,6 +484,9 @@
                     </a>
                     <!-- END Logo -->
 
+                    <a class="d-lg-none text-dual ml-3" data-toggle="layout" data-action="sidebar_close" href="javascript:void(0)">
+                        <i class="fa fa-times"></i>
+                    </a>
                 </div>
                 <!-- END Side Header -->
 
@@ -532,10 +536,27 @@
                             </ul>
                         </li>
                         <li class="nav-main-item">
-                        <a class="nav-main-link" href="{{ route('admin.orders') }}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                                 <i class="fa fa-paper-plane mr-2"></i>
                                 <span class="nav-main-link-name">Orders</span>
                             </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link"  href="{{ route('admin.orders') }}">
+                                        <span class="nav-main-link-name">Orders</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link"  href="{{ route('admin.orders') }}">
+                                        <span class="nav-main-link-name">Create</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link"  href="{{ route('admin.excel') }}">
+                                        <span class="nav-main-link-name">Excel</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
@@ -554,6 +575,24 @@
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="#">
+                                <i class="fa fa-headset mr-2"></i>
+                                <span class="nav-main-link-name">Call center</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{ route('admin.roles') }}">
+                                <i class="fa fa-mask mr-2"></i>
+                                    <span class="nav-main-link-name">Roles</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="https://github.com/Spashev/unionp" target="_blank">
+                                <i class="fab fa-github mr-2"></i>
+                                    <span class="nav-main-link-name">GitHub</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -886,8 +925,8 @@
         <!-- END Page Container -->
 
 
-        <script src="{{ asset('assets/js/pages/be_pages_dashboard.min.js') }}"></script>
         <script src="{{ asset('assets/js/oneui.core.min.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/be_pages_dashboard.min.js') }}"></script>
         <script src="{{ asset('assets/js/oneui.app.min.js') }}"></script>
         @yield('script')
     </body>

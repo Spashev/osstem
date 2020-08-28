@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Repository\NotificationRepository;
 
 class NotificationCommand extends Command
 {
@@ -37,6 +38,7 @@ class NotificationCommand extends Command
      */
     public function handle()
     {
+        NotificationRepository::start();
         return 0;
     }
 }

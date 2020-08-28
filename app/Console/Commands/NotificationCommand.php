@@ -11,14 +11,14 @@ class NotificationCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'start:notification';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'This command start notification service';
 
     /**
      * Create a new command instance.

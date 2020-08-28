@@ -9,4 +9,9 @@ class Customer extends Model
     protected $guarded = [];
 
     public $timestamps = false;
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

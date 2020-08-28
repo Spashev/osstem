@@ -15,11 +15,13 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_excel_id');
+            $table->integer('customer_id');
+            $table->integer('manager_id');
             $table->string('seq');
             $table->string('amount');
             $table->string('remain');
             $table->string('paid');
+            $table->string('contract_no');
             $table->timestamp('payment_date', 0)->nullable();
             $table->timestamp('deadline', 0)->nullable();
         });

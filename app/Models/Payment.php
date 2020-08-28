@@ -9,4 +9,14 @@ class Payment extends Model
     protected $guarded = [];
 
     public $timestamps = false;
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function manager()
+    {
+        return $this->belongsTo(Manager::class);
+    }
 }

@@ -15,8 +15,10 @@ class CreateManagersTable extends Migration
     {
         Schema::create('managers', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
-            $table->bigInteger('manager_id')->unique();
+            $table->string('in_charage')->unique();
+            $table->string('name');
+            $table->string('region');
+            $table->string('region_id');
         });
     }
 

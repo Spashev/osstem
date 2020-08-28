@@ -17,7 +17,7 @@ use League\Csv\Writer;
 class ExcelJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+    public $timeout = 0;
     protected $excel;
     /**
      * Create a new job instance.
@@ -40,41 +40,45 @@ class ExcelJob implements ShouldQueue
         $reader = Reader::createFromPath($inputFileName, 'r');  
         $csv = iterator_to_array($reader->getRecords());
         
-        info($csv);
-        dd();
         dump($csv[0]);
+        $manager_id = NULL;
+        $customer_id = NULL;
         for($i = 1; $i< count($csv); $i++)
         {
-            if(strpos($csv[$i][2], '> TOTAL') !== false) {
+            dump($csv[$i]);
+            if(strpos($csv[$i][6], '> TOTAL') !== false) {
                 continue;
             }
-            dump($csv[$i]);
-            $manager = Manager::firstOrCreate([
-                'manager_id' => $csv[$i][4] ?? NULL,
-                'full_name' => $csv[$i][6] ?? NULL
+            $manager = Manager::updateOrCreate([
+                'name' => $csv[$i][5],
+                'in_charge' => $csv[$i][4]
             ]);
 
-            Customer::firstOrCreate([
-                'manager_id' => $manager->id,
-                'name' => $csv[$i][7] ?? NULL,
-                'region' => $csv[$i][10] ?? NULL,
-                'order_excel_id' => $this->excel->id
-            ]);
-
-            if($order->id !== 'Null') {
-                $orderId = $order->id;
+            if($manager->id !== 'Null') {
+                $manager_id = $manager->id;
             }
-            dump($csv[$i]);
+
+            $customer = Customer::firstOrCreate([
+                'manager_id' => $manager_id,
+                'customer_id' => $csv[$i][0],
+                'name' => $csv[$i][1],
+                'region' => $csv[$i][3],
+                'region_id' => $csv[$i][2]
+            ]);
+
+            if($customer->id !== 'Null') {
+                $customer_id = $customer->id;
+            }
             Payment::create([
-                'order_excel_id' => $orderId,
-                'seq' => $csv[$i][12] ?? NULL,
-                'amount' => $csv[$i][1] ?? NULL,
-                'remain' => $csv[$i][11] ?? NULL,
-                'in_charge' => $csv[$i][5] ?? NULL,
-                'contract_no' => $csv[$i][2] ?? NULL,
-                'deadline' =>$csv[$i][0] !== '0' ? date('Y-m-d H:i:s', substr($csv[$i][0],0,strlen($csv[$i][0])-3)) : NULL,
-                'payment_date' =>$csv[$i][9] !== '' ? date('Y-m-d H:i:s', substr($csv[$i][9],0,strlen($csv[$i][9])-3)) : NULL,
-                'paid' => $csv[$i][8] ?? NULL
+                'customer_id' => $customer_id,
+                'manager_id' => $manager_id,
+                'seq' => $csv[$i][7],
+                'amount' => $csv[$i][9],
+                'remain' => $csv[$i][12],
+                'contract_no' => $csv[$i][6],
+                'deadline' => $csv[$i][8] =='0000/00/00' ? NULL : Carbon::parse($csv[$i][8])->format('Y-m-d H:i:s'),
+                'payment_date' => $csv[$i][10] =='0000/00/00' ? NULL : Carbon::parse($csv[$i][10])->format('Y-m-d H:i:s') ,
+                'paid' => $csv[$i][11]
             ]);
         }
     }

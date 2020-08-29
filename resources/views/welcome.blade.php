@@ -89,7 +89,7 @@
 </html> --}}
 
 <!doctype html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -135,16 +135,27 @@
                         <h1 class="display-4 font-w600 mb-3 text-white invisible" data-toggle="appear" data-class="animated fadeInDown">
                             Union <span class="font-w300">Partners</span>
                         </h1>
+                        @auth
+                            <span class="m-2 d-inline-block invisible" data-toggle="appear" data-class="animated fadeInUp" data-timeout="600">
+                                <a class="btn btn-primary px-4 py-2" data-toggle="click-ripple" href="{{route('admin.index')}}">
+                                    <i class="fa fa-fw fa-rocket mr-1"></i>Go home
+                                </a>
+                            </span>
+                        @else
                         <span class="m-2 d-inline-block invisible" data-toggle="appear" data-class="animated fadeInUp" data-timeout="600">
                             <a class="btn btn-success px-4 py-2" data-toggle="click-ripple" href="{{ route('admin.login')}}">
                                 <i class="fa fa-sign-in-alt mr-1"></i> Login
                             </a>
                         </span>
-                        <span class="m-2 d-inline-block invisible" data-toggle="appear" data-class="animated fadeInUp" data-timeout="600">
-                            <a class="btn btn-primary px-4 py-2" data-toggle="click-ripple" href="#">
-                                <i class="fa fa-fw fa-rocket mr-1"></i> Live Preview
-                            </a>
-                        </span>
+
+                        @if (Route::has('register'))
+                            <span class="m-2 d-inline-block invisible" data-toggle="appear" data-class="animated fadeInUp" data-timeout="600">
+                                <a class="btn btn-primary px-4 py-2" data-toggle="click-ripple" href="{{ route('register') }}">
+                                    <i class="si si-lock ml-1 mr-1"></i> Register
+                                </a>
+                            </span>    
+                        @endif
+                        @endauth
                     </div>
                 </div>
                 <div class="hero-meta">

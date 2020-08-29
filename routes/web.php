@@ -8,11 +8,11 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('~admin/login', 'Admin\LoginController@login')->name('login.admin');
-Route::view('~admin/login', 'admin.login')->name('admin.login');
-Route::middleware(['admin_auth','is_admin'])->prefix('~admin')->namespace('Admin')->name('admin.')->group(function () {
+Route::post('admin/login', 'Admin\LoginController@login')->name('login.admin');
+Route::view('admin/login', 'admin.login')->name('admin.login');
+Route::middleware(['admin_auth','is_admin'])->prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
     Route::get('/','AdminController@index')->name('index');
     // User
     Route::get('/users', 'ClientController@users')->name('users');
@@ -31,6 +31,9 @@ Route::middleware(['admin_auth','is_admin'])->prefix('~admin')->namespace('Admin
     Route::post('/category/create', 'CategoryController@store')->name('category.store');
     // Order
     Route::get('/orders', 'AdminController@orders')->name('orders');
+    //Excel
+    Route::get('excel', 'ExcelController@index')->name('excel');
+    Route::post('excel/upload', 'ExcelController@upload')->name('excel.upload');
     // Product
     Route::get('/products', 'ProductController@index')->name('products');
     Route::get('/product/create', 'ProductController@create')->name('product.create');
@@ -41,8 +44,4 @@ Route::middleware(['admin_auth','is_admin'])->prefix('~admin')->namespace('Admin
     Route::get('/product/{product}/delete', 'ProductController@destroy')->name('product.delete');
     //Roles
     Route::get('/roles', 'RoleController@index')->name('roles');
-
-    //Excel
-    Route::get('excel', 'ExcelController@index')->name('excel');
-    Route::post('excel/upload', 'ExcelController@upload')->name('excel.upload');
 });

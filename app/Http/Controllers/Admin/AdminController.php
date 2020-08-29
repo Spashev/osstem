@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\Category;
+use App\Models\Manager;
 use App\Models\Order;
 use App\Models\Product;
 use App\User;
@@ -21,10 +22,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $products = Product::all();
-        $categories = Category::all();
-        return view('admin.index', compact('users', 'products', 'categories'));
+        return view('admin.index');
     }
     public function orders() 
     {

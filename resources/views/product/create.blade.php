@@ -19,12 +19,12 @@
                 <div class="">
                     <!-- Regular -->
                     <div class="row items-push">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <p class="font-size-sm text-muted">
                                 Enter all input for creating product.
                             </p>
                         </div>
-                        <div class="col-lg-8 col-xl-5">
+                        <div class="col-lg-9 col-xl-8">
                             <div class="form-group">
                                 <label for="val-username">Title <span class="text-danger">*</span></label>
                                 <input  type="text" name="title"  class="form-control" id="val-username" name="val-username" placeholder="Enter title..">

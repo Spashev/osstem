@@ -16,9 +16,10 @@ class NotificationRepository extends Repository
 
     public static function start()
     {
-        $date = Carbon::now()->subDays('3');
-        dump($date);
-        $payments = ModelsPayment::with('manager','customer')->where('payment_date','<',$date)->limit(100)->get();
+        $to = Carbon::now()->addDays('4');
+        $from = Carbon::now();
+        dump($from, $to);
+        $payments = ModelsPayment::with('manager','customer')->whereBetween('payment_date',[$from, $to])->limit(100)->get();
         dump($payments->toArray());
     }
 }

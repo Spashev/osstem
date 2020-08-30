@@ -21,7 +21,7 @@
                         Enter category name.
                     </p>
                 </div>
-                <div class="col-lg-8 col-xl-5">
+                <div class="col-lg-8 col-xl-6">
                     <div class="form-group">
                         <label for="example-text-input-alt">Name</label>
                         <input type="text" name="name" class="form-control form-control-alt" id="example-text-input-alt" name="example-text-input-alt" placeholder="Text name">

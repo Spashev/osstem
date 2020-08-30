@@ -577,14 +577,14 @@
                             </ul>
                         </li>
                         <li class="nav-main-item">
-                            <a class="nav-main-link" href="#">
-                                <i class="fa fa-headset mr-2"></i>
+                            <a class="nav-main-link ml-3" href="#">
+                                {{-- <i class="fa fa-headset mr-2"></i> --}}
                                 <span class="nav-main-link-name">Call center</span>
                             </a>
                         </li>
                         <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{ route('admin.roles') }}">
-                                <i class="fa fa-mask mr-2"></i>
+                            <a class="nav-main-link ml-3" href="{{ route('admin.roles') }}">
+                                {{-- <i class="fa fa-mask mr-2"></i> --}}
                                     <span class="nav-main-link-name">Roles</span>
                             </a>
                         </li>

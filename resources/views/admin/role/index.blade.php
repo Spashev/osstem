@@ -13,12 +13,12 @@
                         Enter the name of roles.
                     </p>
                 </div>
-                <div class="col-lg-8 col-xl-5">
+                <div class="col-lg-8 col-xl-6">
                     <div class="form-group">
                         <label for="example-text-input-alt">Role name</label>
                         <input type="text" class="form-control form-control-alt" id="example-text-input-alt" name="example-text-input-alt" placeholder="Text Input">
                     </div>
-                    
+                    <button type="submit" class="btn btn-default float-right">Save</button>
                 </div>
             </div>
         </form>

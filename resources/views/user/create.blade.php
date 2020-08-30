@@ -11,9 +11,9 @@
             </div>
         @endif
         <div class="row items-push">
-            <div class="col-lg-4">
+            <div class="col-lg-2">
             </div>
-            <div class="col-lg-8 col-xl-5">
+            <div class="col-lg-10 col-xl-8 col-md-10">
                 <form action="{{route('admin.user.create') }}" method="POST" class="pb-5">
                     @csrf
                     <div class="form-group">

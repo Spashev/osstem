@@ -2,8 +2,7 @@
 
 namespace App\Repository;
 
-use App\Models\Payment as ModelsPayment;
-use App\Payment;
+use App\Models\Payment;
 use Carbon\Carbon;
 use LazyElePHPant\Repository\Repository;
 
@@ -16,10 +15,15 @@ class NotificationRepository extends Repository
 
     public static function start()
     {
-        $to = Carbon::now()->addDays('4');
-        $from = Carbon::now();
-        dump($from, $to);
-        $payments = ModelsPayment::with('manager','customer')->whereBetween('payment_date',[$from, $to])->limit(100)->get();
+        $to = Carbon::now()->addDays('3')->format('Y-m-d');
+        $payments = Payment::with('manager','customer')->where('deadline', $to)->where('paid',0)->limit(100)->get();
         dump($payments->toArray());
+        if(Carbon::now()->isMonday() == 'True') {
+            $to = Carbon::now()->format('Y-m-d');
+            $from = Carbon::now()->subMonth()->format('Y-m-d');
+            $delay = Payment::with('manager','customer')->whereBeetwen('deadline', [$from, $to])->Where('remain','<>',0)->get();
+            dump($delay->toArray());
+            # send sms
+        }
     }
 }

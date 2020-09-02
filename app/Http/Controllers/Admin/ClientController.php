@@ -21,16 +21,12 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $products = Product::all();
-        return view('admin.index', compact('users', 'products'));
+        return view('admin.index');
     }
 
     public function users()
     {
-        $users = User::all();
-        $roles = Role::all();
-        return view('admin.users', compact('users', 'roles'));
+        return view('admin.users');
     }
 
     /**
@@ -105,7 +101,7 @@ class ClientController extends Controller
                 $user->roles()->sync($role);
             }
         }
-        $user->save(); 
+        $user->save();
         return redirect()->route('admin.users');
 
     }

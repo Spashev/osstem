@@ -34,6 +34,12 @@ Route::middleware(['admin_auth','is_admin'])->prefix('admin')->namespace('Admin'
     //Excel
     Route::get('excel', 'ExcelController@index')->name('excel');
     Route::post('excel/upload', 'ExcelController@upload')->name('excel.upload');
+    Route::get('excel/table', 'ExcelController@table')->name('excel.table');
+    Route::get('/excel/customers', 'ExcelController@customer')->name('excel.customers');
+    Route::get('/excel/managers', 'ExcelController@manager')->name('excel.managers');
+    Route::get('/excel/manager/{manager}/delete', 'ExcelController@managerDelete')->name('manager.delete');
+    Route::get('/excel/manager/{manager}/edit', 'ExcelController@managerEdit')->name('manager.edit');
+    Route::get('/excel/payments', 'ExcelController@payment')->name('excel.payments');
     // Product
     Route::get('/products', 'ProductController@index')->name('products');
     Route::get('/product/create', 'ProductController@create')->name('product.create');

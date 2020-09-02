@@ -63,7 +63,7 @@ class ProductController extends Controller
         if($request->file('images')) {
             foreach($request->file('images') as $image) {
                 $image_path = $image->store('upload', 'public');
-                Image::create([
+                Image::updateOrCreate([
                     'image' => $image_path,
                     'product_id' => $product->id
                 ]);
@@ -105,7 +105,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        dd($request->toArray());
+        // dd($request->toArray());
         $product->title = $request->title;
         $product->price = $request->price;
         $product->quantity = $request->quantity;
@@ -114,9 +114,10 @@ class ProductController extends Controller
         $product->currency = $request->currency;
         $product->is_published = $product->is_published ?? 'off';
         if($request->file('images')) {
+            Image::where('product_id',$product->id)->delete();
             foreach($request->file('images') as $image) {
                 $image_path = $image->store('upload', 'public');
-                Image::create([
+                Image::updateOrCreate([
                     'image' => $image_path,
                     'product_id' => $product->id
                 ]);

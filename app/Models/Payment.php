@@ -19,4 +19,9 @@ class Payment extends Model
     {
         return $this->belongsTo(Manager::class);
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

@@ -37,9 +37,9 @@ class ExcelJob implements ShouldQueue
     public function handle()
     {
         $inputFileName = storage_path('app/public/' . $this->excel->path);
-        $reader = Reader::createFromPath($inputFileName, 'r');  
+        $reader = Reader::createFromPath($inputFileName, 'r');
         $csv = iterator_to_array($reader->getRecords());
-        
+
         dump($csv[0]);
         $manager_id = NULL;
         $customer_id = NULL;
@@ -49,6 +49,7 @@ class ExcelJob implements ShouldQueue
             if(strpos($csv[$i][6], '> TOTAL') !== false) {
                 continue;
             }
+
             $manager = Manager::updateOrCreate([
                 'name' => $csv[$i][5],
                 'in_charge' => $csv[$i][4]
@@ -69,6 +70,7 @@ class ExcelJob implements ShouldQueue
             if($customer->id !== 'Null') {
                 $customer_id = $customer->id;
             }
+
             Payment::create([
                 'customer_id' => $customer_id,
                 'manager_id' => $manager_id,

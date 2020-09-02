@@ -17,13 +17,15 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->integer('customer_id');
             $table->integer('manager_id');
+            $table->string('contract_no');
             $table->string('seq');
             $table->string('amount');
-            $table->string('remain');
-            $table->string('paid');
-            $table->string('contract_no');
             $table->timestamp('payment_date', 0)->nullable();
             $table->timestamp('deadline', 0)->nullable();
+            $table->string('paid');
+            $table->string('remain');
+            $table->string('percent')->nullable();
+            $table->string('amount_percent')->nullable();
         });
     }
 

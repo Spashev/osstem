@@ -15,8 +15,8 @@ class CreateManagersTable extends Migration
     {
         Schema::create('managers', function (Blueprint $table) {
             $table->id();
-            $table->string('in_charge');
             $table->string('name');
+            $table->string('in_charge');
         });
     }
 

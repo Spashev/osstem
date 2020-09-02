@@ -59,7 +59,7 @@
                         <i class="fa fa-fw fa-times text-danger"></i>
                     </a>
                     <!-- END Close Side Overlay -->
-                    
+
                 </div>
                 <!-- END Side Header -->
 
@@ -501,13 +501,23 @@
                             </a>
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
+                                    <a class="nav-main-link" href="{{ route('admin.user.create.form') }}">
+                                        <span class="nav-main-link-name">Create</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
                                 <a class="nav-main-link" href="{{ route('admin.users') }}">
                                         <span class="nav-main-link-name">Users</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link" href="{{ route('admin.user.create.form') }}">
-                                        <span class="nav-main-link-name">Create</span>
+                                    <a class="nav-main-link"  href="{{ route('admin.excel.managers') }}">
+                                        <span class="nav-main-link-name">Managers</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link"  href="{{ route('admin.excel.customers') }}">
+                                        <span class="nav-main-link-name">Customers</span>
                                     </a>
                                 </li>
                             </ul>
@@ -519,13 +529,13 @@
                             </a>
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link" href="{{ route('admin.products') }}">
-                                        <span class="nav-main-link-name">Products</span>
+                                    <a class="nav-main-link" href="{{ route('admin.product.create') }}">
+                                        <span class="nav-main-link-name">Create</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link" href="{{ route('admin.product.create') }}">
-                                        <span class="nav-main-link-name">Create</span>
+                                    <a class="nav-main-link" href="{{ route('admin.products') }}">
+                                        <span class="nav-main-link-name">Products</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
@@ -538,7 +548,25 @@
                         <li class="nav-main-item">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                                 <i class="fa fa-paper-plane mr-2"></i>
-                                <span class="nav-main-link-name">Orders</span>
+                                <span class="nav-main-link-name">Excel</span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link"  href="{{ route('admin.excel') }}">
+                                        <span class="nav-main-link-name">Upload</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link"  href="{{ route('admin.excel.table') }}">
+                                        <span class="nav-main-link-name">Table</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+                                <i class="fa fa-paper-plane mr-2"></i>
+                                <span class="nav-main-link-name">Order</span>
                             </a>
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
@@ -547,13 +575,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link"  href="{{ route('admin.orders') }}">
-                                        <span class="nav-main-link-name">Create</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link"  href="{{ route('admin.excel') }}">
-                                        <span class="nav-main-link-name">Excel</span>
+                                    <a class="nav-main-link"  href="{{ route('admin.excel.payments') }}">
+                                        <span class="nav-main-link-name">Payments</span>
                                     </a>
                                 </li>
                             </ul>
@@ -565,13 +588,13 @@
                             </a>
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link" href="{{ route('admin.category') }}">
-                                        <span class="nav-main-link-name">Categories</span>
+                                    <a class="nav-main-link" href="{{ route('admin.category.create') }}">
+                                        <span class="nav-main-link-name">Create</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link" href="{{ route('admin.category.create') }}">
-                                        <span class="nav-main-link-name">Create</span>
+                                    <a class="nav-main-link" href="{{ route('admin.category') }}">
+                                        <span class="nav-main-link-name">Categories</span>
                                     </a>
                                 </li>
                             </ul>

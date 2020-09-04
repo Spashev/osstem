@@ -45,6 +45,8 @@ Route::middleware(['admin_auth', 'is_admin'])->prefix('admin')->namespace('Admin
     Route::get('/excel/manager/{manager}/delete', 'ExcelController@managerDelete')->name('manager.delete');
     Route::get('/excel/manager/{manager}/edit', 'ExcelController@managerEdit')->name('manager.edit');
     Route::get('/excel/payments', 'ExcelController@payment')->name('excel.payments');
+    //Customer
+    Route::get('/customer/{customer}', 'CustomerController@show')->name('customer.show');
     // Product
     Route::get('/products', 'ProductController@index')->name('products');
     Route::get('/product/create', 'ProductController@create')->name('product.create');

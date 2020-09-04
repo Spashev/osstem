@@ -14,4 +14,9 @@ class Customer extends Model
     {
         return $this->hasMany(Payment::class);
     }
+
+    public function manager()
+    {
+        return $this->belongsTo(Manager::class);
+    }
 }

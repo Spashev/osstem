@@ -18,6 +18,8 @@ class CreateCustomersTable extends Migration
             $table->string('customer_id');
             $table->integer('manager_id');
             $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
             $table->string('region');
             $table->string('region_id');
         });

@@ -4,6 +4,7 @@
     <!-- Page Content -->
     <div class="content content-narrow">
         <!-- Stats -->
+        <div class="messages"></div>
         <div class="row">
             <div class="col-6 col-md-3 col-lg-6 col-xl-3">
                 <a class="block block-rounded block-link-pop border-left border-primary border-4x" href="javascript:void(0)">
@@ -139,44 +140,24 @@
 @endsection
 
 @section('script')
+<script src="{{ asset('assets/js/pages/be_pages_dashboard.min.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/chart.js/Chart.bundle.min.js') }}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/sockjs-client/0.3.4/sockjs.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="{{asset('js/stomp.js')}}"></script>
 <script>
-    // var ctx = document.getElementById('myChart').getContext('2d');
-    // var myChart = new Chart(ctx, {
-    //     type: 'pie',
-    //     data: {
-    //         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    //         datasets: [{
-    //             label: '# of Votes',
-    //             data: [12, 19, 3, 5, 2, 3],
-    //             backgroundColor: [
-    //                 'rgba(255, 99, 132, 0.2)',
-    //                 'rgba(54, 162, 235, 0.2)',
-    //                 'rgba(255, 206, 86, 0.2)',
-    //                 'rgba(75, 192, 192, 0.2)',
-    //                 'rgba(153, 102, 255, 0.2)',
-    //                 'rgba(255, 159, 64, 0.2)'
-    //             ],
-    //             borderColor: [
-    //                 'rgba(255, 99, 132, 1)',
-    //                 'rgba(54, 162, 235, 1)',
-    //                 'rgba(255, 206, 86, 1)',
-    //                 'rgba(75, 192, 192, 1)',
-    //                 'rgba(153, 102, 255, 1)',
-    //                 'rgba(255, 159, 64, 1)'
-    //             ],
-    //             borderWidth: 1
-    //         }]
-    //     },
-    //     options: {
-    //         scales: {
-    //             yAxes: [{
-    //                 ticks: {
-    //                     beginAtZero: true
-    //                 }
-    //             }]
-    //         }
-    //     }
-    // });
+    // var ws = new WebSocket('ws://127.0.0.1:5672');
+    // var client = Stomp.over(ws);
+    // console.log(client);
+    // var on_connect = function() {
+    //     console.log('connected');
+    // };
+    // var on_error =  function() {
+    //     console.log('error');
+    // };
+    // client.connect('guest', 'guest', on_connect, on_error, '/');
+    var ws = new WebSocket('ws://' + window.location.hostname + ':5672/ws');
+    var client = Stomp.over(ws);
+    console.log(client);
 </script>
 @endsection

@@ -12,8 +12,8 @@ Auth::routes();
 
 Route::post('admin/login', 'Admin\LoginController@login')->name('login.admin');
 Route::view('admin/login', 'admin.login')->name('admin.login');
-Route::middleware(['admin_auth','is_admin'])->prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
-    Route::get('/','AdminController@index')->name('index');
+Route::middleware(['admin_auth', 'is_admin'])->prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
+    Route::get('/', 'AdminController@index')->name('index');
     // User
     Route::get('/users', 'ClientController@users')->name('users');
     Route::post('/user/create', 'ClientController@userStore')->name('user.create');
@@ -33,8 +33,13 @@ Route::middleware(['admin_auth','is_admin'])->prefix('admin')->namespace('Admin'
     Route::get('/orders', 'AdminController@orders')->name('orders');
     //Excel
     Route::get('excel', 'ExcelController@index')->name('excel');
+    Route::get('excel/create', 'ExcelController@create')->name('excel.create');
+    Route::post('excel/save', 'ExcelController@save')->name('excel.save');
     Route::post('excel/upload', 'ExcelController@upload')->name('excel.upload');
     Route::get('excel/table', 'ExcelController@table')->name('excel.table');
+    Route::get('excel/{id}/edit', 'ExcelController@edit')->name('excel.edit');
+    Route::get('excel/{id}/update', 'ExcelController@update')->name('excel.update');
+    Route::get('excel/{payment}/delete', 'ExcelController@delete')->name('excel.delete');
     Route::get('/excel/customers', 'ExcelController@customer')->name('excel.customers');
     Route::get('/excel/managers', 'ExcelController@manager')->name('excel.managers');
     Route::get('/excel/manager/{manager}/delete', 'ExcelController@managerDelete')->name('manager.delete');

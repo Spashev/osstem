@@ -24,14 +24,15 @@ class AdminController extends Controller
     {
         return view('admin.index');
     }
-    public function orders() 
+    public function orders()
     {
-        $orders = Order::all();
-        $products = [];
-        foreach($orders as $order) {
-            dump($order->product);
-        }
-        dd('hz');
-        return view('admin.order', compact('orders'));
+
+        return view('admin.order');
+        // $orders = Order::all();
+        // $products = [];
+        // foreach($orders as $order) {
+        //     dump($order->product);
+        // }
+        // return view('admin.order', compact('orders'));
     }
 }

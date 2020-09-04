@@ -43,7 +43,7 @@
                 <div class="content-header border-bottom">
                     <!-- User Avatar -->
                     <a class="img-link mr-1" href="javascript:void(0)">
-                        <img class="img-avatar img-avatar32" src="assets/media/avatars/avatar10.jpg" alt="">
+                        <img class="img-avatar img-avatar32" src="{{asset('assets/media/avatars/avatar10.jpg')}}" alt="">
                     </a>
                     <!-- END User Avatar -->
 
@@ -157,7 +157,7 @@
                                             <li>
                                                 <a class="media py-2" href="javascript:void(0)">
                                                     <div class="mr-3 ml-2 overlay-container overlay-bottom">
-                                                        <img class="img-avatar img-avatar48" src="assets/media/avatars/avatar8.jpg" alt="">
+                                                        <img class="img-avatar img-avatar48" src="{{asset('assets/media/avatars/avatar8.jpg')}}" alt="">
                                                         <span class="overlay-item item item-tiny item-circle border border-2x border-white bg-success"></span>
                                                     </div>
                                                     <div class="media-body">
@@ -169,7 +169,7 @@
                                             <li>
                                                 <a class="media py-2" href="javascript:void(0)">
                                                     <div class="mr-3 ml-2 overlay-container overlay-bottom">
-                                                        <img class="img-avatar img-avatar48" src="assets/media/avatars/avatar9.jpg" alt="">
+                                                        <img class="img-avatar img-avatar48" src="{{asset('assets/media/avatars/avatar9.jpg')}}" alt="">
                                                         <span class="overlay-item item item-tiny item-circle border border-2x border-white bg-success"></span>
                                                     </div>
                                                     <div class="media-body">
@@ -181,7 +181,7 @@
                                             <li>
                                                 <a class="media py-2" href="javascript:void(0)">
                                                     <div class="mr-3 ml-2 overlay-container overlay-bottom">
-                                                        <img class="img-avatar img-avatar48" src="assets/media/avatars/avatar6.jpg" alt="">
+                                                        <img class="img-avatar img-avatar48" src="{{asset('assets/media/avatars/avatar6.jpg')}}" alt="">
                                                         <span class="overlay-item item item-tiny item-circle border border-2x border-white bg-success"></span>
                                                     </div>
                                                     <div class="media-body">
@@ -193,7 +193,7 @@
                                             <li>
                                                 <a class="media py-2" href="javascript:void(0)">
                                                     <div class="mr-3 ml-2 overlay-container overlay-bottom">
-                                                        <img class="img-avatar img-avatar48" src="assets/media/avatars/avatar4.jpg" alt="">
+                                                        <img class="img-avatar img-avatar48" src="{{asset('assets/media/avatars/avatar4.jpg')}}" alt="">
                                                         <span class="overlay-item item item-tiny item-circle border border-2x border-white bg-warning"></span>
                                                     </div>
                                                     <div class="media-body">
@@ -205,7 +205,7 @@
                                             <li>
                                                 <a class="media py-2" href="javascript:void(0)">
                                                     <div class="mr-3 ml-2 overlay-container overlay-bottom">
-                                                        <img class="img-avatar img-avatar48" src="assets/media/avatars/avatar13.jpg" alt="">
+                                                        <img class="img-avatar img-avatar48" src="{{asset('assets/media/avatars/avatar13.jpg')}}" alt="">
                                                         <span class="overlay-item item item-tiny item-circle border border-2x border-white bg-warning"></span>
                                                     </div>
                                                     <div class="media-body">
@@ -501,11 +501,6 @@
                             </a>
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link" href="{{ route('admin.user.create.form') }}">
-                                        <span class="nav-main-link-name">Create</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
                                 <a class="nav-main-link" href="{{ route('admin.users') }}">
                                         <span class="nav-main-link-name">Users</span>
                                     </a>
@@ -539,7 +534,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link" href="be_ui_typography.html">
+                                <a class="nav-main-link" href="{{route('admin.orders')}}">
                                         <span class="nav-main-link-name">Payment</span>
                                     </a>
                                 </li>
@@ -600,7 +595,7 @@
                             </ul>
                         </li>
                         <li class="nav-main-item">
-                            <a class="nav-main-link ml-3" href="#">
+                            <a class="nav-main-link ml-3" href="{{route('admin.orders')}}">
                                 {{-- <i class="fa fa-headset mr-2"></i> --}}
                                 <span class="nav-main-link-name">Call center</span>
                             </a>
@@ -949,7 +944,7 @@
 
 
         <script src="{{ asset('assets/js/oneui.core.min.js') }}"></script>
-        <script src="{{ asset('assets/js/pages/be_pages_dashboard.min.js') }}"></script>
+
         <script src="{{ asset('assets/js/oneui.app.min.js') }}"></script>
         @yield('script')
     </body>

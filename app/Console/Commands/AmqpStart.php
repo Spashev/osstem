@@ -2,25 +2,24 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Repository\NotificationRepository;
 use App\Repository\AmqpRepository;
+use Illuminate\Console\Command;
 
-class NotificationCommand extends Command
+class AmqpStart extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'notify:start';
+    protected $signature = 'amqp:start';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'This command start notification service';
+    protected $description = 'Command description';
 
     /**
      * Create a new command instance.
@@ -39,7 +38,8 @@ class NotificationCommand extends Command
      */
     public function handle()
     {
-        NotificationRepository::start();
+        AmqpRepository::sendNotifications();
+        AmqpRepository::resiveNotifications();
         return 0;
     }
 }

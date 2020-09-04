@@ -181,6 +181,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
 
+
     ],
 
     /*

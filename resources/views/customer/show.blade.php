@@ -9,17 +9,20 @@
                     <h1 class="flex-sm-fill h3 my-2">
                         Customer <small class="d-block d-sm-inline-block mt-2 mt-sm-0 font-size-base font-w400 text-muted">HISTORY.</small>
                     </h1>
-                    <div class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
+                    <div class="flex-sm-00-auto ml-sm-3 btn-group" aria-label="breadcrumb">
                         <button class="btn btn-sm btn-primary" data-toggle="class-toggle" data-target=".timeline" data-class="timeline-centered">
                             <i class="fa fa-arrows-alt-h mr-1"></i> Timeline Mode
                         </button>
+                    <a class="btn btn-sm btn-primary" href="{{route('admin.customer.csv', $customer->id)}}">
+                            <i class="fa fa-file-csv mr-1"></i> CSV
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="content">
             <ul class="timeline timeline-alt">
-                @foreach($customer->payments as $payment)
+                @foreach($customer->payments->sortDesc() as $payment)
                     <li class="timeline-event">
                         <div class="timeline-event-icon bg-info">
                             <i class="fab fa-twitter"></i>

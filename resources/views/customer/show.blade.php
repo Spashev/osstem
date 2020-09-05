@@ -11,10 +11,13 @@
                     </h1>
                     <div class="flex-sm-00-auto ml-sm-3 btn-group" aria-label="breadcrumb">
                         <button class="btn btn-sm btn-primary" data-toggle="class-toggle" data-target=".timeline" data-class="timeline-centered">
-                            <i class="fa fa-arrows-alt-h mr-1"></i> Timeline Mode
+                            <i class="fa fa-arrows-alt-h mr-1 fa-2x"></i>
                         </button>
-                    <a class="btn btn-sm btn-primary" href="{{route('admin.customer.csv', $customer->id)}}">
-                            <i class="fa fa-file-csv mr-1"></i> CSV
+                        <a class="btn btn-sm btn-primary" href="{{route('admin.customer.csv', $customer->id)}}">
+                            <i class="fa fa-file-csv mr-1 fa-2x"></i>
+                        </a>
+                        <a class="btn btn-sm btn-primary" href="{{route('admin.customer.invoice', $customer->id)}}">
+                            <i class="fa fa-file-invoice mr-1 fa-2x"></i>
                         </a>
                     </div>
                 </div>
@@ -43,10 +46,10 @@
                                         <ul class="nav-items push">
                                             <li>
                                                 <a class="media py-2" href="javascript:void(0)">
-                                                    <div class="mr-3 ml-2 overlay-container overlay-left">
-                                                        <p><i class="fa fa-money-bill fa-3x text-success"></i></p>
+                                                    <div class="item item-rounded bg-success text-white mx-auto">
+                                                        <i class="fab fa-2x fa-bitcoin"></i>
                                                     </div>
-                                                    <div class="media-body">
+                                                    <div class="media-body ml-2">
                                                         <div class="font-size-sm text-muted">Amount</div>
                                                         <div class="font-w600">{{$payment->amount}} KZT</div>
                                                     </div>
@@ -54,10 +57,10 @@
                                             </li>
                                             <li>
                                                 <a class="media py-2" href="javascript:void(0)">
-                                                    <div class="mr-3 ml-2 overlay-container overlay-left">
-                                                        <p><i class="fa fa-calculator fa-3x text-muted"></i></p>
+                                                    <div class="item item-rounded bg-body text-success mx-auto">
+                                                        <i class="fa fa-calculator fa-2x text-muted"></i>
                                                     </div>
-                                                    <div class="media-body">
+                                                    <div class="media-body ml-2">
                                                         <div class="font-w400 font-size-sm text-muted">Remain</div>
                                                     <div class="font-w600">{{$payment->remain}} KZT</div>
 
@@ -66,10 +69,10 @@
                                             </li>
                                             <li>
                                                 <a class="media py-2" href="javascript:void(0)">
-                                                    <div class="mr-3 ml-2 overlay-container overlay-left">
-                                                        <p><i class="fa fa-percent fa-3x text-warning"></i></p>
+                                                    <div class="item item-rounded bg-warning text-white mx-auto">
+                                                        <i class="fa fa-percent fa-2x"></i>
                                                     </div>
-                                                    <div class="media-body">
+                                                    <div class="media-body ml-2">
                                                         <div class="font-w400 font-size-sm text-muted">Percent</div>
                                                     <div class="font-w600">{{$payment->percent}} %</div>
                                                     </div>
@@ -83,7 +86,9 @@
                                             <li>
                                                 <a class="media py-2" href="javascript:void(0)">
                                                     <div class="mr-3 ml-2 overlay-container overlay-left">
-                                                        <p><i class="far fa-calendar-alt fa-3x text-info"></i></p>
+                                                        <div class="item item-rounded bg-info-light text-info mx-auto">
+                                                            <i class="si fa-2x si-calendar"></i>
+                                                        </div>
                                                     </div>
                                                     <div class="media-body">
                                                         <div class="font-w400 font-size-sm text-muted">Seq</div>
@@ -92,22 +97,22 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="media py-2" href="javascript:void(0)">
-                                                    <div class="mr-3 ml-2 overlay-container overlay-left">
-                                                        <p><i class="fa fa-money-check-alt fa-3x text-primary-darker"></i></p>
+                                                <a class="media py-2 ml-2" href="javascript:void(0)">
+                                                    <div class="item item-rounded bg-dark text-white mx-auto">
+                                                        <i class="fa fa-money-bill-alt fa-2x"></i>
                                                     </div>
-                                                    <div class="media-body">
+                                                    <div class="media-body ml-2">
                                                         <div class="font-size-sm text-muted">Paid</div>
                                                     <div class="font-w600">{{$payment->paid}} KZT</div>
                                                     </div>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="media py-2" href="javascript:void(0)">
-                                                    <div class="mr-3 ml-2 overlay-container overlay-left">
-                                                        <p><i class="fa fa-funnel-dollar fa-3x text-danger"></i></p>
+                                                <a class="media py-2 ml-2" href="javascript:void(0)">
+                                                    <div class="item item-rounded bg-danger-light text-danger mx-auto">
+                                                        <i class="fa fa-money-check-alt fa-2x"></i>
                                                     </div>
-                                                    <div class="media-body">
+                                                    <div class="media-body ml-2">
                                                         <div class="font-w400 font-size-sm text-muted">Amount with percent</div>
                                                     <div class="font-w600">{{$payment->amount_percent}} KZT</div>
                                                     </div>

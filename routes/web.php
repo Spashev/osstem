@@ -37,17 +37,20 @@ Route::middleware(['admin_auth', 'is_admin'])->prefix('admin')->namespace('Admin
     Route::post('excel/save', 'ExcelController@save')->name('excel.save');
     Route::post('excel/upload', 'ExcelController@upload')->name('excel.upload');
     Route::get('excel/table', 'ExcelController@table')->name('excel.table');
-    Route::get('excel/{id}/edit', 'ExcelController@edit')->name('excel.edit');
-    Route::get('excel/{id}/update', 'ExcelController@update')->name('excel.update');
-    Route::get('excel/{payment}/delete', 'ExcelController@delete')->name('excel.delete');
-    Route::get('/excel/customers', 'ExcelController@customer')->name('excel.customers');
-    Route::get('/excel/managers', 'ExcelController@manager')->name('excel.managers');
-    Route::get('/excel/manager/{manager}/delete', 'ExcelController@managerDelete')->name('manager.delete');
-    Route::get('/excel/manager/{manager}/edit', 'ExcelController@managerEdit')->name('manager.edit');
-    Route::get('/excel/payments', 'ExcelController@payment')->name('excel.payments');
+    Route::get('payment/{id}/edit', 'ExcelController@edit')->name('excel.edit');
+    Route::get('payment/{id}/update', 'ExcelController@update')->name('excel.update');
+    Route::get('payment/{payment}/delete', 'ExcelController@delete')->name('excel.delete');
+    Route::get('/payments', 'ExcelController@payment')->name('excel.payments');
+    //Manager
+    Route::get('/managers', 'ExcelController@manager')->name('excel.managers');
+    Route::get('/manager/{id}/show', 'ExcelController@show')->name('manager.show');
+    Route::get('/manager/{manager}/delete', 'ExcelController@managerDelete')->name('manager.delete');
+    Route::get('/manager/{manager}/edit', 'ExcelController@managerEdit')->name('manager.edit');
     //Customer
+    Route::get('/customers', 'ExcelController@customer')->name('excel.customers');
     Route::get('/customer/{customer}', 'CustomerController@show')->name('customer.show');
     Route::get('/customer/csv/{id}', 'CustomerController@get_csv')->name('customer.csv');
+    Route::get('/customer/{id}/invoice', 'CustomerController@invoice')->name('customer.invoice');
     // Product
     Route::get('/products', 'ProductController@index')->name('products');
     Route::get('/product/create', 'ProductController@create')->name('product.create');

@@ -58,7 +58,7 @@ class ExcelController extends Controller
 
     public function manager()
     {
-        $managers = Manager::paginate(10);
+        $managers = Manager::all();
         return view('manager.index', compact('managers'));
     }
 
@@ -109,10 +109,15 @@ class ExcelController extends Controller
         Session::flash('msg', 'All data saved');
         return redirect()->back();
     }
+    public function show($id)
+    {
+        $manager = Manager::with('customers')->findOrFail($id);
+        return view('manager.show', compact('manager'));
+    }
 
     public function edit($id)
     {
-        $payment = Payment::with('customer', 'manager')->find($id);
+        $payment = Payment::with('customer', 'manager')->findOrFail($id);
         $managers = Manager::all();
         $customers = Customer::all();
         return view('excel.edit', compact('payment', 'customers', 'managers'));
@@ -121,7 +126,7 @@ class ExcelController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
-        $payment = Payment::find($id);
+        $payment = Payment::findOrFail($id);
         $payment->manager_id = $request->manager;
         $payment->contract_no = $request->contract_no;
         $payment->amount = $request->amount;
@@ -137,6 +142,8 @@ class ExcelController extends Controller
 
     public function delete(Payment $payment)
     {
-        dd($payment);
+        dd('Delete');
+        $payment->delete();
+        return redirect()->back();
     }
 }

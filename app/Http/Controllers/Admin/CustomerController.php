@@ -67,6 +67,12 @@ class CustomerController extends Controller
         return response()->download('storage/upload/customer.csv');
     }
 
+    public function invoice($id)
+    {
+        $customer = Customer::with('payments')->findOrFail($id);
+        return view('customer.invoice', compact('customer'));
+    }
+
     public function create()
     {
         //
@@ -82,7 +88,6 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::with('manager', 'payments')->findOrFail($id);
-        // dd($customer->payments);
         return view('customer.show', compact('customer'));
     }
 

@@ -8,11 +8,10 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-// Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('admin/login', 'Admin\LoginController@login')->name('login.admin');
 Route::view('admin/login', 'admin.login')->name('admin.login');
-Route::middleware(['admin_auth', 'is_admin'])->prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
+Route::middleware('auth')->prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
     Route::get('/', 'AdminController@index')->name('index');
     // User
     Route::get('/users', 'ClientController@users')->name('users');
@@ -42,12 +41,14 @@ Route::middleware(['admin_auth', 'is_admin'])->prefix('admin')->namespace('Admin
     Route::get('payment/{payment}/delete', 'ExcelController@delete')->name('excel.delete');
     Route::get('/payments', 'ExcelController@payment')->name('excel.payments');
     //Manager
-    Route::get('/managers', 'ExcelController@manager')->name('excel.managers');
-    Route::get('/manager/{id}/show', 'ExcelController@show')->name('manager.show');
-    Route::get('/manager/{manager}/delete', 'ExcelController@managerDelete')->name('manager.delete');
-    Route::get('/manager/{manager}/edit', 'ExcelController@managerEdit')->name('manager.edit');
+    Route::get('/managers', 'ManagerController@manager')->name('excel.managers');
+    Route::get('/manager/{id}/show', 'ManagerController@show')->name('manager.show');
+    Route::get('/manager/{manager}/delete', 'ManagerController@managerDelete')->name('manager.delete');
+    Route::get('/manager/{manager}/edit', 'ManagerController@managerEdit')->name('manager.edit');
+    Route::post('manager', 'ManagerController@save')->name('manager.save');
     //Customer
-    Route::get('/customers', 'ExcelController@customer')->name('excel.customers');
+    Route::get('/customers', 'CustomerController@customer')->name('excel.customers');
+    Route::post('/customer', 'CustomerController@store')->name('customer.save');
     Route::get('/customer/{customer}', 'CustomerController@show')->name('customer.show');
     Route::get('/customer/csv/{id}', 'CustomerController@get_csv')->name('customer.csv');
     Route::get('/customer/{id}/invoice', 'CustomerController@invoice')->name('customer.invoice');

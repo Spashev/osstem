@@ -180,7 +180,7 @@ return [
          */
         Spatie\Permission\PermissionServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
-
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -234,6 +234,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

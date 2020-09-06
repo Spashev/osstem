@@ -38,24 +38,24 @@
                             @foreach($payments as $payment)
                                 <tr>
                                     <td class="font-size-md" scope="row">{!!$payment->id!!}</td>
-                                    <td class="font-size-md" scope="row">{!!$payment->manager->in_charge ? $payment->manager->in_charge : '<span class="font-w700 badge badge-warning"">No manager</span>'!!}</td>
+                                    <td class="font-size-md" scope="row">{!!$payment->contract->manager->in_charge ? $payment->contract->manager->in_charge : '<span class="font-w700 badge badge-warning"">No manager</span>'!!}</td>
                                     <td class="font-size-md" scope="row">
-                                        <a href="#">{!!$payment->manager->name ? $payment->manager->name : '<span class="font-w700 badge badge-danger">No manager</span>'!!}</a>
+                                        <a href="#">{!!$payment->contract->manager->name ? $payment->contract->manager->name : '<span class="font-w700 badge badge-danger">No manager</span>'!!}</a>
                                     </td>
                                     <td class="font-size-md">
-                                        {!!$payment->customer->region ? $payment->customer->region : '<span class="font-w700 badge badge-warning"">No region</span>'!!}
+                                        {!!$payment->contract->customer->region ? $payment->contract->customer->region : '<span class="font-w700 badge badge-warning"">No region</span>'!!}
                                     </td>
                                     <td class="ffont-size-md">
-                                        {!!$payment->customer->region_id ? $payment->customer->region_id : '<span class="font-w700 badge badge-danger">No region</span>'!!}
+                                        {!!$payment->contract->customer->region_id ? $payment->contract->customer->region_id : '<span class="font-w700 badge badge-danger">No region</span>'!!}
                                     </td>
                                     <td class="font-size-md">
-                                        {{$payment->customer->customer_id}}
+                                        {{$payment->contract->customer->customer_id}}
                                     </td>
                                     <td class="font-size-md">
-                                        {{$payment->customer->name}}
+                                        {{$payment->contract->customer->name}}
                                     </td>
                                     <td class="font-size-md">
-                                        {{$payment->contract_no}}
+                                        {{$payment->contract->contract_no}}
                                     </td>
                                     <td class="font-size-md">
                                         {{$payment->amount}}

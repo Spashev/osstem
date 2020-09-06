@@ -68,10 +68,7 @@
         <h3 class="block-title">Managers</h3>
         <div class="block-options">
             <button class="btn-block-option" data-toggle="modal" data-target="#exampleModal">
-                <i class="fa fa-user-plus"></i>
-            </button>
-            <button type="button" class="btn-block-option">
-                <i class="si si-settings"></i>
+                <i class="fa fa-user-plus fa-2x"></i>
             </button>
         </div>
     </div>
@@ -81,6 +78,7 @@
                 <tr>
                     <th class="text-center" style="width: 80px;">ID</th>
                     <th class="text-center" style="width: 80px;">Name</th>
+                    <th class="text-center" style="width: 80px;">Email</th>
                     <th class="d-none d-sm-table-cell" style="width: 30%;">In charge</th>
                     <th class="text-center" style="width: 100px;">Actions</th>
                 </tr>
@@ -90,7 +88,10 @@
                 <tr>
                     <td class="text-center font-size-sm">{{ $manager->id }}</td>
                     <td class="font-w600 font-size-sm">
-                    <a href="{{route('admin.manager.show', $manager->id)}}">{{ $manager->name }}</a>
+                        <a href="{{route('admin.manager.show', $manager->id)}}">{{ $manager->name }}</a>
+                    </td>
+                    <td class="font-w600 font-size-sm">
+                        {{ $manager->email }}
                     </td>
                     <td class="d-none d-sm-table-cell font-size-sm">
                     <em class="text-muted">{{$manager->in_charge}}</em>
@@ -112,6 +113,38 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Manager</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('admin.manager.save') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Manager name</label>
+                        <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">In charge</label>
+                        <input type="text" name="in_charge" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <hr>
+                    <button type="submit" class="btn btn-primary float-right">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('script')

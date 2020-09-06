@@ -58,30 +58,32 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($customer->payments as $payment)
-                            <tr>
-                                <td class="text-center">{{$payment->id}}</td>
-                                <td>
-                                <p class="font-w600 mb-1">{{$payment->contract_no}}</p>
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge badge-pill badge-primary">{{$payment->seq}}</span>
-                                </td>
-                                <td class="text-right">{{$payment->amount}} KZT</td>
-                                <td class="text-right">{{Str::substr($payment->payment_date,0,10)}}
-                                    <div class="text-muted"><small>Deadline:<br> {{Str::substr($payment->deadline,0,10)}}</small></div>
-                                </td>
-                                <td class="text-right">{{$payment->paid}} KZT</td>
-                                <td class="text-right">{{$payment->remain}} KZT</td>
-                            </tr>
+                            @foreach($customer->contracts as $contract)
+                                @foreach($contract->payments as $payment)
+                                <tr>
+                                    <td class="text-center">{{$payment->id}}</td>
+                                    <td>
+                                    <p class="font-w600 mb-1">{{$contract->contract_no}}</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge badge-pill badge-primary">{{$payment->seq}}</span>
+                                    </td>
+                                    <td class="text-right">{{$payment->amount}} KZT</td>
+                                    <td class="text-right">{{Str::substr($payment->payment_date,0,10)}}
+                                        <div class="text-muted"><small>Deadline:<br> {{Str::substr($payment->deadline,0,10)}}</small></div>
+                                    </td>
+                                    <td class="text-right">{{$payment->paid}} KZT</td>
+                                    <td class="text-right">{{$payment->remain}} KZT</td>
+                                </tr>
+                                @endforeach
                             @endforeach
                             <tr>
                                 <td colspan="6" class="font-w700 text-uppercase text-right bg-body-light">Remain Total</td>
-                                <td class="font-w700 text-right bg-body-light">{{array_sum($customer->payments->pluck('remain')->toArray())}}</td>
+                                <td class="font-w700 text-right bg-body-light">{{$total}}</td>
                             </tr>
                             <tr>
                                 <td colspan="6" class="font-w700 text-uppercase text-right bg-body-light">Total Due</td>
-                                <td class="font-w700 text-right bg-body-light">{{array_sum($customer->payments->pluck('paid')->toArray())}}</td>
+                                <td class="font-w700 text-right bg-body-light">{{$remain_total}}</td>
                             </tr>
                         </tbody>
                     </table>

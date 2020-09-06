@@ -30,7 +30,7 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer('admin.index', function($view) {
+        View::composer('admin.index', function ($view) {
             $view->with([
                 'users' => User::all(),
                 'products' => Product::all(),
@@ -39,7 +39,7 @@ class ComposerServiceProvider extends ServiceProvider
                 'customers' => Customer::all()
             ]);
         });
-        View::composer(['admin.index', 'admin.users'], function($view) {
+        View::composer(['admin.users'], function ($view) {
             $view->with([
                 'users' => User::all(),
                 'roles' => Role::all(),

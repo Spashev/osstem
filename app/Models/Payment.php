@@ -10,14 +10,9 @@ class Payment extends Model
 
     public $timestamps = false;
 
-    public function customer()
+    public function contract()
     {
-        return $this->belongsTo(Customer::class);
-    }
-
-    public function manager()
-    {
-        return $this->belongsTo(Manager::class);
+        return $this->belongsTo(Contract::class);
     }
 
     public function notifications()

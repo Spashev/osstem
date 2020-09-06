@@ -10,9 +10,9 @@ class Manager extends Model
 
     public $timestamps = false;
 
-    public function payments()
+    public function contracts()
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Contract::class);
     }
 
     public function customers()

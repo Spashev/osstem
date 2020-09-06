@@ -47,12 +47,19 @@ oneui
 
 ## Composer
 
+-   sudo pacman -S rabbitmq
+-   sudo pacman -S memcached
 -   composer require league/csv
 -   composer require predis/predis
--   sudo pacman -S rabbitmq
 -   composer require vladimir-yuldashev/laravel-queue-rabbitmq
 -   composer require spatie/laravel-permission
 -   composer require php-amqplib/php-amqplib
 -   composer require league/csv
 -   composer require lazyelephpant/repository
 -   composer require bschmitt/laravel-amqp
+-   composer require barryvdh/laravel-debugbar --dev
+
+## Error
+
+-   memory_limit /etc/php/php.ini memory_limit=512M
+-   redis install redis

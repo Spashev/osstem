@@ -97,23 +97,28 @@ class ExcelController extends Controller
 
     public function edit($id)
     {
-        $payment = Payment::with('customer', 'manager')->findOrFail($id);
+        $payment = Payment::with('contract')->findOrFail($id);
         $managers = Manager::all();
         $customers = Customer::all();
+        // dd($payment);
         return view('excel.edit', compact('payment', 'customers', 'managers'));
     }
 
     public function update(Request $request, $id)
     {
+
         $payment = Payment::findOrFail($id);
-        $payment->manager_id = $request->manager;
-        $payment->contract_no = $request->contract_no;
+        $payment->contract->manager_id = $request->manager;
+        if ($request->contract_no) {
+            $payment->contract->contract_no = $request->contract_no;
+        }
         $payment->amount = $request->amount;
         $payment->paid = $request->paid;
         $payment->remain = $request->paid != 0 ? $payment->remain - $request->paid : $payment->amount;
         $payment->payment_date = Carbon::parse($request->payment_day)->format('Y-m-d');
         $payment->deadline = Carbon::parse($request->deadline)->format('Y-m-d');
         $payment->save();
+        $payment->contract->save();
 
         Session::flash('msg', 'Data updated');
         return redirect()->back();

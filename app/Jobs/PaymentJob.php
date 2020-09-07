@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Payment;
 use Carbon\Carbon;
 
-class NotificationJob implements ShouldQueue
+class PaymentJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -31,9 +31,10 @@ class NotificationJob implements ShouldQueue
      */
     public function handle()
     {
-        $to = Carbon::now()->addDays('3')->format('Y-m-d');
-        $payments = Payment::with('manager', 'customer')->where('deadline', $to)->where('paid', 0)->get();
-        dump('SMS notifications for payment: ', $payments->toArray()); # send sms
-
+        if (Carbon::now()->isFriday() == 'True') {
+            $to = Carbon::now()->subDay(3)->format('Y-m-d');
+            $delay = Payment::with('manager', 'customer')->where('deadline', $to)->where('remain', '<>', 0)->get();
+            dump("SMS notifications for overdue clients: ", $delay->toArray()); # send sms
+        }
     }
 }

@@ -2,26 +2,24 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\NotificationJob;
+use App\Jobs\PaymentJob;
 use Illuminate\Console\Command;
-use App\Repository\NotificationRepository;
-use App\Repository\AmqpRepository;
 
-class NotificationCommand extends Command
+class PaymentCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'notify:start';
+    protected $signature = 'payment:start';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'This command start notification service';
+    protected $description = 'Start notification bot';
 
     /**
      * Create a new command instance.
@@ -40,7 +38,7 @@ class NotificationCommand extends Command
      */
     public function handle()
     {
-        NotificationJob::dispatch();
+        PaymentJob::dispatch();
         return 0;
     }
 }

@@ -27,7 +27,7 @@
                 <form class="mb-5" action="{{route('admin.excel.update', $payment->id)}}" method="GET">
                         <div class="form-group">
                             <label for="example-select1 wizard-progress-firstname">Customer name</label>
-                            <input class="form-control" readonly type="text" id="wizard-progress-location1" name="contract_no" value="{{$payment->customer->name}}">
+                            <input class="form-control" readonly type="text" id="wizard-progress-location1" name="contract_no" value="{{$payment->contract->customer->name}}">
                         </div>
                         <div class="form-group">
                             <label for="example-select2 wizard-progress-firstname">Manager</label>

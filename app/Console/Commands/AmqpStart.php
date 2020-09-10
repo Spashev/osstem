@@ -4,6 +4,10 @@ namespace App\Console\Commands;
 
 use App\Repository\AmqpRepository;
 use Illuminate\Console\Command;
+use Ratchet\Server\IoServer;
+use Ratchet\Http\HttpServer;
+use Ratchet\WebSocket\WsServer;
+use App\Classes\Socket\SendNotification;
 
 class AmqpStart extends Command
 {
@@ -38,8 +42,19 @@ class AmqpStart extends Command
      */
     public function handle()
     {
+        // $this->info('Websocket start');
+        // $server = IoServer::factory(
+        //     new HttpServer(
+        //         new WsServer(
+        //             new SendNotification()
+        //         )
+        //     ),
+        //     8080
+        // );
+    
+        // $server->run();
         AmqpRepository::sendNotifications();
-        AmqpRepository::resiveNotifications();
-        return 0;
+        // AmqpRepository::resiveNotifications();
+        // return 0;
     }
 }

@@ -21,10 +21,10 @@
                     <div class="col-6 font-size-sm">
                     <p class="h3">Company</p>
                         <address>
-                            Region<br>
-                            Region id<br>
-                            Phone<br>
-                            Email
+                            <strong>Region</strong><br>
+                            <strong>Region id</strong><br>
+                            <strong>Phone</strong><br>
+                            <strong>Email</strong>
                         </address>
                     </div>
                     <!-- END Company Info -->
@@ -33,10 +33,10 @@
                     <div class="col-6 text-right font-size-sm">
                         <p class="h3">{{$customer->name}}</p>
                         <address>
-                            {{$customer->region}}<br>
-                            {{$customer->region_id}}<br>
-                            {{$customer->phone}}<br>
-                            {{$customer->email}}
+                            <strong>{{$customer->region}}</strong><br>
+                            <strong>{{$customer->region_id}}</strong><br>
+                            <strong>{{$customer->phone}}</strong><br>
+                            <strong>{{$customer->email}}</strong>
                         </address>
                     </div>
                     <!-- END Client Info -->

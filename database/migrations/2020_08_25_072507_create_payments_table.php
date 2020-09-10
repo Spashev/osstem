@@ -15,7 +15,7 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('hash');
+            $table->string('hash')->unique();
             $table->bigInteger('contract_id');
             $table->string('seq');
             $table->string('amount');
@@ -26,6 +26,7 @@ class CreatePaymentsTable extends Migration
             $table->string('remain');
             $table->string('percent')->default(0);
             $table->string('amount_percent')->default(0);
+            
         });
     }
 

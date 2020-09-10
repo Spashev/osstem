@@ -137,6 +137,7 @@
         <!-- END Customers and Latest Orders -->
     </div>
     <!-- END Page Content -->
+    <button class="btn btn-danger" onclick="send();">websocket</button>
 @endsection
 
 @section('script')
@@ -144,20 +145,14 @@
 <script src="{{ asset('assets/js/plugins/chart.js/Chart.bundle.min.js') }}"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/sockjs-client/0.3.4/sockjs.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script src="{{asset('js/stomp.js')}}"></script>
+
+
+<script src="{{asset('js/app.js')}}"></script>
 <script>
-    // var ws = new WebSocket('ws://127.0.0.1:5672');
-    // var client = Stomp.over(ws);
-    // console.log(client);
-    // var on_connect = function() {
-    //     console.log('connected');
-    // };
-    // var on_error =  function() {
-    //     console.log('error');
-    // };
-    // client.connect('guest', 'guest', on_connect, on_error, '/');
-    var ws = new WebSocket('ws://' + window.location.hostname + ':5672/ws');
-    var client = Stomp.over(ws);
-    console.log(client);
+        Echo.channel('home')
+        .listen('NewMessage', (e) => {
+            console.log(e.message)
+        });
+    
 </script>
 @endsection

@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
+
+use League\Csv\Reader;
+
 class ExcelController extends Controller
 {
     public function index()
@@ -128,5 +131,24 @@ class ExcelController extends Controller
     {
         $payment->delete();
         return redirect()->back();
+    }
+
+    public function import()
+    {
+        $inputFileName = public_path('client_address.csv');
+        $reader = Reader::createFromPath($inputFileName, 'r');
+        $reader->setHeaderOffset(0);
+        $records = $reader->getRecords();
+        foreach($records as $record) {
+            $nomer = $record['CELL'] ? $record['CELL'] : $record['TEL NO'];
+            $customer = Customer::where('customer_id', $record['CODE'])->first();
+            if($customer) {
+                $customer->phone = $nomer;
+                $customer->city = $record['city'];
+                $customer->district = $record['district'];
+                $customer->address = $record['address'];
+                $customer->save();
+            }
+        }
     }
 }

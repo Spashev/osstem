@@ -17,7 +17,7 @@ class CreateContractsTable extends Migration
             $table->id();
             $table->integer('customer_id');
             $table->integer('manager_id')->nullable();
-            $table->string('contract_no');
+            $table->string('contract_no')->unique();
             $table->timestamps();
         });
     }

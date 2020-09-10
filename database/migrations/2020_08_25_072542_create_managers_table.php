@@ -17,7 +17,7 @@ class CreateManagersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->nullable();
-            $table->string('in_charge');
+            $table->string('in_charge')->unique();
         });
     }
 

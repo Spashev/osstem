@@ -12,7 +12,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Session;
 use League\Csv\Reader;
 
 class ExcelJob implements ShouldQueue
@@ -46,9 +45,8 @@ class ExcelJob implements ShouldQueue
         $customer_id = $contract_no = NULL;
         $in_charge = $customer_id = NULL;
         $updated_item = [];
-
+        
         $payments_hash = Payment::all();
-
         foreach ($records as $record) {
             dump($record);
             $hash = '$_' . $record['CONTRACT NO'] . '_S_' . $record['SEQ'];

@@ -9,10 +9,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::post('admin/login', 'Admin\LoginController@login')->name('login.admin');
-Route::view('admin/login', 'admin.login')->name('admin.login');
-Route::middleware('auth')->prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
-    Route::get('/', 'AdminController@index')->name('index');
+Route::post('login', 'Admin\LoginController@login')->name('login.admin');
+Route::view('login', 'admin.login')->name('admin.login');
+Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function () {
+    Route::get('/home', 'AdminController@index')->name('index');
     // User
     Route::get('/users', 'ClientController@users')->name('users');
     Route::post('/user/create', 'ClientController@userStore')->name('user.create');
@@ -63,3 +63,4 @@ Route::middleware('auth')->prefix('admin')->namespace('Admin')->name('admin.')->
     //Roles
     Route::get('/roles', 'RoleController@index')->name('roles');
 });
+Route::get('import', 'Admin\ExcelController@import');

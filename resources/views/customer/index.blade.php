@@ -27,6 +27,7 @@
                         <th class="text-center" style="width: 80px;">Name</th>
                         <th>Email</th>
                         <th class="d-none d-sm-table-cell" style="width: 30%;">Phone</th>
+                        <th class="d-none d-sm-table-cell" style="width: 30%;">Address</th>
                         <th class="d-none d-sm-table-cell" style="width: 15%;">Region</th>
                         <th style="width: 15%;">Region ID</th>
                         <th style="width: 15%;">Actions</th>
@@ -45,6 +46,9 @@
                         </td>
                         <td class="d-none d-sm-table-cell">
                             <span class="badge badge-success">{{ $customer->phone }}</span>
+                        </td>
+                        <td class="d-none d-sm-table-cell">
+                            {{ $customer->address }}
                         </td>
                         <td class="d-none d-sm-table-cell">
                             <span class="badge badge-info font-size-lg">{{ $customer->region }}</span>

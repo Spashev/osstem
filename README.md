@@ -49,15 +49,18 @@ oneui
 
 -   sudo pacman -S rabbitmq
 -   sudo pacman -S memcached
--   composer require league/csv
--   composer require predis/predis
--   composer require vladimir-yuldashev/laravel-queue-rabbitmq
--   composer require spatie/laravel-permission
--   composer require php-amqplib/php-amqplib
--   composer require league/csv
--   composer require lazyelephpant/repository
--   composer require bschmitt/laravel-amqp
--   composer require barryvdh/laravel-debugbar --dev
+-   sudo pacman -S zeromq
+-   COMPOSER_MEMORY_LIMIT=-1 composer require league/csv
+-   COMPOSER_MEMORY_LIMIT=-1 composer require predis/predis
+-   COMPOSER_MEMORY_LIMIT=-1 composer require vladimir-yuldashev/laravel-queue-rabbitmq
+-   COMPOSER_MEMORY_LIMIT=-1 composer require spatie/laravel-permission
+-   COMPOSER_MEMORY_LIMIT=-1 composer require php-amqplib/php-amqplib
+-   COMPOSER_MEMORY_LIMIT=-1 composer require league/csv
+-   COMPOSER_MEMORY_LIMIT=-1 composer require lazyelephpant/repository
+-   COMPOSER_MEMORY_LIMIT=-1 composer require bschmitt/laravel-amqp
+-   COMPOSER_MEMORY_LIMIT=-1 composer require barryvdh/laravel-debugbar --dev
+-   COMPOSER_MEMORY_LIMIT=-1 composer require beyondcode/laravel-websockets[doc](https://beyondco.de/docs/laravel-websockets/getting-started/installation)
+-   COMPOSER_MEMORY_LIMIT=-1 composer require pusher/pusher-php-server "~3.0"
 
 ## Error
 

@@ -51,8 +51,8 @@ class AmqpRepository extends Repository
         ]);
         $channel->basic_publish($message, $exchange);
 
-        $channel->close();
-        $connection->close();
+        // $channel->close();
+        // $connection->close();
     }
 
     public static function resiveNotifications()

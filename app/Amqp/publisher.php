@@ -4,6 +4,7 @@ namespace App\Amqp;
 
 include('../../vendor/autoload.php');
 
+use App\Events\SendNotification;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Exchange\AMQPExchangeType;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -32,6 +33,9 @@ $messageBody = json_encode([
     'name' => 'Nurken',
     'subscribed' => true
 ]);
+
+event(new SendNotification('hello'));
+
 $message = new AMQPMessage($messageBody, array('content_type' => 'text/plain', 'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT));
 $channel->basic_publish($message, $exchange);
 

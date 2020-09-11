@@ -145,14 +145,21 @@
 <script src="{{ asset('assets/js/plugins/chart.js/Chart.bundle.min.js') }}"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/sockjs-client/0.3.4/sockjs.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 
 
-<script src="{{asset('js/app.js')}}"></script>
 <script>
-        Echo.channel('home')
-        .listen('NewMessage', (e) => {
-            console.log(e.message)
+    // var socket = io('http://'+document.domain+':2021');
+    // socket.on('connection', function(data) {
+    //     console.log('From server: ' + data)
+    // }).on('message', function(data) {
+    //     console.log(data);
+    // });
+
+    var ws = new WebSocket('ws://0.0.0.0:8001');
+        ws.addEventListener('message', function(event) {
+            console.log('Message: ' + event.data);
         });
-    
+
 </script>
 @endsection

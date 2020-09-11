@@ -22,9 +22,11 @@
         "league/csv": "^9.6",
         "php-amqplib/php-amqplib": "^2.12",
         "predis/predis": "^1.1",
-        "pusher/pusher-php-server": "~3.0",
+        "pusher/pusher-php-server": "~4.0",
         "spatie/laravel-permission": "^3.13",
-        "vladimir-yuldashev/laravel-queue-rabbitmq": "^10.2"
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^10.2",
+        "wisembly/elephant.io": "^3.3",
+        "workerman/phpsocket.io": "^1.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.4",

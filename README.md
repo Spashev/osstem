@@ -47,12 +47,8 @@ oneui
 
 ## Composer
 
--   sudo pacman -S rabbitmq
--   sudo pacman -S memcached
--   sudo pacman -S zeromq
 -   COMPOSER_MEMORY_LIMIT=-1 composer require league/csv
 -   COMPOSER_MEMORY_LIMIT=-1 composer require predis/predis
--   COMPOSER_MEMORY_LIMIT=-1 composer require vladimir-yuldashev/laravel-queue-rabbitmq
 -   COMPOSER_MEMORY_LIMIT=-1 composer require spatie/laravel-permission
 -   COMPOSER_MEMORY_LIMIT=-1 composer require php-amqplib/php-amqplib
 -   COMPOSER_MEMORY_LIMIT=-1 composer require league/csv

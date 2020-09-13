@@ -52,10 +52,10 @@ About our project.
 
 ## Error
 ``` bash
--   memory_limit /etc/php/php.ini memory_limit=512M
--   redis install redis
+memory_limit /etc/php/php.ini memory_limit=512M
+redis install redis
 
--   '\*\/1 \* \* \* \* flock -n /tmp/bot-cron.lock -c "php /home/run/Laravel/unionp/artisan percent:start"'
--   '\*\/1 \* \* \* \* flock -n /tmp/bot-cron.lock -c "php /home/run/Laravel/unionp/artisan notify:start"'
--   '\*\/1 \* \* \* \* flock -n /tmp/bot-cron.lock -c "php /home/run/Laravel/unionp/artisan payment:start"'
+\*/1 \* \* \* \* flock -n /tmp/bot-cron.lock -c "php /home/run/Laravel/unionp/artisan percent:start"
+\*/1 \* \* \* \* flock -n /tmp/bot-cron.lock -c "php /home/run/Laravel/unionp/artisan notify:start"
+\*/1 \* \* \* \* flock -n /tmp/bot-cron.lock -c "php /home/run/Laravel/unionp/artisan payment:start"
 ```

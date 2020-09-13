@@ -36,7 +36,7 @@ About our project.
 -   css3
 -   html5
 -   oneui
-
+```
 ## Composer
 
 -   COMPOSER_MEMORY_LIMIT=-1 composer require league/csv
@@ -49,7 +49,7 @@ About our project.
 -   COMPOSER_MEMORY_LIMIT=-1 composer require barryvdh/laravel-debugbar --dev
 -   COMPOSER_MEMORY_LIMIT=-1 composer require beyondcode/laravel-websockets [doc](https://beyondco.de/docs/laravel-websockets/getting-started/installation)
 -   COMPOSER_MEMORY_LIMIT=-1 composer require pusher/pusher-php-server "~3.0"
-```
+
 ## Error
 
 -   memory_limit /etc/php/php.ini memory_limit=512M

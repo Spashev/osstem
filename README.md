@@ -17,7 +17,7 @@ About our project.
 
 ## Technologies used
 
--   Backend
+#  Backend
 -   Php 7.4
 -   Laravel 7
 -   Mysql
@@ -28,7 +28,7 @@ About our project.
 -   STMP
 -   SMS
 
--   Frontend
+#   Frontend
 -   Javascript
 -   vuejs
 -   ajax
@@ -47,7 +47,7 @@ About our project.
 -   COMPOSER_MEMORY_LIMIT=-1 composer require lazyelephpant/repository
 -   COMPOSER_MEMORY_LIMIT=-1 composer require bschmitt/laravel-amqp
 -   COMPOSER_MEMORY_LIMIT=-1 composer require barryvdh/laravel-debugbar --dev
--   COMPOSER_MEMORY_LIMIT=-1 composer require beyondcode/laravel-websockets[doc](https://beyondco.de/docs/laravel-websockets/getting-started/installation)
+-   COMPOSER_MEMORY_LIMIT=-1 composer require beyondcode/laravel-websockets [doc](https://beyondco.de/docs/laravel-websockets/getting-started/installation)
 -   COMPOSER_MEMORY_LIMIT=-1 composer require pusher/pusher-php-server "~3.0"
 
 ## Error

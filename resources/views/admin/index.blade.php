@@ -132,22 +132,16 @@
                 </div>
             </div>
         </div>
-        <!-- END Dashboard Charts -->
-
         <!-- END Customers and Latest Orders -->
     </div>
     <!-- END Page Content -->
 @endsection
 
-@section('script')
-<script src="{{ asset('assets/js/pages/be_pages_dashboard.min.js') }}"></script>
-<script src="{{ asset('assets/js/plugins/chart.js/Chart.bundle.min.js') }}"></script>
+@section('head')
+    <link rel="stylesheet" id="css-main" href="{{ asset('css/notificaion.css')}}">
+@endsection
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-<script>
-    var ws = new WebSocket('ws://0.0.0.0:8001');
-        ws.addEventListener('message', function(event) {
-            console.log('Message: ' + event.data);
-    });
-</script>
+@section('script')
+    <script src="{{ asset('assets/js/pages/be_pages_dashboard.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/chart.js/Chart.bundle.min.js') }}"></script>
 @endsection

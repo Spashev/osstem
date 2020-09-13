@@ -13,7 +13,7 @@
         </div>
         <div class="block-content">
             <div class="row">
-                <div class="col-md-12 col-lg-12"  style="overflow: scroll; height:500px;">
+                <div class="col-md-12 col-lg-12" style="overflow: scroll; height:500px;">
                     <table class="table table-bordered table-vcenter">
                         <thead>
                             <tr>

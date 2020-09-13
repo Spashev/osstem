@@ -13,7 +13,7 @@
                         <button class="btn btn-sm btn-primary" data-toggle="class-toggle" data-target=".timeline" data-class="timeline-centered">
                             <i class="fa fa-arrows-alt-h mr-1 fa-2x"></i>
                         </button>
-                        <a class="btn btn-sm btn-primary" href="{{route('admin.customer.csv', $customer->id)}}">
+                        <a class="btn btn-sm btn-primary buttonCsv" href="{{route('admin.customer.csv', $customer->id)}}">
                             <i class="fa fa-file-csv mr-1 fa-2x"></i>
                         </a>
                         <a class="btn btn-sm btn-primary" href="{{route('admin.customer.invoice', $customer->id)}}">

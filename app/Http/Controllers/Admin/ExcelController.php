@@ -77,14 +77,14 @@ class ExcelController extends Controller
     public function save(PaymentRequest $request)
     {
 
-        $contract = Contract::create([
+        $contract = Contract::firstOrCreate([
             'customer_id' => $request->customer,
             'manager_id' => $request->manager,
             'contract_no' => $request->contract_no,
         ]);
         for ($i = 1; $i < $request->seq + 1; $i++) {
             Payment::create([
-                'hash' => '$_' . $request->contract_no . '_S_' . $request->seq,
+                'hash' => '$_' . $request->contract_no . '_S_' . $i,
                 'contract_id' => $contract->id,
                 'seq' => $i,
                 'amount' => $request->amount,
@@ -144,11 +144,12 @@ class ExcelController extends Controller
             $customer = Customer::where('customer_id', $record['CODE'])->first();
             if($customer) {
                 $customer->phone = $nomer;
-                $customer->city = $record['city'];
-                $customer->district = $record['district'];
+                $customer->city = $record['(Bill To)'];
+                $customer->district = $record['__EMPTY_1'];
                 $customer->address = $record['address'];
                 $customer->save();
             }
         }
+        return 'All customer contacts saved successfully';
     }
 }

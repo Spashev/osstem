@@ -14,12 +14,8 @@ class CustomerController extends Controller
 {
     public function customer()
     {
-        $customers = Cache::remember('customers', Carbon::now()->addMinutes(1), function () {
-            return Customer::all();
-        });
-        $managers = Cache::remember('managers', Carbon::now()->addMinutes(1), function () {
-            return Manager::all();
-        });
+        $customers = Customer::paginate(20);
+        $managers = Manager::all();
 
         return view('customer.index', compact('customers', 'managers'));
     }

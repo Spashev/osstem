@@ -14,7 +14,7 @@ class PercentCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'percent:start';
+    protected $signature = 'start:percent';
 
     /**
      * The console command description.
@@ -42,13 +42,14 @@ class PercentCommand extends Command
     {
         $now = Str::substr(Carbon::now(), 0, 10);
         $monthStart = Str::substr(Carbon::now()->startOfMonth(), 0, 10);
-        $payments = Payment::whereBetween('payment_date', [$monthStart, $now])->where('remain', '<>', 0)->get();
+        $payments = Payment::with('contract')->whereBetween('payment_date', [$monthStart, $now])->where('remain', '<>', 0)->get();
         foreach ($payments as $payment) {
-            $minusDays = intval(Str::substr($payment->payment_date, 8, 10)) - intval(Str::substr($now, 8, 10));
+            // $minusDays = intval(Str::substr($payment->payment_date, 8, 10)) - intval(Str::substr($now, 8, 10));
             $amount = ((($payment->percent * $payment->amount) / 100)) + $payment->amount;
             $payment->amount_percent = $amount;
             $payment->save();
         }
+        dump($payments->toArray());
         info('Percent: ', $payments->toArray());
         return 0;
     }

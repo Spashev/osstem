@@ -10,27 +10,32 @@
                 <button class="btn-block-option" data-toggle="modal" data-target="#exampleModal">
                     <i class="fa fa-user-plus fa-2x"></i>
                 </button>
+                <button class="btn-block-option" onclick="printDiv()">
+                    <i class="fa fa-print fa-2x"></i>
+                </button>
+                <button class="btn-block-option buttonCsv">
+                    <i class="fa fa-file-csv fa-2x"></i>
+                </button>
             </div>
         </div>
-        <div class="block-content block-content-full">
+        <div class="block-content block-content-full" id="areaToPrint" style="overflow-x: scroll;">
             @if(Session::has('msg'))
                 <div class="alert alert-info">
                     {{Session::get('msg')}}
                 </div>
             @endif
-            <!-- DataTables init on table by adding .js-dataTable-buttons class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _es6/pages/be_tables_datatables.js -->
-            <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
+            <table border="1" cellpadding="5" class="table table-bordered table-striped table-vcenter" >
                 <thead>
                     <tr>
                         <th class="text-center" style="width: 80px;">ID</th>
                         <th class="text-center" style="width: 80px;">Customer ID</th>
                         <th class="text-center" style="width: 80px;">Name</th>
-                        <th>Email</th>
-                        <th class="d-none d-sm-table-cell" style="width: 30%;">Phone</th>
-                        <th class="d-none d-sm-table-cell" style="width: 30%;">Address</th>
-                        <th class="d-none d-sm-table-cell" style="width: 15%;">Region</th>
-                        <th style="width: 15%;">Region ID</th>
-                        <th style="width: 15%;">Actions</th>
+                        <th class="text-center" style="width: 80px;">Email</th>
+                        <th class="d-none d-sm-table-cell">Phone</th>
+                        <th class="d-none d-sm-table-cell" style="width: 80px;">Address</th>
+                        <th class="d-none d-sm-table-cell">Region</th>
+                        <th class="d-none d-sm-table-cell">Region ID</th>
+                        <th class="d-none d-sm-table-cell">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,6 +76,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="ml-3 text-size-md float-right">
+            {{ $customers->links() }}
+        </div>
     </div>
     <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -90,8 +98,8 @@
                         <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Customer id</label>
-                        <input type="text" name="customer_id" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter customer_id">
+                        <label for="exampleInputEmail2">Customer id</label>
+                        <input type="text" name="customer_id" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="Enter customer_id">
                     </div>
                     <div class="form-group">
                         <label for="val-skill">Manager <span class="text-danger">*</span></label>
@@ -103,8 +111,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email</label>
-                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                        <label for="exampleInputEmail3">Email</label>
+                        <input type="email" name="email" class="form-control" id="exampleInputEmail3" aria-describedby="emailHelp" placeholder="Enter email">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword2">Phone</label>
@@ -126,18 +134,63 @@
     </div>
 </div>
 @endsection
-
 @section('script')
+    <script>
+        function printDiv() {
+            var divToPrint = document.getElementById('areaToPrint');
+            newWin = window.open("");
+            newWin.document.write(divToPrint.outerHTML);
+            newWin.print();
+            newWin.close();
+        }
+    </script>
+    <script>
+        function download_csv(csv, filename) {
+            var csvFile;
+            var downloadLink;
 
-    <!-- Page JS Plugins -->
-    <script src="{{ asset('assets/js/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/datatables/buttons/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/datatables/buttons/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/datatables/buttons/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/datatables/buttons/buttons.flash.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/datatables/buttons/buttons.colVis.min.js') }}"></script>
+            // CSV FILE
+            csvFile = new Blob([csv], {type: "text/csv"});
 
-    <!-- Page JS Code -->
-    <script src="{{ asset('assets/js/pages/be_tables_datatables.min.js') }}"></script>
+            // Download link
+            downloadLink = document.createElement("a");
+
+            // File name
+            downloadLink.download = filename;
+
+            // We have to create a link to the file
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+
+            // Make sure that the link is not displayed
+            downloadLink.style.display = "none";
+
+            // Add the link to your DOM
+            document.body.appendChild(downloadLink);
+
+            // Lanzamos
+            downloadLink.click();
+        }
+
+        function export_table_to_csv(html, filename) {
+            var csv = [];
+            var rows = document.querySelectorAll("table tr");
+            
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+                
+                for (var j = 0; j < cols.length; j++) 
+                    row.push(cols[j].innerText);
+                
+                csv.push(row.join(","));		
+            }
+
+            // Download CSV
+            download_csv(csv.join("\n"), filename);
+        }
+
+        document.querySelector(".buttonCsv").addEventListener("click", function () {
+            var html = document.querySelector("table").outerHTML;
+            export_table_to_csv(html, "table.csv");
+        });
+    </script>
 @endsection

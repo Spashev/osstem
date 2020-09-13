@@ -16,7 +16,7 @@ About our project.
 -   [UnionPartners](http://www.unionp.kz/).
 
 ## Technologies used
-
+``` bash
 #  Backend
 -   Php 7.4
 -   Laravel 7
@@ -49,7 +49,7 @@ About our project.
 -   COMPOSER_MEMORY_LIMIT=-1 composer require barryvdh/laravel-debugbar --dev
 -   COMPOSER_MEMORY_LIMIT=-1 composer require beyondcode/laravel-websockets [doc](https://beyondco.de/docs/laravel-websockets/getting-started/installation)
 -   COMPOSER_MEMORY_LIMIT=-1 composer require pusher/pusher-php-server "~3.0"
-
+```
 ## Error
 
 -   memory_limit /etc/php/php.ini memory_limit=512M

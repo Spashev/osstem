@@ -42,14 +42,14 @@ class PaymentNotificationCommand extends Command
      */
     public function handle()
     {
-        $to = Carbon::now()->subDay(3)->format('Y-m-d');
-        $to = Str::substr($to, 0, 10);
-        dump($to);
-        $data = Payment::with('contract')->where('deadline',$to)->where('remain', '<>', 0)->get();
-        // $sms = new SmsService();
-        // $send = $sms->send_sms($phones = '87474646208',$message = 'sms from server', $sender = 'Spashev');
-        // dd($send);
-        dump("SMS notifications for overdue clients: ", $data->toArray()); # send sms
-        return 0;
+        // $to = Carbon::now()->subDay(3)->format('Y-m-d');
+        // $to = Str::substr($to, 0, 10);
+        // dump($to);
+        // $data = Payment::with('contract')->where('deadline',$to)->where('remain', '<>', 0)->get();
+        // // $sms = new SmsService();
+        // // $send = $sms->send_sms($phones = '87474646208',$message = 'sms from server', $sender = 'Spashev');
+        // // dd($send);
+        // dump("SMS notifications for overdue clients: ", $data->toArray()); # send sms
+        // return 0;
     }
 }

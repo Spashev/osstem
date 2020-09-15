@@ -36,8 +36,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
-        return view('user.create', compact('roles'));
+        return view('user.create');
     }
 
     /**
@@ -53,7 +52,6 @@ class ClientController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
-        $user->assignRole($request->roles);
         Session::flash('msg', 'User '.$user->name.', successfully saved.');
         return redirect()->back();
     }
@@ -77,8 +75,7 @@ class ClientController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::all();
-        return view('user.edit', compact('user', 'roles'));
+        return view('user.edit', compact('user'));
     }
 
     /**
@@ -90,16 +87,10 @@ class ClientController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        // dd($user->toArray(), $request->all());
         $user->name = $request->name;
         $user->email = $request->email;
         if(isset($request->password)) {
             $user->password = $request->password;
-        }
-        if(count($request->roles) > 0) {
-            foreach($request->roles as $role) {
-                $user->roles()->sync($role);
-            }
         }
         $user->save();
         return redirect()->route('admin.users');

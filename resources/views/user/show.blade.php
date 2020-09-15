@@ -22,7 +22,6 @@
                         <!-- Info -->
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                            <div class="font-size-sm font-w600 text-success">{{ strtoupper(implode(", ", $user->getRoleNames()->toArray())) }}</div>
                             <div class="font-size-h3 text-muted">Created: {{ $user->created_at->format('Y-m-d') }}</div>
                             </div>
                         </div>

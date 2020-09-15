@@ -100,14 +100,6 @@
                         <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
                     </div>
                     <div class="form-group">
-                        <label for="val-skill">Roles <span class="text-danger">*</span></label>
-                        <select type="text" name="roles[]" class="form-control" multiple="" id="val-skill" name="val-skill">
-                            @foreach($roles as $role)
-                                <option value="{{$role->id}}">{{ $role->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <label for="exampleInputPassword1">Password</label>
                         <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                     </div>

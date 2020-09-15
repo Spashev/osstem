@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CustomerRequest;
 use App\Models\Customer;
 use App\Models\Manager;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
@@ -93,7 +93,7 @@ class CustomerController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(CustomerRequest $request)
     {
         Customer::create([
             'customer_id' => $request->customer_id,

@@ -21,15 +21,6 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('/user/{user}/edit', 'ClientController@edit')->name('user.edit');
     Route::put('/user/{user}/edit', 'ClientController@update')->name('user.update');
     Route::get('/user/{user}/delete', 'ClientController@destroy')->name('user.delete');
-    // Category
-    Route::get('/categories', 'CategoryController@index')->name('category');
-    Route::get('/category/{category}/delete', 'CategoryController@delete')->name('category.delete');
-    Route::get('/category/{category}/edit', 'CategoryController@edit')->name('category.edit');
-    Route::get('/category/{category}/show', 'CategoryController@show')->name('category.show');
-    Route::get('/category/create', 'CategoryController@create')->name('category.create');
-    Route::post('/category/create', 'CategoryController@store')->name('category.store');
-    // Order
-    Route::get('/orders', 'AdminController@orders')->name('orders');
     //Excel
     Route::get('excel', 'ExcelController@index')->name('excel');
     Route::get('excel/create', 'ExcelController@create')->name('excel.create');
@@ -52,15 +43,5 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('/customer/{customer}', 'CustomerController@show')->name('customer.show');
     Route::get('/customer/csv/{id}', 'CustomerController@get_csv')->name('customer.csv');
     Route::get('/customer/{id}/invoice', 'CustomerController@invoice')->name('customer.invoice');
-    // Product
-    Route::get('/products', 'ProductController@index')->name('products');
-    Route::get('/product/create', 'ProductController@create')->name('product.create');
-    Route::post('/product/create', 'ProductController@store')->name('product.store');
-    Route::get('/product/{product}/edit', 'ProductController@edit')->name('product.edit');
-    Route::put('/product/{product}/edit', 'ProductController@update')->name('product.update');
-    Route::get('/product/{product}/show', 'ProductController@show')->name('product.show');
-    Route::get('/product/{product}/delete', 'ProductController@destroy')->name('product.delete');
-    //Roles
-    Route::get('/roles', 'RoleController@index')->name('roles');
 });
 Route::get('import', 'Admin\ExcelController@import');

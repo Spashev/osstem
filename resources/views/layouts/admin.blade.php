@@ -89,29 +89,6 @@
                         </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                                <i class="fa fa-shopping-cart mr-2"></i>
-                                <span class="nav-main-link-name">Commercial module</span>
-                            </a>
-                            <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link" href="{{ route('admin.product.create') }}">
-                                        <span class="nav-main-link-name">Create</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link" href="{{ route('admin.products') }}">
-                                        <span class="nav-main-link-name">Products</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                <a class="nav-main-link" href="{{route('admin.orders')}}">
-                                        <span class="nav-main-link-name">Payment</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                                 <i class="fa fa-paper-plane mr-2"></i>
                                 <span class="nav-main-link-name">Excel</span>
                             </a>
@@ -127,54 +104,6 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                                <i class="fa fa-paper-plane mr-2"></i>
-                                <span class="nav-main-link-name">Order</span>
-                            </a>
-                            <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link"  href="{{ route('admin.orders') }}">
-                                        <span class="nav-main-link-name">Orders</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link"  href="{{ route('admin.excel.payments') }}">
-                                        <span class="nav-main-link-name">Payments</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                                <i class="fa fa-clipboard-list mr-2"></i>
-                                <span class="nav-main-link-name">Category</span>
-                            </a>
-                            <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link" href="{{ route('admin.category.create') }}">
-                                        <span class="nav-main-link-name">Create</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link" href="{{ route('admin.category') }}">
-                                        <span class="nav-main-link-name">Categories</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link ml-3" href="{{route('admin.orders')}}">
-                                {{-- <i class="fa fa-headset mr-2"></i> --}}
-                                <span class="nav-main-link-name">Call center</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link ml-3" href="{{ route('admin.roles') }}">
-                                {{-- <i class="fa fa-mask mr-2"></i> --}}
-                                    <span class="nav-main-link-name">Roles</span>
-                            </a>
                         </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="https://github.com/Spashev/unionp" target="_blank">
@@ -223,7 +152,7 @@
                         <!-- END Open Search Section -->
 
                         <!-- Search Form (visible on larger screens) -->
-                        <form class="d-none d-sm-inline-block" action="be_pages_generic_search.html" method="POST">
+                        <form class="d-none d-sm-inline-block">
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control form-control-alt" placeholder="Search.." id="page-header-search-input2" name="page-header-search-input2">
                                 <div class="input-group-append">
@@ -319,14 +248,7 @@
 
             <!-- Main Container -->
             <main id="main-container">
-
                 @yield('content')
-
-
-                {{-- <div id="app">
-                    <notify-component></notify-component>
-                </div> --}}
-
             </main>
             <!-- END Main Container -->
             <!-- Footer -->

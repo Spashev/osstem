@@ -53,7 +53,9 @@ class ExcelJob implements ShouldQueue
             $hash_p = $payments_hash->filter(function ($value, $key) use ($hash) {
                 return $value->hash == $hash;
             });
+            dump($hash_p);
             if (count($hash_p) == 0) {
+                dump('new data');
                 if (strpos($record['CONTRACT NO'], '> TOTAL') !== false) {
                     continue;
                 }
@@ -96,22 +98,71 @@ class ExcelJob implements ShouldQueue
                     'payment_date' => $record['PAYMENT DATE'] == '0000/00/00' ? NULL : Carbon::parse($record['PAYMENT DATE'])->format('Y-m-d H:i:s'),
                     'paid' => $record['PAID']
                 ]);
-            }
-            foreach ($hash_p as $item) {
-                if ($item->paid !== $record['PAID']) {
-                    $item->paid = $record['PAID'];
-                    $item->remain = $record['REMAIN'];
-                    $item->current_payment_day = Carbon::now()->format('Y-m-d H:i:s');
-                    $item->save();
-                    $updated_item[] = $item;
+            } else {
+                foreach ($hash_p as $item) {
+                    if ($item->paid !== $record['PAID']) {
+                        $item->paid = $record['PAID'];
+                        $item->remain = $record['REMAIN'];
+                        $item->current_payment_day = Carbon::now()->format('Y-m-d H:i:s');
+                        $item->save();
+                        $updated_item[] = $item;
+                    }
                 }
+                dump('Result: ', $updated_item);
             }
         }
-        dump('Result: ', $updated_item);
         if (count($updated_item) > 0) {
-            return $updated_item;
-        } else {
-            return  'Excel file uploaded';
+            $fileName = '/update_payment.csv';
+            $columns = [
+                'CUSTOMER',
+                'REGION ID',
+                'REGION',
+                'IN-CHARGE',
+                'MANAGER',
+                'CONTRACT NO',
+                'SEQ',
+                'DEADLINE',
+                'AMOUNT',
+                'PAID',
+                'REMAIN',
+                'PERCENT',
+                'AMOUNT PERCENT'
+            ];
+            $path = public_path('storage/upload' . $fileName);
+            $file = fopen($path, 'w+');
+            fputcsv($file, $columns);
+            foreach ($updated_item as $item) {
+                $row['CUSTOMER']  = $item->contract->customer->name;
+                $row['REGION ID']    = $item->contract->customer->region_id;
+                $row['REGION']    = $item->contract->customer->region;
+                $row['IN-CHARGE']  = $item->contract->manager->in_charge;
+                $row['MANAGER']  = $item->contract->manager->name;
+                $row['CONTRACT NO']  = $item->contract->contract_no;
+                $row['SEQ']  = $item->seq;
+                $row['DEADLINE']  = $item->deadline;
+                $row['AMOUNT']  = $item->amount;
+                $row['PAID']  = $item->paid;
+                $row['REMAIN']  = $item->remain;
+                $row['PERCENT']  = $item->percent;
+                $row['AMOUNT PERCENT']  = $item->amount_percent;
+                fputcsv($file, [
+                    $row['CUSTOMER'],
+                    $row['REGION ID'],
+                    $row['REGION'],
+                    $row['IN-CHARGE'],
+                    $row['MANAGER'],
+                    $row['CONTRACT NO'],
+                    $row['SEQ'],
+                    $row['DEADLINE'],
+                    $row['AMOUNT'],
+                    $row['PAID'],
+                    $row['REMAIN'],
+                    $row['PERCENT'],
+                    $row['AMOUNT PERCENT']
+                ]);
+            }
+            fclose($file);
+            return response()->download('storage/upload/customer.csv');
         }
     }
 }

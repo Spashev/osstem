@@ -57,22 +57,7 @@
                                 <i class="fa fa-sign-in-alt mr-1"></i> Login
                             </a>
                         </span>
-
-                        @if (Route::has('register'))
-                            <span class="m-2 d-inline-block invisible" data-toggle="appear" data-class="animated fadeInUp" data-timeout="600">
-                                <a class="btn btn-primary px-4 py-2" data-toggle="click-ripple" href="{{ route('register') }}">
-                                    <i class="si si-lock ml-1 mr-1"></i> Register
-                                </a>
-                            </span>
-                        @endif
                         @endauth
-                    </div>
-                </div>
-                <div class="hero-meta">
-                    <div class="js-appear-enabled animated fadeIn" data-toggle="appear" data-timeout="450">
-                        <span class="d-inline-block animated slideInDown infinite">
-                            <i class="fa fa-angle-down text-white-50 fa-2x"></i>
-                        </span>
                     </div>
                 </div>
             </div>

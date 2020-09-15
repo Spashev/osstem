@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
     <head>
+
+        {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
@@ -32,7 +34,6 @@
         <!-- Fonts and OneUI framework -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
         <link rel="stylesheet" id="css-main" href="{{ asset('assets/css/oneui.min.css') }}">
-
         @yield('head')
 
     </head>
@@ -59,7 +60,6 @@
                     </a>
                 </div>
                 <!-- END Side Header -->
-
                 <!-- Side Navigation -->
                 <div class="content-side content-side-full" style="margin-top: -30px">
                     <ul class="nav-main">
@@ -277,84 +277,6 @@
                                 <i class="si si-bell"></i>
                                 <span class="badge badge-primary badge-pill">6</span>
                             </button>
-                            {{-- <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0 border-0 font-size-sm" aria-labelledby="page-header-notifications-dropdown">
-                                <div class="p-2 bg-primary text-center">
-                                    <h5 class="dropdown-header text-uppercase text-white">Notifications</h5>
-                                </div>
-                                <ul class="nav-items mb-0">
-                                    <li>
-                                        <a class="text-dark media py-2" href="javascript:void(0)">
-                                            <div class="mr-2 ml-3">
-                                                <i class="fa fa-fw fa-check-circle text-success"></i>
-                                            </div>
-                                            <div class="media-body pr-2">
-                                                <div class="font-w600">You have a new follower</div>
-                                                <small class="text-muted">15 min ago</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="text-dark media py-2" href="javascript:void(0)">
-                                            <div class="mr-2 ml-3">
-                                                <i class="fa fa-fw fa-plus-circle text-info"></i>
-                                            </div>
-                                            <div class="media-body pr-2">
-                                                <div class="font-w600">1 new sale, keep it up</div>
-                                                <small class="text-muted">22 min ago</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="text-dark media py-2" href="javascript:void(0)">
-                                            <div class="mr-2 ml-3">
-                                                <i class="fa fa-fw fa-times-circle text-danger"></i>
-                                            </div>
-                                            <div class="media-body pr-2">
-                                                <div class="font-w600">Update failed, restart server</div>
-                                                <small class="text-muted">26 min ago</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="text-dark media py-2" href="javascript:void(0)">
-                                            <div class="mr-2 ml-3">
-                                                <i class="fa fa-fw fa-plus-circle text-info"></i>
-                                            </div>
-                                            <div class="media-body pr-2">
-                                                <div class="font-w600">2 new sales, keep it up</div>
-                                                <small class="text-muted">33 min ago</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="text-dark media py-2" href="javascript:void(0)">
-                                            <div class="mr-2 ml-3">
-                                                <i class="fa fa-fw fa-user-plus text-success"></i>
-                                            </div>
-                                            <div class="media-body pr-2">
-                                                <div class="font-w600">You have a new subscriber</div>
-                                                <small class="text-muted">41 min ago</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="text-dark media py-2" href="javascript:void(0)">
-                                            <div class="mr-2 ml-3">
-                                                <i class="fa fa-fw fa-check-circle text-success"></i>
-                                            </div>
-                                            <div class="media-body pr-2">
-                                                <div class="font-w600">You have a new follower</div>
-                                                <small class="text-muted">42 min ago</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="p-2 border-top">
-                                    <a class="btn btn-sm btn-light btn-block text-center" href="javascript:void(0)">
-                                        <i class="fa fa-fw fa-arrow-down mr-1"></i> Load More..
-                                    </a>
-                                </div>
-                            </div> --}}
                         </div>
                         <!-- END Notifications Dropdown -->
 
@@ -400,9 +322,13 @@
 
                 @yield('content')
 
+
+                {{-- <div id="app">
+                    <notify-component></notify-component>
+                </div> --}}
+
             </main>
             <!-- END Main Container -->
-
             <!-- Footer -->
             <footer id="page-footer" class="bg-body-light">
                 <div class="content py-3">
@@ -436,7 +362,7 @@
                                 <div class="row gutters-tiny">
                                     <div class="col-6">
                                         <!-- CRM -->
-                                        <a class="block block-rounded block-themed bg-default" href="javascript:void(0)">
+                                    <a class="block block-rounded block-themed bg-default" href="{{route('admin.index')}}">
                                             <div class="block-content text-center">
                                                 <i class="si si-speedometer fa-2x text-white-75"></i>
                                                 <p class="font-w600 font-size-sm text-white mt-2 mb-3">
@@ -492,7 +418,7 @@
         </div>
         <!-- END Page Container -->
 
-
+        
         <script src="{{ asset('assets/js/oneui.core.min.js') }}"></script>
 
         <script src="{{ asset('assets/js/oneui.app.min.js') }}"></script>

@@ -3,7 +3,9 @@ require_once '../vendor/autoload.php';
 
 use Workerman\Worker;
 use Carbon\Carbon;
-
+use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Message\AMQPMessage;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 $to = Carbon::now()->subDay(3)->format('Y-m-d');
 
@@ -56,13 +58,25 @@ $stmt->execute([
 
 $result = $stmt->fetchAll(PDO::FETCH_OBJ);
 $result = json_encode($result, JSON_UNESCAPED_UNICODE);
+
 dump($result, $to);
 
-$worker = new Worker('websocket://0.0.0.0:8001');
+// $connection = new AMQPStreamConnection('127.0.0.1', 5672, 'guest','guest');
+// $channel = $connection->channel();
 
+// $channel->queue_declare('notification', false, false, false, false); // uniq queue-name
+
+// $channel->exchange_declare('notification', 'topic', false, false, false);
+
+// $channel->queue_bind('notification', 'topic_logs', 'test_bind_key');
+
+// $msg = new AMQPMessage('Hello World!');
+
+// $channel->basic_publish($msg, 'notification', 'test_bind_key');
+
+$worker = new Worker('websocket://0.0.0.0:8001');
 // 4 processes
 $worker->count = 4;
-
 // Emitted when data received
 $worker->onConnect = function ($connection) use(&$result){
     $connection->send($result);
@@ -70,6 +84,5 @@ $worker->onConnect = function ($connection) use(&$result){
         $connection->emit($result);
     });
 };
-
 Worker::runAll();
 

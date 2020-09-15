@@ -50,14 +50,11 @@ class ExcelController extends Controller
             );
             $result = ExcelJob::dispatch($excel);
         }
-        dd($result);
     }
 
     public function payment()
     {
-        $payments = Cache::remember('payment.index', Carbon::now()->addMinutes(1), function () {
-            return Payment::all();
-        });
+        $payments =  Payment::all();
         return view('payment.index', compact('payments'));
     }
 

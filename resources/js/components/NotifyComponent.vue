@@ -1,23 +1,27 @@
+<template>
+    <div class="container">
+        <button class="btn btn-info">notify</button>
+    </div>
+</template>
+
+<script>
 let Stomp = require('@stomp/stompjs');
 export default {
     data: function() {
         return {
-            stomp: _object.get(this.options, 'stomp', []),
-            queueName: '',
-            uri: '',
-            port: '',
         };
     },
 
     props: ['options'],
 
     mounted: function() {
-        this.queueName = _object.get(this.stomp, 'queueName', '');
-        this.uri = _object.get(this.stomp, 'uri', '');
-        this.port = _object.get(this.stomp, 'port', '');
-        if (this.queueName !== '' && this.uri !== '' && this.port !== '') {
-            this.subscribeWS();
-        }
+        console.log('hello');
+        // this.queueName = _object.get(this.stomp, 'queueName', '');
+        // this.uri = _object.get(this.stomp, 'uri', '');
+        // this.port = _object.get(this.stomp, 'port', '');
+        // if (this.queueName !== '' && this.uri !== '' && this.port !== '') {
+        //     this.subscribeWS();
+        // }
     },
 
     computed: {},
@@ -30,7 +34,7 @@ export default {
             let vue = this;
             let wsUri = this.prepareUri(this.uri);
             this.client = new Stomp.Client({
-                brokerURL: "ws://" + wsUri + ":" + vue.port + "/ws",
+                brokerURL: "ws://127.0.0.1:15674/ws",
                 connectHeaders: {
                     login: "guest",
                     passcode: "guest",
@@ -52,7 +56,7 @@ export default {
                     }
                 };
                 if (vue.queueName != null) {
-                    vue.client.subscribe('/amq/queue/' + vue.queueName, callback);
+                    vue.client.subscribe('/amq/queue/notification', callback);
                 }
             }
 
@@ -102,3 +106,4 @@ export default {
         }
     }
 }
+</script>

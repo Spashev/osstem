@@ -53,7 +53,7 @@ class ExcelJob implements ShouldQueue
             $hash_p = $payments_hash->filter(function ($value, $key) use ($hash) {
                 return $value->hash == $hash;
             });
-            dump($hash_p);
+            // dump($hash_p);
             if (count($hash_p) == 0) {
                 dump('new data');
                 if (strpos($record['CONTRACT NO'], '> TOTAL') !== false) {
@@ -108,7 +108,7 @@ class ExcelJob implements ShouldQueue
                         $updated_item[] = $item;
                     }
                 }
-                dump('Result: ', $updated_item);
+                // dump('Result: ', $updated_item);
             }
         }
         if (count($updated_item) > 0) {
@@ -162,7 +162,7 @@ class ExcelJob implements ShouldQueue
                 ]);
             }
             fclose($file);
-            return response()->download('storage/upload/customer.csv');
+            return response()->download('storage/upload'.$fileName);
         }
     }
 }

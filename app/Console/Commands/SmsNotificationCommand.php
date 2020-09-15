@@ -65,7 +65,7 @@ class SmsNotificationCommand extends Command
                         if($status) {
                             $payment->notifications()->create([
                                 'payment_id' => $payment->id,
-                                'status' => 1
+                                'status' => 0
                             ]);
                         }
                     }
@@ -92,6 +92,10 @@ class SmsNotificationCommand extends Command
             }
             sleep(1);
         }
+
+        // $to = Carbon::now()->subDays(10)->format('Y-m-d');
+        // $payments = Payment::with('contract')->where('payment_date', $to)->where('paid', 0)->where('remain','<>', 0)->get();
+
         return 0;
     }
 }

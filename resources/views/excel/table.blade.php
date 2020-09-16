@@ -40,7 +40,7 @@
                                     <td class="font-size-md" scope="row">{!!$payment->id!!}</td>
                                     <td class="font-size-md" scope="row">{!!$payment->contract->manager->in_charge ? $payment->contract->manager->in_charge : '<span class="font-w700 badge badge-warning"">No manager</span>'!!}</td>
                                     <td class="font-size-md" scope="row">
-                                        <a href="#">{!!$payment->contract->manager->name ? $payment->contract->manager->name : '<span class="font-w700 badge badge-danger">No manager</span>'!!}</a>
+                                    <a href="{{route('admin.manager.show', $payment->contract->manager->id)}}">{!!$payment->contract->manager->name ? $payment->contract->manager->name : '<span class="font-w700 badge badge-danger">No manager</span>'!!}</a>
                                     </td>
                                     <td class="font-size-md">
                                         {!!$payment->contract->customer->region ? $payment->contract->customer->region : '<span class="font-w700 badge badge-warning"">No region</span>'!!}

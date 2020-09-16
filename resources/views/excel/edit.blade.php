@@ -54,6 +54,14 @@
                             <input class="form-control" type="number" id="wizard-progress-location2" name="paid" value="{{$payment->paid}}">
                         </div>
                         <div class="form-group">
+                            <label for="wizard-progress-location2">Percent</label>
+                            <input class="form-control" readonly type="text" id="wizard-progress-location2" name="percent" value="{{$payment->percent}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="wizard-progress-location2">Delay</label>
+                            <input class="form-control" readonly type="text" id="wizard-progress-location2" value="{{$amount_percent}}">
+                        </div>
+                        <div class="form-group">
                             <div class="form-group">
                                 <div class="input-daterange input-group" data-date-format="mm/dd/yyyy" data-week-start="1" data-autoclose="true" data-today-highlight="true">
                                 <input type="text" class="form-control" id="example-daterange1" name="payment_day" placeholder="Payment day" data-week-start="1" data-autoclose="true" data-today-highlight="true" value="{{$payment->payment_date}}">

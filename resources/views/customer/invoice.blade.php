@@ -79,11 +79,11 @@
                             @endforeach
                             <tr>
                                 <td colspan="6" class="font-w700 text-uppercase text-right bg-body-light">Remain Total</td>
-                                <td class="font-w700 text-right bg-body-light">{{$total}}</td>
+                                <td class="font-w700 text-right bg-body-light">{{$remain_total}}</td>
                             </tr>
                             <tr>
                                 <td colspan="6" class="font-w700 text-uppercase text-right bg-body-light">Total Due</td>
-                                <td class="font-w700 text-right bg-body-light">{{$remain_total}}</td>
+                                <td class="font-w700 text-right bg-body-light">{{$total}}</td>
                             </tr>
                         </tbody>
                     </table>

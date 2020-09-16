@@ -49,6 +49,7 @@ class SmsNotificationCommand extends Command
                 if(count($payment->notifications) > 0) {
                     foreach($payment->notifications as $notify) {
                         if($notify->created_at->format('Y-m-d') == Carbon::now()->subMonth()->format('Y-m-d')) {
+                            dump('SMS month');
                             $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг до %s.";
                             $result = [
                                 'customer_name' => $payment->contract->customer->name,
@@ -57,6 +58,7 @@ class SmsNotificationCommand extends Command
                                 'payment_date' => Str::substr($payment->payment_date, 0, 10)
                             ];
                             $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date']);
+                            dump($text);
                             $sms = new SmsService();
                             list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
                             list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
@@ -64,13 +66,13 @@ class SmsNotificationCommand extends Command
                             if ($status) {
                                 $payment->notifications()->create([
                                     'payment_id' => $payment->id,
-                                    'status' => 1
+                                    'status' => 0
                                 ]);
                             }
                         }
-                        sleep(1);
                     }
                 } else {
+                    dump("sms 3");
                     $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг до %s.";
                     $result = [
                         'customer_name' => $payment->contract->customer->name,
@@ -79,6 +81,7 @@ class SmsNotificationCommand extends Command
                         'payment_date' => Str::substr($payment->payment_date, 0, 10)
                     ];
                     $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date']);
+                    dump($text);
                     $sms = new SmsService();
                     list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
                     list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
@@ -86,42 +89,52 @@ class SmsNotificationCommand extends Command
                     if ($status) {
                         $payment->notifications()->create([
                             'payment_id' => $payment->id,
-                            'status' => 1
+                            'status' => 0
                         ]);
                     }
                 }
-                sleep(1);
             }
         }
 
-        $to = Carbon::now()->subDays(10)->format('Y-m-d');
-        $payments = Payment::with('contract')->where('payment_date', $to)->where('paid', 0)->where('remain','<>', 0)->where('delay', 0)->get();
+        $now = Carbon::now()->format('Y-m-d');
+        $payments = Payment::with('contract', 'notifications')->where('deadline', '<', $now)->where('paid', 0)->where('remain','<>', 0)->get();
         if(count($payments) > 0) {
             foreach($payments as $payment) {
-                $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг дата %s, просрочен сумма с процентом %s.";
-                $result = [
-                    'customer_name' => $payment->contract->customer->name,
-                    'customer_phone' => $payment->contract->customer->phone,
-                    'amount' => $payment->amount,
-                    'payment_date' => Str::substr($payment->payment_date, 0, 10),
-                    'percent_amount' => $payment->percent_amount
-                ];
-                $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date'], $result['percent_amount']);
-                $sms = new SmsService();
-                list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'Spashev');
-                list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
-                $status = true;
-                if($status) {
-                    $payment->notifications()->create([
-                        'payment_id' => $payment->id,
-                        'status' => 0
-                    ]);
-                    $payment->delay = 1;
-                    $payment->save();
+                if(count($payment->notifications) > 0) {
+                    foreach($payment->notifications as $notify) {
+                        $today = Carbon::now();
+                        if(intval(Str::substr($notify->created_at, 8, 10)) == intval(Str::substr(Carbon::now()->subDays(7)->format('Y-m-d'), 8, 10)) AND $notify->status == 0) {
+                            dump('Percent');
+                            $todayNow = Carbon::now()->format('Y-m-d');
+                            $minusDays = intval(Str::substr($todayNow, 8, 10)) - intval(Str::substr($payment->payment_date, 8, 10));
+                            $amount = ((($payment->percent * $payment->amount) / 100) * $minusDays) + $payment->amount;
+                            $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг дата %s, просрочен сумма с процентом %s.";
+                            $result = [
+                                'customer_name' => $payment->contract->customer->name,
+                                'customer_phone' => $payment->contract->customer->phone,
+                                'amount' => $payment->amount,
+                                'payment_date' => Str::substr($payment->payment_date, 0, 10),
+                                'percent_amount' => $amount
+                            ];
+                            $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date'], $result['percent_amount']);
+                            dump($text);
+                            $sms = new SmsService();
+                            list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'Spashev');
+                            list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
+                            $status = true;
+                            if($status) {
+                                $payment->notifications()->create([
+                                    'payment_id' => $payment->id,
+                                    'status' => 1
+                                ]);
+                                $payment->save();
+                            }
+                        }
+                    }
                 }
-                sleep(1);
             }
         }
-        return 0;
+
+        dump('finish');
     }
 }

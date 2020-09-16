@@ -11,6 +11,7 @@ use App\Models\Excel;
 use App\Models\Manager;
 use App\Models\Payment;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -97,11 +98,18 @@ class ExcelController extends Controller
 
     public function edit($id)
     {
+        $now = Str::substr(Carbon::now(), 0, 10);
+        $subMonth = Carbon::now()->subMonth()->format('Y-m-d');
         $payment = Payment::with('contract')->findOrFail($id);
         $managers = Manager::all();
         $customers = Customer::all();
-        // dd($payment);
-        return view('excel.edit', compact('payment', 'customers', 'managers'));
+        if($payment->paid == 0 and $payment->remain != 0) {
+            $minusDays = intval(Str::substr($now, 8, 10)) - intval(Str::substr($payment->payment_date, 8, 10));
+            $amount_percent = ((($payment->percent * $payment->amount) / 100) * $minusDays) + $payment->amount;
+        } else {
+            $amount_percent = 0;
+        }
+        return view('excel.edit', compact('payment', 'customers', 'managers', 'amount_percent'));
     }
 
     public function update(Request $request, $id)

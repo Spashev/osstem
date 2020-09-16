@@ -46,9 +46,9 @@ class PercentCommand extends Command
         $payments = Payment::with('contract')->whereBetween('deadline', [$subMonth, $now])->where('paid', 0)->where('remain','<>', 0)->get();
         dump($payments);
         foreach ($payments as $payment) {
-            $minusDays = intval(Str::substr($now, 8, 10)) - intval(Str::substr($payment->payment_date, 8, 10));
-            $amount = ((($payment->percent * $payment->amount) / 100) * $minusDays) + $payment->amount;
-            $payment->amount_percent = $amount;
+            // $minusDays = intval(Str::substr($now, 8, 10)) - intval(Str::substr($payment->payment_date, 8, 10));
+            // $amount = ((($payment->percent * $payment->amount) / 100) * $minusDays) + $payment->amount;
+            // $payment->amount_percent = $amount;
             $payment->delay = 0;
             $payment->save();
             dump($payment);

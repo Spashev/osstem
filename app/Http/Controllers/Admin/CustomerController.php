@@ -45,6 +45,8 @@ class CustomerController extends Controller
         foreach ($customer->contracts as $contract) {
             foreach ($contract->payments as $payment) {
                 $row['CUSTOMER']  = $customer->customer_id;
+                $row['CUSTOMER NAME']  = $customer->name;
+                $row['CUSTOMER PHONE']  = $customer->phone;
                 $row['REGION ID']    = $customer->region_id;
                 $row['REGION']    = $customer->region;
                 $row['IN-CHARGE']  = $customer->manager->in_charge;
@@ -59,6 +61,7 @@ class CustomerController extends Controller
                 $row['AMOUNT PERCENT']  = $payment->amount_percent;
                 fputcsv($file, [
                     $row['CUSTOMER'],
+                    $row['CUSTOMER NAME'],
                     $row['REGION ID'],
                     $row['REGION'],
                     $row['IN-CHARGE'],

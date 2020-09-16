@@ -43,7 +43,7 @@ class SmsService
 		static $formats = array(1 => "flash=1", "push=1", "hlr=1", "bin=1", "bin=2", "ping=1", "mms=1", "mail=1", "call=1", "viber=1", "soc=1");
 
 		$m = $this->_smsc_send_cmd("send", "cost=3&phones=".urlencode($phones)."&mes=".urlencode($message).
-						"&translit=$translit&id=$id".($format > 0 ? "&".$formats[$format] : "").
+						"&translit=0&id=$id".($format > 0 ? "&".$formats[$format] : "").
 						($sender === false ? "" : "&sender=".urlencode($sender)). '&charset=utf-8' .
 						($time ? "&time=".urlencode($time) : "").($query ? "&$query" : ""), $files);
 

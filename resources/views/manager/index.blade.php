@@ -43,7 +43,7 @@
                     </td>
                     <td class="text-center">
                         <div class="btn-group">
-                            <a href="{{route('admin.manager.edit', $manager->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="edit" data-original-title="Edit">
+                            <a href="{{route('admin.manager.show', $manager->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="edit" data-original-title="Edit">
                                 <i class="fa fa-fw fa-pencil-alt"></i>
                             </a>
                             <a href="{{route('admin.manager.delete', $manager->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="delete" data-original-title="Delete">

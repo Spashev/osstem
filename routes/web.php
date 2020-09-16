@@ -35,7 +35,7 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('/managers', 'ManagerController@manager')->name('excel.managers');
     Route::get('/manager/{id}/show', 'ManagerController@show')->name('manager.show');
     Route::get('/manager/{manager}/delete', 'ManagerController@managerDelete')->name('manager.delete');
-    Route::get('/manager/{manager}/edit', 'ManagerController@managerEdit')->name('manager.edit');
+    Route::put('/manager/{manager}/', 'ManagerController@update')->name('manager.update');
     Route::post('manager', 'ManagerController@save')->name('manager.save');
     //Customer
     Route::get('/customers', 'CustomerController@customer')->name('excel.customers');

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\Contract;
 use App\Models\Customer;
 use App\Models\Manager;
 use App\Models\Product;
@@ -34,7 +35,8 @@ class ComposerServiceProvider extends ServiceProvider
             $view->with([
                 'users' => User::all(),
                 'managers' => Manager::all(),
-                'customers' => Customer::all()
+                'customers' => Customer::all(),
+                'contracts' => Contract::all()
             ]);
         });
     }

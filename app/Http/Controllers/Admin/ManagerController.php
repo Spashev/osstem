@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Manager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\Http\Requests\ManagerRequest;
 
 class ManagerController extends Controller
 {
@@ -21,9 +22,14 @@ class ManagerController extends Controller
         return view('manager.show', compact('manager'));
     }
 
-    public function managerEdit(Request $request, Manager $manager)
+    public function update(ManagerRequest $request, Manager $manager)
     {
-        dd($manager);
+        $manager->name = $request->name;
+        $manager->email = $request->email;
+        $manager->in_charge = $request->in_charge;
+        $manager->save();
+        Session::flush('msg','Data updated successfully.');
+        return redirect()->back();
     }
 
     public function managerDelete(Manager $manager)

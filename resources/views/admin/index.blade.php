@@ -9,7 +9,9 @@
             <div class="col-6 col-md-3 col-lg-6 col-xl-3">
                 <a class="block block-rounded block-link-pop border-left border-primary border-4x" href="javascript:void(0)">
                     <div class="block-content block-content-full">
-                        <div class="font-size-sm font-w600 text-uppercase text-muted">Users</div>
+                        <div class="font-size-sm font-w600 text-uppercase text-muted">
+                            <i class="fa fa-users fa-2x mr-3"></i>Users
+                        </div>
                     <div class="font-size-h2 font-w400 text-dark">{{ $users->count() }}</div>
                     </div>
                 </a>
@@ -17,7 +19,9 @@
             <div class="col-6 col-md-3 col-lg-6 col-xl-3">
                 <a class="block block-rounded block-link-pop border-left border-primary border-4x" href="javascript:void(0)">
                     <div class="block-content block-content-full">
-                        <div class="font-size-sm font-w600 text-uppercase text-muted">Managers</div>
+                        <div class="font-size-sm font-w600 text-uppercase text-muted">
+                            <i class="fa fa-user-tie fa-2x mr-3"></i>Managers
+                        </div>
                     <div class="font-size-h2 font-w400 text-dark">{{ $managers->count() }}</div>
                     </div>
                 </a>
@@ -27,6 +31,14 @@
                     <div class="block-content block-content-full">
                         <div class="font-size-sm font-w600 text-uppercase text-muted">Customers</div>
                         <div class="font-size-h2 font-w400 text-dark">{{ $customers->count() }}</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-3 col-lg-6 col-xl-3">
+                <a class="block block-rounded block-link-pop border-left border-primary border-4x" href="javascript:void(0)">
+                    <div class="block-content block-content-full">
+                        <div class="font-size-sm font-w600 text-uppercase text-muted">Contracts</div>
+                        <div class="font-size-h2 font-w400 text-dark">{{ $contracts->count() }}</div>
                     </div>
                 </a>
             </div>

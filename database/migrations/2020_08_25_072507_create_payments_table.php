@@ -26,7 +26,7 @@ class CreatePaymentsTable extends Migration
             $table->string('remain');
             $table->string('percent')->default(0);
             $table->string('amount_percent')->default(0);
-            $table->string('delay')->default(0);
+            $table->string('delay')->nullable();
         });
     }
 

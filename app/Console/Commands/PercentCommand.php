@@ -41,19 +41,6 @@ class PercentCommand extends Command
     public function handle()
     {
         $now = Str::substr(Carbon::now(), 0, 10);
-        // $payments = Payment::with('contract')->where('payment_date', $now)->where('paid', 0)->where('remain', '<>', 0)->get();
-        // dump($payments);
-        // foreach ($payments as $payment) {
-        //     $minusDays = intval(Str::substr($now, 8, 10)) - intval(Str::substr($payment->payment_date, 8, 10));
-        //     $amount = ((($payment->percent * $payment->amount) / 100) * $minusDays) + $payment->amount;
-        //     $payment->amount_percent = $amount;
-        //     $payment->delay = 1;
-        //     $payment->save();
-        // }
-        // dump($payments->toArray());
-        // info('Percent: ', $payments->toArray());
-
-        // $remainDay = Carbon::now()->subDays(10)->format('Y-m-d');
         $subMonth = Carbon::now()->subMonth()->format('Y-m-d');
         dump($now, $subMonth);
         $payments = Payment::with('contract')->whereBetween('deadline', [$subMonth, $now])->where('paid', 0)->where('remain','<>', 0)->get();
@@ -62,7 +49,7 @@ class PercentCommand extends Command
             $minusDays = intval(Str::substr($now, 8, 10)) - intval(Str::substr($payment->payment_date, 8, 10));
             $amount = ((($payment->percent * $payment->amount) / 100) * $minusDays) + $payment->amount;
             $payment->amount_percent = $amount;
-            $payment->delay = 1;
+            $payment->delay = 0;
             $payment->save();
             dump($payment);
         }

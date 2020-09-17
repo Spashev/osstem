@@ -55,7 +55,7 @@
                         </div>
                         <div class="form-group">
                             <label for="wizard-progress-location2">Percent</label>
-                            <input class="form-control" readonly type="text" id="wizard-progress-location2" name="percent" value="{{$payment->percent}}">
+                            <input class="form-control" type="text" id="wizard-progress-location2" name="percent" value="{{$payment->percent}}">
                         </div>
                         <div class="form-group">
                             <label for="wizard-progress-location2">Delay</label>

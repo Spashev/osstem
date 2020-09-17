@@ -59,16 +59,15 @@ class SmsNotificationCommand extends Command
                             ];
                             $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date']);
                             dump($text);
-                            $sms = new SmsService();
-                            list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
-                            list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
-                            $status = true;
-                            if ($status) {
-                                $payment->notifications()->create([
-                                    'payment_id' => $payment->id,
-                                    'status' => 0
-                                ]);
-                            }
+                            // $sms = new SmsService();
+                            // list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+                            // list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
+                            // if ($status) {
+                            //     $payment->notifications()->create([
+                            //         'payment_id' => $payment->id,
+                            //         'status' => 0
+                            //     ]);
+                            // }
                         }
                     }
                 } else {
@@ -82,52 +81,58 @@ class SmsNotificationCommand extends Command
                     ];
                     $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date']);
                     dump($text);
-                    $sms = new SmsService();
-                    list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
-                    list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
-                    $status = true;
-                    if ($status) {
-                        $payment->notifications()->create([
-                            'payment_id' => $payment->id,
-                            'status' => 0
-                        ]);
-                    }
+                    // $sms = new SmsService();
+                    // list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+                    // list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
+                    // if ($status) {
+                    //     $payment->notifications()->create([
+                    //         'payment_id' => $payment->id,
+                    //         'status' => 0
+                    //     ]);
+                    // }
                 }
             }
         }
 
         $now = Carbon::now()->format('Y-m-d');
         $payments = Payment::with('contract', 'notifications')->where('deadline', '<', $now)->where('paid', 0)->where('remain','<>', 0)->get();
+        $remainDays = 0;
         if(count($payments) > 0) {
+            $contract = '';
             foreach($payments as $payment) {
                 if(count($payment->notifications) > 0) {
+                    $minusDay = 0;
                     foreach($payment->notifications as $notify) {
-                        $today = Carbon::now();
-                        if(intval(Str::substr($notify->created_at, 8, 10)) == intval(Str::substr(Carbon::now()->subDays(7)->format('Y-m-d'), 8, 10)) AND $notify->status == 0) {
-                            dump('Percent');
-                            $todayNow = Carbon::now()->format('Y-m-d');
-                            $minusDays = intval(Str::substr($todayNow, 8, 10)) - intval(Str::substr($payment->payment_date, 8, 10));
-                            $amount = ((($payment->percent * $payment->amount) / 100) * $minusDays) + $payment->amount;
-                            $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг дата %s, просрочен сумма с процентом %s.";
-                            $result = [
-                                'customer_name' => $payment->contract->customer->name,
-                                'customer_phone' => $payment->contract->customer->phone,
-                                'amount' => $payment->amount,
-                                'payment_date' => Str::substr($payment->payment_date, 0, 10),
-                                'percent_amount' => $amount
-                            ];
-                            $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date'], $result['percent_amount']);
-                            dump($text);
-                            $sms = new SmsService();
-                            list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'Spashev');
-                            list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
-                            $status = true;
-                            if($status) {
-                                $payment->notifications()->create([
-                                    'payment_id' => $payment->id,
-                                    'status' => 1
-                                ]);
-                                $payment->save();
+                        if($notify->status == 0) {
+                            if($contract != $payment->contract->contract_no) {
+                                $contract = $payment->contract->contract_no;
+                                $remainDays += Carbon::createFromDate($payment->deadline)->diffInDays(Carbon::now());
+                            } 
+                            if(Carbon::now()->diffInDays($notify->created_at) == 6) {
+                                $amount = ((($payment->percent * $payment->amount) / 100) * $remainDays) + $payment->amount;
+                                $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг дата %s, просрочен сумма с процентом %s.";
+                                $result = [
+                                    'customer_name' => $payment->contract->customer->name,
+                                    'customer_phone' => $payment->contract->customer->phone,
+                                    'amount' => $payment->amount,
+                                    'payment_date' => Str::substr($payment->payment_date, 0, 10),
+                                    'percent_amount' => $amount
+                                ];
+                                $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date'], $result['percent_amount']);
+                                dump($text);
+                                // $sms = new SmsService();
+                                // list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'Spashev');
+                                // list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
+                                $status = true;
+                                if($status) {
+                                    $notify->status = 1;
+                                    $notify->save();
+                                    $payment->notifications()->create([
+                                        'payment_id' => $payment->id,
+                                        'status' => 1
+                                    ]);
+                                    $payment->save();
+                                }
                             }
                         }
                     }
@@ -136,5 +141,6 @@ class SmsNotificationCommand extends Command
         }
 
         dump('finish');
+        return 0;
     }
 }

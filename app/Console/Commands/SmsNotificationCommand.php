@@ -109,9 +109,9 @@ class SmsNotificationCommand extends Command
                             if($contract != $payment->contract->contract_no) {
                                 $contract = $payment->contract->contract_no;
                                 $remainDays += Carbon::createFromDate($payment->deadline)->diffInDays(Carbon::now());
-                                dump($payment,$remainDays);
+                                dump($payment,$remainDays, Carbon::now()->diffInDays($payment->notifications->last()->created_at));
                             } 
-                            if(Carbon::now()->diffInDays($payment->notifications->last()->created_at) == 7 AND $count == $key) {
+                            if(Carbon::now()->diffInDays($payment->notifications->last()->created_at) == 7 AND $count == $key + 1) {
                                 $amount = ((($payment->percent * $payment->amount) / 100) * $remainDays) + $payment->amount;
                                 $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг дата %s, просрочен сумма с процентом %s.";
                                 $result = [

@@ -124,7 +124,6 @@ class SmsNotificationCommand extends Command
                                 $sms = new SmsService();
                                 list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'Spashev');
                                 list($status) = $sms->get_status($sms_id, $result['customer_phone']);
-                                $status = true;
                                 if($status) {
                                     $notify->status = 1;
                                     $notify->save();

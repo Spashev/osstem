@@ -103,14 +103,15 @@ class SmsNotificationCommand extends Command
                 if(count($payment->notifications) > 0) {
                     $minusDay = 0;
                     $remainDays = 0;
-                    foreach($payment->notifications as $notify) {
+                    $count = count($payment->notifications);
+                    foreach($payment->notifications as $key => $notify) {
                         if($notify->status == 0) {
                             if($contract != $payment->contract->contract_no) {
                                 $contract = $payment->contract->contract_no;
                                 $remainDays += Carbon::createFromDate($payment->deadline)->diffInDays(Carbon::now());
                                 dump($payment,$remainDays);
                             } 
-                            if(Carbon::now()->diffInDays($notify->created_at) == 7) {
+                            if(Carbon::now()->diffInDays($payment->notifications->last()->created_at) == 7 AND $count == $key) {
                                 $amount = ((($payment->percent * $payment->amount) / 100) * $remainDays) + $payment->amount;
                                 $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг дата %s, просрочен сумма с процентом %s.";
                                 $result = [
@@ -122,9 +123,9 @@ class SmsNotificationCommand extends Command
                                 ];
                                 $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date'], $result['percent_amount']);
                                 dump($text, $remainDays);
-                                // $sms = new SmsService();
-                                // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'Spashev');
-                                // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                                $sms = new SmsService();
+                                list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'Spashev');
+                                list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                                 $status = true;
                                 if($status) {
                                     $payment->notifications()->create([

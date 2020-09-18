@@ -12,12 +12,16 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use League\Csv\Reader;
 
 class ExcelJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     public $timeout = 0;
+    
     protected $excel;
 
     /**
@@ -53,7 +57,6 @@ class ExcelJob implements ShouldQueue
             $hash_p = $payments_hash->filter(function ($value, $key) use ($hash) {
                 return $value->hash == $hash;
             });
-            // dump($hash_p);
             if (count($hash_p) == 0) {
                 dump('new data');
                 if (strpos($record['CONTRACT NO'], '> TOTAL') !== false) {
@@ -108,7 +111,6 @@ class ExcelJob implements ShouldQueue
                         $updated_item[] = $item;
                     }
                 }
-                // dump('Result: ', $updated_item);
             }
         }
         if (count($updated_item) > 0) {
@@ -129,6 +131,8 @@ class ExcelJob implements ShouldQueue
                 'AMOUNT PERCENT'
             ];
             $path = public_path('storage/upload' . $fileName);
+            header('Content-Type: text/csv; charset=utf-8');  
+            header('Content-Disposition: attachment; filename=update_payment.csv');  
             $file = fopen($path, 'w+');
             fputcsv($file, $columns);
             foreach ($updated_item as $item) {
@@ -162,7 +166,7 @@ class ExcelJob implements ShouldQueue
                 ]);
             }
             fclose($file);
-            return response()->download('storage/upload'.$fileName);
+            return response()->download('storage/upload/update_payment.csv');
         }
     }
 }

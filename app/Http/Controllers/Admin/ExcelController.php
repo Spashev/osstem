@@ -16,6 +16,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -50,6 +51,14 @@ class ExcelController extends Controller
                 ['path' => $file]
             );
             $result = ExcelJob::dispatch($excel);
+            if($result) {
+                if (file_exists($file)) {
+                    $fileName = '/update_payment.csv';
+                    $path = public_path('storage/upload' . $fileName);
+                    $file = file_get_contents($path);
+                    dump($file);
+                  }
+            }
         }
     }
 
@@ -122,6 +131,7 @@ class ExcelController extends Controller
         }
         $payment->amount = $request->amount;
         $payment->paid = $request->paid;
+        $payment->percent = $request->percent;
         $payment->remain = $request->paid != 0 ? $payment->remain - $request->paid : $payment->amount;
         $payment->payment_date = Carbon::parse($request->payment_day)->format('Y-m-d');
         $payment->deadline = Carbon::parse($request->deadline)->format('Y-m-d');

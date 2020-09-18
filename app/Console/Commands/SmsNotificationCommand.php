@@ -107,6 +107,7 @@ class SmsNotificationCommand extends Command
                             if($contract != $payment->contract->contract_no) {
                                 $contract = $payment->contract->contract_no;
                                 $remainDays += Carbon::createFromDate($payment->deadline)->diffInDays(Carbon::now());
+                                // dump($payment,$remainDays);
                             } 
                             if(Carbon::now()->diffInDays($notify->created_at) == 6) {
                                 $amount = ((($payment->percent * $payment->amount) / 100) * $remainDays) + $payment->amount;
@@ -119,20 +120,20 @@ class SmsNotificationCommand extends Command
                                     'percent_amount' => $amount
                                 ];
                                 $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date'], $result['percent_amount']);
-                                dump($text);
+                                dump($text, $remainDays);
                                 // $sms = new SmsService();
                                 // list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'Spashev');
                                 // list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
-                                $status = true;
-                                if($status) {
-                                    $notify->status = 1;
-                                    $notify->save();
-                                    $payment->notifications()->create([
-                                        'payment_id' => $payment->id,
-                                        'status' => 1
-                                    ]);
-                                    $payment->save();
-                                }
+                                // $status = true;
+                                // if($status) {
+                                //     $notify->status = 1;
+                                //     $notify->save();
+                                //     $payment->notifications()->create([
+                                //         'payment_id' => $payment->id,
+                                //         'status' => 1
+                                //     ]);
+                                //     $payment->save();
+                                // }
                             }
                         }
                     }

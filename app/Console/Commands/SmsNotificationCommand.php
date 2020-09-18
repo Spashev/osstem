@@ -47,9 +47,7 @@ class SmsNotificationCommand extends Command
         if(count($payments) > 0) {
             foreach($payments as $payment) {
                 if(count($payment->notifications) > 0) {
-                    // dd($payment->notifications->last());
                     $notify = $payment->notifications->last();
-                    // foreach($payment->notifications as $notify) {
                         if($notify->created_at->format('Y-m-d') == Carbon::now()->subMonth()->format('Y-m-d')) {
                             dump('SMS month');
                             $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг до %s.";
@@ -71,7 +69,6 @@ class SmsNotificationCommand extends Command
                                     'status' => 0
                                 ]);
                             }
-                        // }
                     }
                 } else {
                     dump("sms 3");
@@ -130,8 +127,6 @@ class SmsNotificationCommand extends Command
                                 // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                                 $status = true;
                                 if($status) {
-                                    $notify->status = 1;
-                                    $notify->save();
                                     $payment->notifications()->create([
                                         'payment_id' => $payment->id,
                                         'status' => 1

@@ -48,7 +48,7 @@ class SmsNotificationCommand extends Command
             foreach($payments as $payment) {
                 if(count($payment->notifications) > 0) {
                     foreach($payment->notifications as $notify) {
-                        if(Carbon::now()->diffInDays($notify->created_at) != 6 OR $notify->created_at->format('Y-m-d') == Carbon::now()->subMonth()->format('Y-m-d')) {
+                        if(Carbon::now()->diffInDays($notify->created_at) != 0 OR $notify->created_at->format('Y-m-d') == Carbon::now()->subMonth()->format('Y-m-d')) {
                             dump('SMS month');
                             $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг до %s.";
                             $result = [
@@ -60,8 +60,8 @@ class SmsNotificationCommand extends Command
                             $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date']);
                             dump($text);
                             $sms = new SmsService();
-                            list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
-                            list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
+                            list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+                            list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                             if ($status) {
                                 $payment->notifications()->create([
                                     'payment_id' => $payment->id,
@@ -82,8 +82,8 @@ class SmsNotificationCommand extends Command
                     $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date']);
                     dump($text);
                     $sms = new SmsService();
-                    list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
-                    list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
+                    list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+                    list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                     if ($status) {
                         $payment->notifications()->create([
                             'payment_id' => $payment->id,
@@ -122,8 +122,8 @@ class SmsNotificationCommand extends Command
                                 $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date'], $result['percent_amount']);
                                 dump($text, $remainDays);
                                 $sms = new SmsService();
-                                list($sms_id, $sms_cnt, $cost, $balance) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'Spashev');
-                                list($status, $time) = $sms->get_status($sms_id, $result['customer_phone']);
+                                list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'Spashev');
+                                list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                                 $status = true;
                                 if($status) {
                                     $notify->status = 1;

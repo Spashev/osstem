@@ -41,9 +41,10 @@
                     <div class="content content-full text-center">
                         <div class="mb-5 invisible" data-toggle="appear" data-class="animated fadeInDown">
                             <i class="fa fa-circle-notch fa-3x text-primary"></i>
+                            <i class="fa fa-italic fa-3x text-white"></i>
                         </div>
                         <h1 class="display-4 font-w600 mb-3 text-white invisible" data-toggle="appear" data-class="animated fadeInDown">
-                            Union <span class="font-w300">Partners</span>
+                            OSSTEM <span class="font-w300">IMPLANT</span>
                         </h1>
                         @auth
                             <span class="m-2 d-inline-block invisible" data-toggle="appear" data-class="animated fadeInUp" data-timeout="600">

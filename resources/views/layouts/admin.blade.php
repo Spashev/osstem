@@ -9,16 +9,16 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>@yield('title', 'Unionp CRM')</title>
+        <title>@yield('title', 'OSSTEM IMPLANT')</title>
 
-        <meta name="description" content="Unionp CRM">
+        <meta name="description" content="OSSTEM IMPLANT">
         <meta name="author" content="pixelcave">
         <meta name="robots" content="noindex, nofollow">
 
         <!-- Open Graph Meta -->
-        <meta property="og:title" content="Unionp CRM">
-        <meta property="og:site_name" content="Unionp">
-        <meta property="og:description" content="Unionp CRM">
+        <meta property="og:title" content="OSSTEM IMPLANT">
+        <meta property="og:site_name" content="OSSTEM IMPLANT">
+        <meta property="og:description" content="OSSTEM IMPLANT">
         <meta property="og:type" content="website">
         <meta property="og:url" content="">
         <meta property="og:image" content="">
@@ -50,7 +50,12 @@
                     <!-- Logo -->
                     <a class="font-w600 text-dual" href="{{ route('admin.index') }}">
                         <span class="smini-hide">
-                            <span class="font-w700 font-size-h5">UNION</span> <span class="font-w400">P</span>
+                            <span class="font-w700 font-size-h5">
+                                OSSTEM
+                            </span> 
+                            <span class="font-w400">
+                                IMPLANT
+                            </span>
                         </span>
                     </a>
                     <!-- END Logo -->
@@ -259,7 +264,7 @@
                             Crafted by <a class="font-w600" href="http://www.unionp.kz/" target="_blank">union-partners</a>
                         </div>
                         <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-left">
-                            <a class="font-w600" href="#" target="_blank">UNIONP-CRM</a> &copy; <span data-toggle="year-copy"></span>
+                            <a class="font-w600" href="#" target="_blank">OSSTEM IMPLANT</a> &copy; <span data-toggle="year-copy"></span>
                         </div>
                     </div>
                 </div>

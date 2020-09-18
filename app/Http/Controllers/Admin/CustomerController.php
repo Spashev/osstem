@@ -26,6 +26,7 @@ class CustomerController extends Controller
         $fileName = '/customer.csv';
         $columns = [
             'CUSTOMER',
+            'CUSTOMER NAME',
             'REGION ID',
             'REGION',
             'IN-CHARGE',

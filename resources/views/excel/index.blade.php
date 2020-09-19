@@ -8,8 +8,10 @@
 <div class="content">
     <div class="block">
         <div class="block-header">
-            <h3 class="block-title">Upload excel</h3>
-            
+            <h3 class="block-title">Upload excel</h3>   
+            <div class="block-options">
+                <a href="{{route('admin.download')}}" class="btn-block-option float-right"><i class="fa fa-file-download fa-2x"></i></a>
+            </div>
         </div>
         <div class="block-content block-content-full">
             <h2 class="content-heading border-bottom mb-4 pb-2">Asynchronous File Uploads</h2>
@@ -25,6 +27,7 @@
                     @csrf
                         <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
                     </form>
+
                 </div>
             </div>
         </div>

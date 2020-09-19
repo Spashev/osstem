@@ -43,5 +43,7 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('/customer/{customer}', 'CustomerController@show')->name('customer.show');
     Route::get('/customer/csv/{id}', 'CustomerController@get_csv')->name('customer.csv');
     Route::get('/customer/{id}/invoice', 'CustomerController@invoice')->name('customer.invoice');
+    //Update
+    Route::get('/payment_update', 'ExcelController@download')->name('download');
 });
 Route::get('import', 'Admin\ExcelController@import');

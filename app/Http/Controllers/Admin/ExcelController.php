@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -51,15 +52,13 @@ class ExcelController extends Controller
                 ['path' => $file]
             );
             $result = ExcelJob::dispatch($excel);
-            if($result) {
-                if (file_exists($file)) {
-                    $fileName = '/update_payment.csv';
-                    $path = public_path('storage/upload' . $fileName);
-                    $file = file_get_contents($path);
-                    dump($file);
-                  }
-            }
         }
+    }
+    public function download()
+    {
+        $filename = '/update_payment.csv';
+        $path = public_path('storage/upload' . $filename);
+        return response()->download($path)->deleteFileAfterSend(true);
     }
 
     public function payment()

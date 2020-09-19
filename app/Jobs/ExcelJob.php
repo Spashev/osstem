@@ -108,7 +108,7 @@ class ExcelJob implements ShouldQueue
                         $item->remain = $record['REMAIN'];
                         $item->current_payment_day = Carbon::now()->format('Y-m-d H:i:s');
                         $item->save();
-                        $updated_item[] = $item;
+                        $updated_item[] = $item->toArray();
                     }
                 }
             }
@@ -130,9 +130,7 @@ class ExcelJob implements ShouldQueue
                 'PERCENT',
                 'AMOUNT PERCENT'
             ];
-            $path = public_path('storage/upload' . $fileName);
-            header('Content-Type: text/csv; charset=utf-8');  
-            header('Content-Disposition: attachment; filename=update_payment.csv');  
+            $path = public_path('storage/upload' . $fileName); 
             $file = fopen($path, 'w+');
             fputcsv($file, $columns);
             foreach ($updated_item as $item) {
@@ -166,7 +164,7 @@ class ExcelJob implements ShouldQueue
                 ]);
             }
             fclose($file);
-            return response()->download('storage/upload/update_payment.csv');
+            return $updated_item;
         }
     }
 }

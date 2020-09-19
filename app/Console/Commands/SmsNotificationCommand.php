@@ -59,9 +59,9 @@ class SmsNotificationCommand extends Command
                             ];
                             $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date']);
                             dump($text);
-                            // $sms = new SmsService();
-                            // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
-                            // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                            $sms = new SmsService();
+                            list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+                            list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                             $status = true;
                             if ($status) {
                                 $payment->notifications()->create([
@@ -81,9 +81,9 @@ class SmsNotificationCommand extends Command
                     ];
                     $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date']);
                     dump($text);
-                    // $sms = new SmsService();
-                    // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
-                    // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                    $sms = new SmsService();
+                    list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+                    list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                     $status = true;
                     if ($status) {
                         $payment->notifications()->create([
@@ -123,9 +123,9 @@ class SmsNotificationCommand extends Command
                                 ];
                                 $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date'], $result['percent_amount']);
                                 dump($text, $remainDays);
-                                // $sms = new SmsService();
-                                // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'Spashev');
-                                // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                                $sms = new SmsService();
+                                list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'Spashev');
+                                list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                                 $status = true;
                                 if($status) {
                                     $payment->notifications()->create([

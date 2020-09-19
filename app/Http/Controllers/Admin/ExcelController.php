@@ -58,7 +58,11 @@ class ExcelController extends Controller
     {
         $filename = '/update_payment.csv';
         $path = public_path('storage/upload' . $filename);
-        return response()->download($path)->deleteFileAfterSend(true);
+        if(file_exists($path)) {
+            return response()->download($path)->deleteFileAfterSend(true);
+        } else {
+            return redirect()->back();
+        }
     }
 
     public function payment()

@@ -27,7 +27,7 @@ class PaymentRequest extends FormRequest
         return [
             'customer' => 'required',
             'manager' => 'required',
-            'contract_no' => 'required',
+            'contract_no' => 'required|unique:contracts,contract_no',
             'seq' => 'required',
             'amount' => 'required',
             'payment_day' => 'required',

@@ -59,9 +59,9 @@ class SmsNotificationCommand extends Command
                             ];
                             $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date']);
                             dump($text);
-                            $sms = new SmsService();
-                            list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
-                            list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                            // $sms = new SmsService();
+                            // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+                            // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                             $status = true;
                             if ($status) {
                                 $payment->notifications()->create([
@@ -81,9 +81,9 @@ class SmsNotificationCommand extends Command
                     ];
                     $text = sprintf($message, $result['customer_name'],$result['amount'], $result['payment_date']);
                     dump($text);
-                    $sms = new SmsService();
-                    list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
-                    list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                    // $sms = new SmsService();
+                    // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+                    // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                     $status = true;
                     if ($status) {
                         $payment->notifications()->create([
@@ -111,6 +111,7 @@ class SmsNotificationCommand extends Command
                                 $remainDays += Carbon::createFromDate($payment->deadline)->diffInDays(Carbon::now());
                                 dump($payment,$remainDays);
                             } 
+                            dump($payment->notifications);
                             if(Carbon::now()->diffInDays($payment->notifications->last()->created_at) == 7 AND $count == $key + 1) {
                                 $amount = ((($payment->percent * $payment->amount) / 100) * $remainDays) + $payment->amount;
                                 $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг дата %s, просрочен сумма с процентом %s.";

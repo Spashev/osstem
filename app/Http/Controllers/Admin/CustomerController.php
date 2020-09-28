@@ -12,10 +12,17 @@ use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
 {
-    public function customer()
+    public function customer(Request $request)
     {
-        $customers = Customer::paginate(20);
         $managers = Manager::all();
+        if(request()->has('search_input')) {
+            $customers = Customer::where('name', 'LIKE', '%' . $request->search_input . '%')
+                            ->orWhere('customer_id', 'LIKE', '%' . $request->search_input . '%')
+                            ->get();
+        } 
+        if(!isset($customers)) {
+            $customers = Customer::paginate(20);
+        }
 
         return view('customer.index', compact('customers', 'managers'));
     }

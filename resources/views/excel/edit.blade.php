@@ -4,7 +4,7 @@
     <div class="content">
         <div class="block">
         <div class="block-header">
-            <h3 class="block-title">Edit</h3>
+            <h3 class="block-title">Edit payment</h3>
         </div>
         <div class="block-content block-content-full">
             <div class="row">
@@ -39,7 +39,7 @@
                         </div>
                         <div class="form-group">
                             <label for="wizard-progress-location1">Contract no</label>
-                            <input class="form-control" type="text" id="wizard-progress-location1" name="contract_no" value="{{$payment->contract_no}}">
+                            <input class="form-control" type="text" id="wizard-progress-location1" name="contract_no" value="{{$payment->contract->contract_no}}">
                         </div>
                         <div class="form-group">
                             <label for="wizard-progress-location2">Seq</label>
@@ -56,10 +56,6 @@
                         <div class="form-group">
                             <label for="wizard-progress-location2">Percent</label>
                             <input class="form-control" type="text" id="wizard-progress-location2" name="percent" value="{{$payment->percent}}">
-                        </div>
-                        <div class="form-group">
-                            <label for="wizard-progress-location2">Delay</label>
-                            <input class="form-control" readonly type="text" id="wizard-progress-location2" value="{{$amount_percent}}">
                         </div>
                         <div class="form-group">
                             <div class="form-group">

@@ -24,6 +24,18 @@
                     {{Session::get('msg')}}
                 </div>
             @endif
+            <div class="mb-4 d-flex justify-content-center">
+                <form class="d-none d-sm-inline-block" method="GET">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control " placeholder="Search.." id="page-header-search-input3" name="search_input" v-model="input">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-body border-0">
+                                <i class="si si-magnifier"></i>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <table border="1" cellpadding="5" class="table table-bordered table-striped table-vcenter" >
                 <thead>
                     <tr>
@@ -76,9 +88,11 @@
                 </tbody>
             </table>
         </div>
+        @if($customers instanceof \Illuminate\Pagination\LengthAwarePaginator )
         <div class="ml-3 text-size-md float-right">
             {{ $customers->links() }}
         </div>
+        @endif
     </div>
     <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -2,7 +2,6 @@
 <html lang="en">
     <head>
 
-        {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
@@ -23,6 +22,9 @@
         <meta property="og:url" content="">
         <meta property="og:image" content="">
 
+        <!-- Scripts -->
+        <script src="{{ asset('js/app.js') }}" defer></script>
+        
         <!-- Icons -->
         <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
         <link rel="shortcut icon" href="{{ asset('assets/media/favicons/favicon.png') }}">
@@ -253,7 +255,9 @@
 
             <!-- Main Container -->
             <main id="main-container">
-                @yield('content')
+                <div id="app">
+                    @yield('content')
+                </div>
             </main>
             <!-- END Main Container -->
             <!-- Footer -->
@@ -347,67 +351,9 @@
 
         
         <script src="{{ asset('assets/js/oneui.core.min.js') }}"></script>
-
         <script src="{{ asset('assets/js/oneui.app.min.js') }}"></script>
-
         <script src="{{ asset('assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-        <script>
-            var ws = new WebSocket('ws://0.0.0.0:8001');
-            ws.addEventListener('message', function(event) {
-                var data = JSON.parse(event.data);
-                table = document.createElement('table');
-                table.border=1
-                tr = document.createElement('tr');
-                th1 = document.createElement('th');
-                th1.innerHTML = 'Amount';
-                th2 = document.createElement('th');
-                th2.innerHTML = 'Contract no';
-                th3 = document.createElement('th');
-                th3.innerHTML = 'Deadline';
-                th4 = document.createElement('th');
-                th4.innerHTML = 'Name';
-                th5 = document.createElement('th');
-                th5.innerHTML = 'Seq';
-                th6 = document.createElement('th');
-                th6.innerHTML = 'Paind';
-                tr.appendChild(th4)
-                tr.appendChild(th2)
-                tr.appendChild(th1)
-                tr.appendChild(th5)
-                tr.appendChild(th6)
-                tr.appendChild(th3)
-                table.appendChild(tr)
-                for(var item of data) {
-                    tr = document.createElement('tr');
-                    var td1 = document.createElement('td');
-                    var td2 = document.createElement('td');
-                    var td3 = document.createElement('td');
-                    var td4 = document.createElement('td');
-                    var td5 = document.createElement('td');
-                    var td6 = document.createElement('td');
-                    td1.innerHTML = item.amount;
-                    td2.innerHTML = item.contract_no;
-                    td3.innerHTML = item.deadline;
-                    td4.innerHTML = item.name;
-                    td5.innerHTML = item.paid;
-                    td6.innerHTML = item.seq;
-                    tr.appendChild(td4);
-                    tr.appendChild(td2);
-                    tr.appendChild(td1);
-                    tr.appendChild(td5);
-                    tr.appendChild(td6);
-                    tr.appendChild(td3);
-                    table.appendChild(tr);
-                }
-                push = document.querySelector('.js-notify');
-                push.setAttribute('data-message', table.outerHTML);
-            });
-
-        </script>
         <script>jQuery(function(){ One.helpers('notify'); });</script>
-
         @yield('script')
     </body>
 </html>

@@ -4,12 +4,17 @@ namespace App\Models;
 
 use App\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class Contract extends Model
 {
+    use Sortable;
+
     protected $guarded = [];
 
     public $timestamps = false;
+
+    public $sortable = ['contract_no'];
 
     public function payments()
     {

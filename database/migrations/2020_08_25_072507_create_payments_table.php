@@ -21,7 +21,6 @@ class CreatePaymentsTable extends Migration
             $table->string('amount');
             $table->timestamp('payment_date', 0)->nullable();
             $table->timestamp('deadline', 0)->nullable();
-            $table->timestamp('current_payment_day', 0)->nullable();
             $table->string('paid')->default(0);
             $table->string('remain');
             $table->string('percent')->default(0);

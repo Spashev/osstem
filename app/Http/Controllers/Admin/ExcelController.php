@@ -52,6 +52,9 @@ class ExcelController extends Controller
                 ['path' => $file]
             );
             $result = ExcelJob::dispatch($excel);
+            if(isset($result)) {
+                dump($result);
+            }
         }
     }
     public function download()
@@ -71,9 +74,64 @@ class ExcelController extends Controller
         return view('payment.index', compact('payments'));
     }
 
-    public function table()
-    {
-        $payments = Payment::with('contract')->paginate(20);
+    public function table(Request $request)
+    {   
+
+        if($request->has('search_input')) {
+            $payments = Payment::with('contract')
+                        ->where('remain', $request->search_input)
+                        ->orWhere('paid', $request->search_input)
+                        ->orWhere('amount', $request->search_input)
+                        ->get();
+            if(count($payments) > 0) {
+                return view('excel.table', compact('payments'));
+            }
+
+            $customers = Customer::with('contracts', 'manager')
+                            ->where('name', 'LIKE', '%'.$request->search_input .'%')
+                            ->orWhere('region', $request->search_input)
+                            ->get();
+            if(count($customers) > 0) {
+                $results = [];
+                foreach($customers as $customer) {
+                    foreach($customer->contracts as $contract) {
+                        $results[] = [
+                            'name' => $customer->name,
+                            'region' => $customer->region,
+                            'payments' => $contract->payments,
+                            'manager_name' => $contract->manager->name,
+                            'in_charge' => $contract->manager->in_charge,
+
+                        ];
+                    }
+                }
+                return view('excel.customers', compact('results'));
+            }
+
+            $managers = Manager::with('contracts', 'customers')
+                                ->where('name', 'LIKE', '%'.$request->search_input .'%')
+                                ->orWhere('in_charge', 'LIKE', '%'. $request->search_input . '%')
+                                ->get();
+            if(count($managers) > 0) {
+                return $managers;
+            }
+
+            $contracts = Contract::with('payments', 'manager', 'customer')
+                                ->where('contract_no', 'LIKE', '%'.$request->search_input .'%')
+                                ->get();
+            if(count($contracts) > 0) {
+                return view('payment.contract', compact('contracts'));
+            }
+        }
+        
+        if($request->sort == 'contract_no') {
+            $contracts = Contract::with('payments', 'manager', 'customer')
+                            ->orderBy('contract_no', $request->direction)
+                            ->paginate(20);
+            return view('payment.contract', compact('contracts'));
+        }
+
+        $payments = Payment::with('contract')->sortable()->paginate(20);
         return view('excel.table', compact('payments'));
     }
 

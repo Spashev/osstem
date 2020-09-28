@@ -16,6 +16,9 @@ class CreateNotificationsTable extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('payment_id');
+            $table->string('customer_name');
+            $table->string('phone_number');
+            $table->string('amount');
             $table->tinyInteger('status');
             $table->timestamps();
         });

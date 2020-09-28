@@ -14,23 +14,32 @@
         <div class="block-content">
             <div class="row">
                 <div class="col-md-12 col-lg-12" style="overflow: scroll; height:500px;">
+                    <div class="mb-4 d-flex justify-content-center">
+                        <form class="d-none d-sm-inline-block" method="GET">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-alt" placeholder="Search.." id="page-header-search-input3" name="search_input" v-model="input">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-body border-0">
+                                        <i class="si si-magnifier"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <table class="table table-bordered table-vcenter">
                         <thead>
                             <tr>
-                                <th style="width: 15%;">id</th>
-                                <th style="width: 15%;">in_charge</th>
-                                <th class= style="width: 15%;">manager</th>
-                                <th style="width: 15%;">region</th>
-                                <th style="width: 15%;">region_id</th>
-                                <th class="text-center" style="width: 50px;">customer_id</th>
-                                <th>cutomer_name</th>
-                                <th class= style="width: 15%;">contract no</th>
-                                <th class= style="width: 15%;">amount</th>
-                                <th class= style="width: 15%;">seq</th>
-                                <th class= style="width: 15%;">payment_date</th>
-                                <th class= style="width: 15%;">deadline</th>
-                                <th class= style="width: 15%;">paid</th>
-                                <th class= style="width: 15%;">remain</th>
+                                <th style="width: 15%;">@sortablelink('id')</th>
+                                <th style="width: 15%;">@sortablelink('in_charge')</th>
+                                <th style="width: 15%;">@sortablelink('manager')</th>
+                                <th style="width: 15%;">@sortablelink('region')</th>
+                                <th>@sortablelink('cutomer_name')</th>
+                                <th style="width: 15%;">@sortablelink('contract_no')</th>
+                                <th style="width: 15%;">@sortablelink('amount')</th>
+                                <th style="width: 15%;">@sortablelink('seq')</th>
+                                <th style="width: 15%;">@sortablelink('deadline')</th>
+                                <th style="width: 15%;">@sortablelink('paid')</th>
+                                <th style="width: 15%;">@sortablelink('remain')</th>
                                 <th class="text-center" style="width: 100px;">Actions</th>
                             </tr>
                         </thead>
@@ -38,18 +47,12 @@
                             @foreach($payments as $payment)
                                 <tr>
                                     <td class="font-size-md" scope="row">{!!$payment->id!!}</td>
-                                    <td class="font-size-md" scope="row">{!!$payment->contract->manager->in_charge ? $payment->contract->manager->in_charge : '<span class="font-w700 badge badge-warning"">No manager</span>'!!}</td>
+                                    <td class="font-size-md" scope="row">{!!$payment->contract->manager->in_charge ? $payment->contract->manager->in_charge : '<span class="font-w700 badge badge-warning">No manager</span>'!!}</td>
                                     <td class="font-size-md" scope="row">
-                                    <a href="{{route('admin.manager.show', $payment->contract->manager->id)}}">{!!$payment->contract->manager->name ? $payment->contract->manager->name : '<span class="font-w700 badge badge-danger">No manager</span>'!!}</a>
+                                        <a href="{{route('admin.manager.show', $payment->contract->manager->id)}}">{!!$payment->contract->manager->name ? $payment->contract->manager->name : '<span class="font-w700 badge badge-danger">No manager</span>'!!}</a>
                                     </td>
                                     <td class="font-size-md">
-                                        {!!$payment->contract->customer->region ? $payment->contract->customer->region : '<span class="font-w700 badge badge-warning"">No region</span>'!!}
-                                    </td>
-                                    <td class="ffont-size-md">
-                                        {!!$payment->contract->customer->region_id ? $payment->contract->customer->region_id : '<span class="font-w700 badge badge-danger">No region</span>'!!}
-                                    </td>
-                                    <td class="font-size-md">
-                                        {{$payment->contract->customer->customer_id}}
+                                        {!!$payment->contract->customer->region ? $payment->contract->customer->region : '<span class="font-w700 badge badge-warning">No region</span>'!!}
                                     </td>
                                     <td class="font-size-md">
                                         {{$payment->contract->customer->name}}
@@ -64,10 +67,7 @@
                                         {{$payment->seq}}
                                     </td>
                                     <td class="font-size-sm">
-                                        {!!$payment->payment_date ? substr($payment->payment_date,0,-9) : '<span class="font-w700 badge badge-danger">No date</span>'!!}
-                                    </td>
-                                    <td class="font-size-sm">
-                                        {{$payment->deadline ? substr($payment->deadline,0,-9) : '<span class="font-w700 badge badge-warning"">No date</span>'}}
+                                        {!!$payment->deadline ? substr($payment->deadline,0,-9) : '<span class="font-w700 badge badge-warning">No date</span>'!!}
                                     </td>
                                     <td class="font-size-lg">
                                         <span class="badge badge-success font-w700">{{$payment->paid}}</span>
@@ -93,7 +93,7 @@
             </div>
         </div>
         <div class="m-3">
-            {{$payments->links()}}
+            {!!$payments->links()!!}
         </div>
     </div>
 </div>

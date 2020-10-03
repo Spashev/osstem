@@ -13,7 +13,7 @@ class Customer extends Model
 
     public $timestamps = false;
 
-    public $sortable = ['name','customer_id','region'];
+    public $sortable = ['name', 'customer_id', 'region'];
 
     public function contracts()
     {
@@ -23,5 +23,10 @@ class Customer extends Model
     public function manager()
     {
         return $this->belongsTo(Manager::class);
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
     }
 }

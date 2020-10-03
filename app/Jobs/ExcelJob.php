@@ -6,6 +6,7 @@ use App\Models\Contract;
 use App\Models\Customer;
 use App\Models\Manager;
 use App\Models\Payment;
+use App\Models\Region;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,7 +22,7 @@ class ExcelJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $timeout = 0;
-    
+
     protected $excel;
 
     /**
@@ -48,8 +49,9 @@ class ExcelJob implements ShouldQueue
 
         $customer_id = $contract_no = NULL;
         $in_charge = $customer_id = NULL;
+        $region_id = NULL;
         $updated_item = [];
-        
+
         $payments_hash = Payment::all();
         foreach ($records as $record) {
             dump($record);
@@ -69,6 +71,14 @@ class ExcelJob implements ShouldQueue
                         'in_charge' => $record['IN-CHARGE']
                     ]);
                     $in_charge = $record['IN-CHARGE'];
+                }
+
+                if ($region_id !== $record['REGION']) {
+                    $customer = Region::firstOrCreate([
+                        'name' => $record['REGION'],
+                        'region_id' => $record['ID REGION']
+                    ]);
+                    $region_id = $record['REGION'];
                 }
 
                 if ($customer_id !== $record['CUSTOMER']) {
@@ -93,6 +103,8 @@ class ExcelJob implements ShouldQueue
 
                 Payment::create([
                     'contract_id' => $contract->id,
+                    'manager_id' => $manager->id,
+                    'customer_id' => $customer->id,
                     'hash' => '$_' . $record['CONTRACT NO'] . '_S_' . $record['SEQ'],
                     'seq' => $record['SEQ'],
                     'amount' => $record['AMOUNT'],
@@ -130,7 +142,7 @@ class ExcelJob implements ShouldQueue
                 'PERCENT',
                 'AMOUNT PERCENT'
             ];
-            $path = public_path('storage/upload' . $fileName); 
+            $path = public_path('storage/upload' . $fileName);
             $file = fopen($path, 'w+');
             fputcsv($file, $columns);
             foreach ($updated_item as $item) {

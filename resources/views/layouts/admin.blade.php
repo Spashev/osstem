@@ -24,7 +24,7 @@
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
-        
+        @yield('head')
         <!-- Icons -->
         <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
         <link rel="shortcut icon" href="{{ asset('assets/media/favicons/favicon.png') }}">
@@ -36,7 +36,7 @@
         <!-- Fonts and OneUI framework -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
         <link rel="stylesheet" id="css-main" href="{{ asset('assets/css/oneui.min.css') }}">
-        @yield('head')
+
 
     </head>
     <body>
@@ -111,6 +111,12 @@
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="{{ route('admin.analyze') }}">
+                                <i class="fa fa-chart-pie mr-2"></i>
+                                    <span class="nav-main-link-name">Analyzer</span>
+                            </a>
                         </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="https://github.com/Spashev/unionp" target="_blank">

@@ -31,6 +31,10 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('payment/{id}/update', 'ExcelController@update')->name('excel.update');
     Route::get('payment/{payment}/delete', 'ExcelController@delete')->name('excel.delete');
     Route::get('/payments', 'ExcelController@payment')->name('excel.payments');
+    //Analyzer
+    Route::get('analyzer', 'AnalyzerController@index')->name('analyze');
+    Route::get('/analyzer/get', 'AnalyzerController@getData');
+    Route::post('analyzer/get-analyze', 'AnalyzerController@getFilter');
     //Manager
     Route::get('/managers', 'ManagerController@manager')->name('excel.managers');
     Route::get('/manager/{id}/show', 'ManagerController@show')->name('manager.show');

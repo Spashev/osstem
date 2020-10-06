@@ -20,6 +20,16 @@ class Payment extends Model
         return $this->belongsTo(Contract::class);
     }
 
+    public function manager()
+    {
+        return $this->belongsTo(Manager::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
     public function notifications()
     {
         return $this->hasMany(Notification::class);

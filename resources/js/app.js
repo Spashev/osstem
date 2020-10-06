@@ -27,6 +27,10 @@ Vue.component(
     "analuze-component",
     require("./components/AnalyzeComponent.vue").default
 );
+Vue.component(
+    "table-component",
+    require("./components/TableComponent.vue").default
+);
 
 // /**
 //  * Next, we will create a fresh Vue application instance and attach it to
@@ -37,6 +41,12 @@ Vue.component(
 import VueGoodTablePlugin from "vue-good-table";
 // import the styles
 import "vue-good-table/dist/vue-good-table.css";
+
+//Chart
+import Chartkick from "vue-chartkick";
+import Chart from "chart.js";
+
+Vue.use(Chartkick.use(Chart));
 
 Vue.use(VueGoodTablePlugin);
 

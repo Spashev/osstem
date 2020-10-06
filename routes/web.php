@@ -35,6 +35,11 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('analyzer', 'AnalyzerController@index')->name('analyze');
     Route::get('/analyzer/get', 'AnalyzerController@getData');
     Route::post('analyzer/get-analyze', 'AnalyzerController@getFilter');
+    Route::get('get-manager/{manager}', 'AnalyzerController@getManager');
+    Route::get('get-contract/{customer}', 'AnalyzerController@getContract');
+    Route::get('get-payments/{contract}', 'AnalyzerController@getPayments');
+    Route::get('get-region/{region}', 'AnalyzerController@getRegion');
+    Route::post('get-date/', 'AnalyzerController@getDatePayments');
     //Manager
     Route::get('/managers', 'ManagerController@manager')->name('excel.managers');
     Route::get('/manager/{id}/show', 'ManagerController@show')->name('manager.show');

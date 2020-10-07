@@ -52,6 +52,9 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('/customer/{customer}', 'CustomerController@show')->name('customer.show');
     Route::get('/customer/csv/{id}', 'CustomerController@get_csv')->name('customer.csv');
     Route::get('/customer/{id}/invoice', 'CustomerController@invoice')->name('customer.invoice');
+    Route::get('/customer/{id}/edit', 'CustomerController@edit')->name('customer.edit');
+    Route::post('/customer/{id}/update', 'CustomerController@update')->name('customer.update');
+    Route::get('/customer/{customer}/delete', 'CustomerController@delete')->name('customer.delete');
     //Update
     Route::get('/payment_update', 'ExcelController@download')->name('download');
 });

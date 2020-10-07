@@ -118,10 +118,5 @@ class AnalyzerController extends Controller
         return response()->json($groupBy->map(function ($item, $k) {
             return $item->count();
         })->toArray());
-        // return response()->json($groupBy->map(function ($item, $k) {
-        //     return [$k, $item->count()];
-        // }), $groupBy->map(function ($item, $k) {
-        //     return $item->count();
-        // }));
     }
 }

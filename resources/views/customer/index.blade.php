@@ -75,10 +75,10 @@
                         </td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="#" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="edit" data-original-title="Edit">
+                            <a href="{{route('admin.customer.edit', $customer->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="edit" data-original-title="Edit">
                                     <i class="fa fa-fw fa-pencil-alt"></i>
                                 </a>
-                                <a href="#" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="delete" data-original-title="Delete">
+                                <a href="{{route('admin.customer.delete', $customer->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="delete" data-original-title="Delete">
                                     <i class="fa fa-fw fa-times"></i>
                                 </a>
                             </div>
@@ -139,6 +139,10 @@
                     <div class="form-group">
                         <label for="exampleInputPassword4">Region id</label>
                         <input type="text" name="region_id" class="form-control" id="exampleInputPassword4" placeholder="Region id">
+                    </div>
+                    <div class="custom-control custom-switch custom-control-primary custom-control-lg mb-2">
+                    <input type="checkbox" class="custom-control-input" id="example-sw-custom-primary-lg2" name="sms_status"  {{$customer->sms_status == 'on' ? 'checked' : ''}}>
+                        <label class="custom-control-label" for="example-sw-custom-primary-lg2">Send sms</label>
                     </div>
                     <hr>
                     <button type="submit" class="btn btn-primary float-right">Save</button>

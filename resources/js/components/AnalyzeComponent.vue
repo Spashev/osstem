@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="col-lg-12 col-md-12">
+  <div class="col-lg-12 col-md-12">
+    <div>
       <form method="POST">
         <div class="form-group form-row row text-center">
           <div class="col-sm-3">
@@ -77,13 +77,17 @@
       ></pie-chart>
     </div>
     <div v-if="manager_flag" class="text-center">
-      <area-chart :data="chart_data"></area-chart>
+      <area-chart :data="chart_data" ytitle="Contracts"></area-chart>
     </div>
     <div v-if="column_flag" class="text-center">
-      <column-chart :data="chart_data"></column-chart>
+      <column-chart :data="chart_data" ytitle="Managers"></column-chart>
     </div>
     <div v-if="line_flag" class="text-center">
-      <line-chart :data="chart_data"></line-chart>
+      <line-chart
+        :data="chart_data"
+        xtitle="Date"
+        ytitle="Payments"
+      ></line-chart>
     </div>
   </div>
 </template>
@@ -167,7 +171,6 @@ export default {
         method: "get",
         url: "get-manager/" + val,
       }).then(function (response) {
-        console.log(response.data);
         vue.chart_data = response.data;
         vue.chart_flag = false;
         vue.manager_flag = true;
@@ -181,8 +184,9 @@ export default {
         method: "get",
         url: "get-region/" + val,
       }).then(function (response) {
-        console.log(response.data);
         vue.customers = response.data;
+        vue.managers = [];
+        vue.contracts = [];
         vue.chart_data = response.data.map(function (item) {
           return [item.text, item.id];
         });
@@ -190,6 +194,7 @@ export default {
         vue.manager_flag = false;
         vue.line_flag = false;
         vue.chart_flag = false;
+        vue.disabled = 0;
       });
     },
     dateEvent(val) {

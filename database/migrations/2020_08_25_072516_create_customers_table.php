@@ -25,6 +25,7 @@ class CreateCustomersTable extends Migration
             $table->string('district')->nullable();
             $table->string('region');
             $table->string('region_id');
+            $table->string('sms_status')->default('on')->nullable();
         });
     }
 

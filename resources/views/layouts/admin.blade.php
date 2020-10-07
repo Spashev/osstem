@@ -42,7 +42,7 @@
     <body>
         <!-- Page Container -->
 
-        <div id="page-container" class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed">
+        <div id="page-container" class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed side-trans-enabled sidebar-mini sidebar-o-xs">
 
             <!-- END Side Overlay -->
 
@@ -51,15 +51,15 @@
                 <div class="content-header bg-white-5">
                     <!-- Logo -->
                     <a class="font-w600 text-dual" href="{{ route('admin.index') }}">
+                            <i class="fa fa-circle-notch text-primary"></i>
                         <span class="smini-hide">
                             <span class="font-w700 font-size-h5">
-                                OSSTEM
+                                SSTEM
                             </span> 
                             <span class="font-w400">
                                 IMPLANT
                             </span>
                         </span>
-                    </a>
                     <!-- END Logo -->
 
                     <a class="d-lg-none text-dual ml-3" data-toggle="layout" data-action="sidebar_close" href="javascript:void(0)">
@@ -313,9 +313,9 @@
                                         <!-- Products -->
                                     <a class="block block-rounded block-themed bg-danger" href="{{route('admin.excel')}}">
                                             <div class="block-content text-center">
-                                                <i class="far fa-file-excel fa-2x text-white-75"></i>
+                                                <i class="fa fa-upload fa-2x text-white-75"></i>
                                                 <p class="font-w600 font-size-sm text-white mt-2 mb-3">
-                                                    Excel
+                                                    Upload excel
                                                 </p>
                                             </div>
                                         </a>
@@ -325,7 +325,7 @@
                                         <!-- Sales -->
                                         <a class="block block-rounded block-themed bg-success mb-0" href="{{route('admin.excel.table')}}">
                                             <div class="block-content text-center">
-                                                <i class="fa fa-table fa-2x text-white-75"></i>
+                                                <i class="far fa-file-excel fa-2x text-white-75"></i>
                                                 <p class="font-w600 font-size-sm text-white mt-2 mb-3">
                                                     Excel table
                                                 </p>
@@ -335,11 +335,11 @@
                                     </div>
                                     <div class="col-6">
                                         <!-- Payments -->
-                                        <a class="block block-rounded block-themed bg-warning mb-0" href="javascript:void(0)">
+                                    <a class="block block-rounded block-themed bg-warning mb-0" href="{{route('admin.analyze')}}">
                                             <div class="block-content text-center">
-                                                <i class="si si-wallet fa-2x text-white-75"></i>
+                                                <i class="fa fa-chart-line fa-2x text-white-75"></i>
                                                 <p class="font-w600 font-size-sm text-white mt-2 mb-3">
-                                                    Payments
+                                                    Analyze
                                                 </p>
                                             </div>
                                         </a>

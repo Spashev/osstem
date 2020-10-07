@@ -92,9 +92,11 @@
                 </div>
             </div>
         </div>
-        <div class="m-3">
-            {!!$payments->links()!!}
+        @if($payments instanceof \Illuminate\Pagination\LengthAwarePaginator )
+        <div class="ml-3 text-size-md float-right">
+            {{ $payments->links() }}
         </div>
+        @endif
     </div>
 </div>
 @endsection

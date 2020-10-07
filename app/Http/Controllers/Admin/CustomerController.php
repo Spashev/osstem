@@ -15,12 +15,12 @@ class CustomerController extends Controller
     public function customer(Request $request)
     {
         $managers = Manager::all();
-        if(request()->has('search_input')) {
+        if (request()->has('search_input')) {
             $customers = Customer::where('name', 'LIKE', '%' . $request->search_input . '%')
-                            ->orWhere('customer_id', 'LIKE', '%' . $request->search_input . '%')
-                            ->get();
-        } 
-        if(!isset($customers)) {
+                ->orWhere('customer_id', 'LIKE', '%' . $request->search_input . '%')
+                ->get();
+        }
+        if (!isset($customers)) {
             $customers = Customer::paginate(20);
         }
 
@@ -113,9 +113,9 @@ class CustomerController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'region' => $request->region,
-            'region_id' => $request->region_id
+            'region_id' => $request->region_id,
+            'sms_status' => is_null($request->sms_status) ? 'off' : 'on'
         ]);
-
         Session::flash('msg', 'customer created');
         return redirect()->back();
     }
@@ -131,5 +131,28 @@ class CustomerController extends Controller
     {
         $manager->delete();
         return redirect()->back();
+    }
+
+    public function edit($id)
+    {
+        $customer = Customer::with('manager', 'contracts')->findOrFail($id);
+        $managers = Manager::all();
+        return view('customer.edit', compact('customer', 'managers'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $customer = Customer::findOrFail($id);
+        $customer->update($request->toArray());
+        $customer->sms_status = is_null($request->sms_status) ? 'off' : 'on';
+        $customer->save();
+        Session::flash('msg', 'Customer, ' . $customer->name . ' updated.');
+        return redirect()->back();
+    }
+
+    public function delete(Customer $customer)
+    {
+        $customer->delete();
+        return redirect()->route('admin.excel.customers');
     }
 }

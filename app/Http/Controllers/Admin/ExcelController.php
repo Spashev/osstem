@@ -52,7 +52,7 @@ class ExcelController extends Controller
                 ['path' => $file]
             );
             $result = ExcelJob::dispatch($excel);
-            if(isset($result)) {
+            if (isset($result)) {
                 dump($result);
             }
         }
@@ -61,7 +61,7 @@ class ExcelController extends Controller
     {
         $filename = '/update_payment.csv';
         $path = public_path('storage/upload' . $filename);
-        if(file_exists($path)) {
+        if (file_exists($path)) {
             return response()->download($path)->deleteFileAfterSend(true);
         } else {
             return redirect()->back();
@@ -75,26 +75,26 @@ class ExcelController extends Controller
     }
 
     public function table(Request $request)
-    {   
+    {
 
-        if($request->has('search_input')) {
+        if ($request->has('search_input')) {
             $payments = Payment::with('contract')
-                        ->where('remain', $request->search_input)
-                        ->orWhere('paid', $request->search_input)
-                        ->orWhere('amount', $request->search_input)
-                        ->get();
-            if(count($payments) > 0) {
+                ->where('remain', $request->search_input)
+                ->orWhere('paid', $request->search_input)
+                ->orWhere('amount', $request->search_input)
+                ->get();
+            if (count($payments) > 0) {
                 return view('excel.table', compact('payments'));
             }
 
             $customers = Customer::with('contracts', 'manager')
-                            ->where('name', 'LIKE', '%'.$request->search_input .'%')
-                            ->orWhere('region', $request->search_input)
-                            ->get();
-            if(count($customers) > 0) {
+                ->where('name', 'LIKE', '%' . $request->search_input . '%')
+                ->orWhere('region', $request->search_input)
+                ->get();
+            if (count($customers) > 0) {
                 $results = [];
-                foreach($customers as $customer) {
-                    foreach($customer->contracts as $contract) {
+                foreach ($customers as $customer) {
+                    foreach ($customer->contracts as $contract) {
                         $results[] = [
                             'name' => $customer->name,
                             'region' => $customer->region,
@@ -109,25 +109,25 @@ class ExcelController extends Controller
             }
 
             $managers = Manager::with('contracts', 'customers')
-                                ->where('name', 'LIKE', '%'.$request->search_input .'%')
-                                ->orWhere('in_charge', 'LIKE', '%'. $request->search_input . '%')
-                                ->get();
-            if(count($managers) > 0) {
+                ->where('name', 'LIKE', '%' . $request->search_input . '%')
+                ->orWhere('in_charge', 'LIKE', '%' . $request->search_input . '%')
+                ->get();
+            if (count($managers) > 0) {
                 return $managers;
             }
 
             $contracts = Contract::with('payments', 'manager', 'customer')
-                                ->where('contract_no', 'LIKE', '%'.$request->search_input .'%')
-                                ->get();
-            if(count($contracts) > 0) {
+                ->where('contract_no', 'LIKE', '%' . $request->search_input . '%')
+                ->get();
+            if (count($contracts) > 0) {
                 return view('payment.contract', compact('contracts'));
             }
         }
-        
-        if($request->sort == 'contract_no') {
+
+        if ($request->sort == 'contract_no') {
             $contracts = Contract::with('payments', 'manager', 'customer')
-                            ->orderBy('contract_no', $request->direction)
-                            ->paginate(20);
+                ->orderBy('contract_no', $request->direction)
+                ->paginate(20);
             return view('payment.contract', compact('contracts'));
         }
 
@@ -154,6 +154,8 @@ class ExcelController extends Controller
             Payment::create([
                 'hash' => '$_' . $request->contract_no . '_S_' . $i,
                 'contract_id' => $contract->id,
+                'manager_id' => $request->manager,
+                'customer_id' => $request->customer,
                 'seq' => $i,
                 'amount' => $request->amount,
                 'payment_date' => $i == 0 ? Carbon::parse($request->payment_day)->format('Y-m-d') : Carbon::parse($request->payment_day)->addMonth($i)->format('Y-m-d'),
@@ -173,7 +175,7 @@ class ExcelController extends Controller
         $payment = Payment::with('contract')->findOrFail($id);
         $managers = Manager::all();
         $customers = Customer::all();
-        if($payment->paid == 0 and $payment->remain != 0) {
+        if ($payment->paid == 0 and $payment->remain != 0) {
             $minusDays = intval(Str::substr($now, 8, 10)) - intval(Str::substr($payment->payment_date, 8, 10));
             $amount_percent = ((($payment->percent * $payment->amount) / 100) * $minusDays) + $payment->amount;
         } else {
@@ -184,7 +186,6 @@ class ExcelController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $payment = Payment::findOrFail($id);
         $payment->contract->manager_id = $request->manager;
         if ($request->contract_no) {
@@ -193,7 +194,7 @@ class ExcelController extends Controller
         $payment->amount = $request->amount;
         $payment->paid = $request->paid;
         $payment->percent = $request->percent;
-        $payment->remain = $request->paid != 0 ? $payment->remain - $request->paid : $payment->amount;
+        $payment->remain = $request->paid <= $payment->remain ? $payment->remain - $request->paid : $payment->amount;
         $payment->payment_date = Carbon::parse($request->payment_day)->format('Y-m-d');
         $payment->deadline = Carbon::parse($request->deadline)->format('Y-m-d');
         $payment->save();
@@ -215,10 +216,10 @@ class ExcelController extends Controller
         $reader = Reader::createFromPath($inputFileName, 'r');
         $reader->setHeaderOffset(0);
         $records = $reader->getRecords();
-        foreach($records as $record) {
+        foreach ($records as $record) {
             $nomer = $record['CELL'] ? $record['CELL'] : $record['TEL NO'];
             $customer = Customer::where('customer_id', $record['CODE'])->first();
-            if($customer) {
+            if ($customer) {
                 $customer->phone = $nomer;
                 $customer->city = $record['(Bill To)'];
                 $customer->district = $record['__EMPTY_1'];

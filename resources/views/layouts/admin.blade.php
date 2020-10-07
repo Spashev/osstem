@@ -96,7 +96,7 @@
                         </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                                <i class="fa fa-paper-plane mr-2"></i>
+                                <i class="far fa-file-excel mr-2"></i>
                                 <span class="nav-main-link-name">Excel</span>
                             </a>
                             <ul class="nav-main-submenu">

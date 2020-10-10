@@ -34,4 +34,16 @@ class Payment extends Model
     {
         return $this->hasMany(Notification::class);
     }
+
+    public function getReamin()
+    {
+        $payments = Payment::where('contract_id', $this->contract_id)->get();
+        return $payments->sum('remain');
+    }
+
+    public function getPaid()
+    {
+        $payments = Payment::where('contract_id', $this->contract_id)->get();
+        return $payments->sum('paid');
+    }
 }

@@ -13,6 +13,26 @@
         </div>
         <div class="block-content">
             <div class="row">
+                <form action="{{ route('admin.excel.filter') }}" method="post">
+                    @csrf
+                    <div class="form-group form-row">
+                        <div class="col-3">
+                            <input type="text" class="form-control form-control-alt" name="manager" placeholder="Manager">
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control form-control-alt" name="customer" placeholder="Customer">
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control form-control-alt" name="contract_no" placeholder="Contract no">
+                        </div>
+                        <div class="col-2">
+                            <input type="text" class="form-control form-control-alt" name="deadline" placeholder="Deadline">
+                        </div>
+                        <div class="col-1">
+                            <button type="submit" class="btn btn-primary">FILTER</button>
+                        </div>
+                    </div>
+                </form>
                 <div class="col-md-12 col-lg-12" style="overflow: scroll; height:500px;">
                     <div class="mb-4 d-flex justify-content-center">
                         <form class="d-none d-sm-inline-block" method="GET">

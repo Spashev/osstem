@@ -27,10 +27,13 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::post('excel/save', 'ExcelController@save')->name('excel.save');
     Route::post('excel/upload', 'ExcelController@upload')->name('excel.upload');
     Route::get('excel/table', 'ExcelController@table')->name('excel.table');
+    Route::post('excel/filter', 'ExcelController@filter')->name('excel.filter');
     Route::get('payment/{id}/edit', 'ExcelController@edit')->name('excel.edit');
     Route::get('payment/{id}/update', 'ExcelController@update')->name('excel.update');
     Route::get('payment/{payment}/delete', 'ExcelController@delete')->name('excel.delete');
     Route::get('/payments', 'ExcelController@payment')->name('excel.payments');
+    //Sms
+    Route::get('sms', 'SmsController@index')->name('sms');
     //Analyzer
     Route::get('analyzer', 'AnalyzerController@index')->name('analyze');
     Route::get('/analyzer/get', 'AnalyzerController@getData');

@@ -135,6 +135,23 @@ class ExcelController extends Controller
         return view('excel.table', compact('payments'));
     }
 
+    public function filter(Request $request)
+    {
+        if (!is_null($request->manager)) {
+            $manager = Manager::where('name', 'LIKE', '%' . $request->manager . '%')->get();
+            dd($manager->toArray());
+        } else if (!is_null($request->customer)) {
+            $customer = Customer::where('name', 'LIKE', '%' . $request->customer . '%')->get();
+            dd($customer->toArray());
+        } else if (!is_null($request->customer_no)) {
+            $contract = Contract::where('contract_no', 'LIKE', '%' . $request->contract_no . '%')->get();
+            dd($contract->toArray());
+        } else {
+            $deadline = Payment::where('deadline', 'LIKE', '%' . $request->deadline . '%')->get();
+            dd($deadline->toArray());
+        }
+    }
+
     public function create()
     {
         $managers = Manager::all();

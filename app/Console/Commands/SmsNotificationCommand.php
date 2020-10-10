@@ -81,7 +81,11 @@ class SmsNotificationCommand extends Command
                     $contract_payments = Payment::where('contract_id', $payment->contract_id)->where('remain', '<>', 0)->get();
                     $first_paymant_day = $contract_payments->first()->deadline;
                     $delay = Carbon::createFromDate($first_paymant_day)->diffInDays($now);
-                    $payment_percent = ((($contract_payments->first()->percent * $contract_payments->first()->amount) / 100) * $delay) + $contract_payments->first()->amount;
+                    if ($contract_payments->first()->percent == 0) {
+                        $payment_percent = ((($contract_payments->first()->percent * $contract_payments->first()->amount) / 100) * $delay) + $contract_payments->first()->amount;
+                    } else {
+                        $payment_percent = ((($contract_payments->first()->percent * $contract_payments->first()->amount) / 100) * $delay) + $contract_payments->first()->amount;
+                    }
                     $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг, просрочен сумма с процентом %s  дата %s.";
                     $result = [
                         'customer_name' => $contract_payments->first()->contract->customer->name,

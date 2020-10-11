@@ -73,7 +73,7 @@
                         <li class="nav-main-heading">SYSTEM COMPONENTS</li>
                         <li class="nav-main-item">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                                <i class="fa fa-users mr-2"></i>
+                                <i class="nav-main-link-icon fa fa-users mr-2"></i>
                                 <span class="nav-main-link-name">Users</span>
                             </a>
                             <ul class="nav-main-submenu">
@@ -96,7 +96,7 @@
                         </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                                <i class="far fa-file-excel mr-2"></i>
+                                <i class="nav-main-link-icon far fa-file-excel mr-2"></i>
                                 <span class="nav-main-link-name">Excel</span>
                             </a>
                             <ul class="nav-main-submenu">
@@ -114,13 +114,13 @@
                         </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="{{ route('admin.analyze') }}">
-                                <i class="fa fa-chart-pie mr-2"></i>
+                                <i class="nav-main-link-icon fa fa-chart-pie mr-2"></i>
                                     <span class="nav-main-link-name">Analyzer</span>
                             </a>
                         </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                                <i class="fa fa-sms mr-2"></i>
+                                <i class="nav-main-link-icon fab fa-facebook-messenger mr-2"></i>
                                     <span class="nav-main-link-name">Sms</span>
                             </a>
                             <ul class="nav-main-submenu">
@@ -133,7 +133,7 @@
                         </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="https://github.com/Spashev/unionp" target="_blank">
-                                <i class="fab fa-github mr-2"></i>
+                                <i class="nav-main-link-icon fab fa-github mr-2"></i>
                                     <span class="nav-main-link-name">GitHub</span>
                             </a>
                         </li>

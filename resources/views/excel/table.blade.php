@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </form>
-                <div class="col-md-12 col-lg-12" style="overflow: scroll; height:500px;">
+                <div class="col-md-12 col-lg-12" style="overflow-x: scroll;">
                     <div class="mb-4 d-flex justify-content-center">
                         <form class="d-none d-sm-inline-block" method="GET">
                             <div class="input-group input-group-sm">
@@ -89,10 +89,10 @@
                                     <td class="font-size-sm">
                                         {!!$payment->deadline ? substr($payment->deadline,0,-9) : '<span class="font-w700 badge badge-warning">No date</span>'!!}
                                     </td>
-                                    <td class="font-size-lg">
+                                    <td class="font-size-md">
                                         <span class="badge badge-success font-w700">{{$payment->paid}}</span>
                                     </td>
-                                    <td class="font-size-lg">
+                                    <td class="font-size-md">
                                         <span class="badge badge-danger font-w700">{{$payment->remain}}</span>
                                     </td>
                                     <td class="text-center">
@@ -110,13 +110,13 @@
                         </tbody>
                     </table>
                 </div>
+                @if($payments instanceof \Illuminate\Pagination\LengthAwarePaginator )
+                    <div class="ml-3 mt-3 text-size-md">
+                        {{ $payments->links() }}
+                    </div>
+                @endif
             </div>
         </div>
-        @if($payments instanceof \Illuminate\Pagination\LengthAwarePaginator )
-        <div class="ml-3 text-size-md float-right">
-            {{ $payments->links() }}
-        </div>
-        @endif
     </div>
 </div>
 @endsection

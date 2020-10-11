@@ -12,7 +12,7 @@
               v-model="customer_filter"
               :options="customers"
               @change="customerEvent($event)"
-              @select="disabled = 1"
+              @select="disabled == 1"
             >
               <option value="">Select one</option>
             </select2>

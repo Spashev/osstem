@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Contract;
+use App\Models\Customer;
 use App\Models\Payment;
+use App\Models\Region;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class SmsController extends Controller
 {
@@ -19,105 +21,152 @@ class SmsController extends Controller
      */
     public function index()
     {
+        // $now = Carbon::now()->format('Y-m-d');
+        // $payments = Payment::with('contract')->where('deadline', '<', $now)->where('remain', '>', 0)->get();
+        // $payments = $payments->unique('contract_id');
+        // $payments = new Paginator($payments, $perPage = 20);
+        // $payments->setPath('/sms');
+        // $last_page = $payments->toArray()['per_page'];
+        // return view('sms.index', compact('payments', 'last_page'));
+        return view('sms.index');
+    }
+
+    public function getData()
+    {
         $now = Carbon::now()->format('Y-m-d');
-        $payments = Payment::where('deadline', '<', $now)->where('remain', '<>', 0)->get();
-        $payments = $payments->unique('contract_id');
-        // dd($payments);
-        $result = [];
+        $payments = Payment::with('contract')->where('deadline', '<', $now)->where('remain', '>', 0)->get();
+        $payments = $payments->unique('customer_id');
+        $regions = $customers = [];
         foreach ($payments as $payment) {
-            $result[] = [
+            $customers[] = $payment->customer;
+        }
+        $customers = collect($customers)->map(function ($customer, $inex) {
+            return collect($customer)->keyBy(function ($value, $key) {
+                if ($key == 'name') {
+                    return 'text';
+                } else {
+                    return $key;
+                }
+            });
+        });
+        $regions = Region::get(['name', 'id']);
+        $regions = $regions->map(function ($customer, $inex) {
+            return collect($customer)->keyBy(function ($value, $key) {
+                if ($key == 'name') {
+                    return 'text';
+                } else {
+                    return $key;
+                }
+            });
+        });
+        return response()->json(
+            [
+                'customers' => $customers,
+                'regions' => $regions
+            ],
+            200
+        );
+    }
+
+    public function customer(Customer $customer)
+    {
+        $now = Carbon::now()->format('Y-m-d');
+        $payments = Payment::with('contract')->where('customer_id', $customer->id)->where('deadline', '<=', $now)->where('remain', '>', 0)->get();
+        $payments = $payments->unique('contract_id');
+        $customer = [];
+        foreach ($payments as $key => $payment) {
+            $payment->setReaminAndPaid();
+            $customer[] = [
+                'id' => $key + 1,
                 'contract_no' => $payment->contract->contract_no,
-                'remain' => $payment->getReamin(),
-                'paid' => $payment->getPaid(),
-                'deadline' => $payment->deadline,
+                'total_remain' => $payment->getTotalRemain(),
+                'total_paid' => $payment->getTotalPaid(),
+                'deadline' => Str::substr($payment->deadline, 0, 11)
             ];
         }
-        $payments = $this->paginate($result, $perPage = 20);
-        return view('sms.index', compact('payments'));
+        return response()->json(
+            $customer,
+            200
+        );
     }
 
-    /**
-     * Gera a paginação dos itens de um array ou collection.
-     *
-     * @param array|Collection      $items
-     * @param int   $perPage
-     * @param int  $page
-     * @param array $options
-     *
-     * @return LengthAwarePaginator
-     */
-    protected function paginate($items, $perPage = 15, $page = null, $options = [])
+    public function region(Region $region)
     {
-        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-
-        $items = $items instanceof Collection ? $items : Collection::make($items);
-
-        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+        $now = Carbon::now()->format('Y-m-d');
+        $customers = $region->customers;
+        $payments = collect();
+        foreach ($customers as $customer) {
+            $item = Payment::with('contract')->where('customer_id', $customer->id)->where('deadline', '<=', $now)->where('remain', '>', 0)->get()->unique('contract_id');
+            if (count($item) > 0) {
+                $payments = $payments->merge($item);
+            }
+        }
+        if (count($payments) == 0) {
+            $result = [
+                'msg' => 'there are no unpaid customers in this region'
+            ];
+        } else {
+            $result = [];
+            foreach ($payments as $key => $payment) {
+                $payment->setReaminAndPaid();
+                $result[] = [
+                    'id' => $key + 1,
+                    'contract_no' => $payment->contract->contract_no,
+                    'total_remain' => $payment->getTotalRemain(),
+                    'total_paid' => $payment->getTotalPaid(),
+                    'deadline' => Str::substr($payment->deadline, 0, 11)
+                ];
+            }
+        }
+        return response()->json(
+            $result,
+            200
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function data(Request $request)
     {
-        //
+        $payments = Payment::with('manager', 'customer')->whereBetween('deadline', [$request->from, $request->to])->where('remain', '>', 0)->get()->unique('contract_id');
+        if (count($payments) == 0) {
+            $result = [
+                'msg' => 'there are no unpaid customers in this region'
+            ];
+        } else {
+            $result = [];
+            foreach ($payments as $key => $payment) {
+                $payment->setReaminAndPaid();
+                $result[] = [
+                    'id' => $key + 1,
+                    'contract_no' => $payment->contract->contract_no,
+                    'total_remain' => $payment->getTotalRemain(),
+                    'total_paid' => $payment->getTotalPaid(),
+                    'deadline' => Str::substr($payment->deadline, 0, 11)
+                ];
+            }
+        }
+        return response()->json(
+            $result,
+            200
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function contractData(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $contract = Contract::where('contract_no', $request->from)->first();
+        $payments = Payment::where('contract_id', $contract->id)->where('remain', '>', 0)->get();
+        $result = [];
+        foreach ($payments as $key => $payment) {
+            $result[] = [
+                'id' => $key + 1,
+                'contract_no' => $payment->contract->contract_no,
+                'total_remain' => $payment->remain,
+                'total_paid' => $payment->paid,
+                'deadline' => Str::substr($payment->deadline, 0, 11)
+            ];
+        }
+        return response()->json(
+            $result,
+            200
+        );
     }
 }

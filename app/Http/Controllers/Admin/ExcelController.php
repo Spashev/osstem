@@ -132,6 +132,7 @@ class ExcelController extends Controller
         }
 
         $payments = Payment::with('contract')->sortable()->paginate(20);
+
         return view('excel.table', compact('payments'));
     }
 

@@ -34,6 +34,11 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('/payments', 'ExcelController@payment')->name('excel.payments');
     //Sms
     Route::get('sms', 'SmsController@index')->name('sms');
+    Route::get('sms/get', 'SmsController@getData');
+    Route::get('sms/get-customer/{customer}', 'SmsController@customer');
+    Route::get('sms/get-region/{region}', 'SmsController@region');
+    Route::post('sms/get-date', 'SmsController@data');
+    Route::post('sms/contract-data', 'SmsController@contractData');
     //Analyzer
     Route::get('analyzer', 'AnalyzerController@index')->name('analyze');
     Route::get('/analyzer/get', 'AnalyzerController@getData');

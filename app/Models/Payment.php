@@ -15,6 +15,9 @@ class Payment extends Model
 
     public $sortable = ['id', 'seq', 'deadline', 'amount', 'remain'];
 
+    public $total_remain = 0;
+    public $total_paid = 0;
+
     public function contract()
     {
         return $this->belongsTo(Contract::class);
@@ -35,15 +38,22 @@ class Payment extends Model
         return $this->hasMany(Notification::class);
     }
 
-    public function getReamin()
+    public function setReaminAndPaid()
     {
-        $payments = Payment::where('contract_id', $this->contract_id)->get();
-        return $payments->sum('remain');
+        $payments = Payment::where('contract_id', $this->contract_id)
+            ->where('remain', '>', 0)
+            ->get();
+        $this->total_remain = $payments->sum('remain');
+        $this->total_paid = $payments->sum('paid');
     }
 
-    public function getPaid()
+    public function getTotalRemain()
     {
-        $payments = Payment::where('contract_id', $this->contract_id)->get();
-        return $payments->sum('paid');
+        return $this->total_remain;
+    }
+
+    public function getTotalPaid()
+    {
+        return $this->total_paid;
     }
 }

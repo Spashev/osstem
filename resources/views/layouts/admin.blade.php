@@ -113,10 +113,22 @@
                             </ul>
                         </li>
                         <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{ route('admin.analyze') }}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                                 <i class="nav-main-link-icon fa fa-chart-pie mr-2"></i>
                                     <span class="nav-main-link-name">Analyzer</span>
                             </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link"  href="{{ route('admin.analyze.upload') }}">
+                                        <span class="nav-main-link-name">Upload</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link"  href="{{ route('admin.analyze') }}">
+                                        <span class="nav-main-link-name">Analyze</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
@@ -126,7 +138,7 @@
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
                                     <a class="nav-main-link"  href="{{ route('admin.sms') }}">
-                                        <span class="nav-main-link-name">Deadlines</span>
+                                        <span class="nav-main-link-name">Confirm</span>
                                     </a>
                                 </li>
                             </ul>

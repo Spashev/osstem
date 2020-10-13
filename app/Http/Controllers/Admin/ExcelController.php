@@ -25,11 +25,22 @@ use League\Csv\Reader;
 
 class ExcelController extends Controller
 {
+    /**
+     * index
+     *
+     * @return void
+     */
     public function index()
     {
         return view('excel.index');
     }
 
+    /**
+     * upload
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function upload(Request $request)
     {
         $validator = Validator::make(
@@ -57,6 +68,12 @@ class ExcelController extends Controller
             }
         }
     }
+
+    /**
+     * download
+     *
+     * @return void
+     */
     public function download()
     {
         $filename = '/update_payment.csv';
@@ -68,12 +85,23 @@ class ExcelController extends Controller
         }
     }
 
+    /**
+     * payment
+     *
+     * @return void
+     */
     public function payment()
     {
         $payments =  Payment::all();
         return view('payment.index', compact('payments'));
     }
 
+    /**
+     * table
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function table(Request $request)
     {
 
@@ -136,6 +164,12 @@ class ExcelController extends Controller
         return view('excel.table', compact('payments'));
     }
 
+    /**
+     * filter
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function filter(Request $request)
     {
         if (!is_null($request->manager)) {
@@ -153,6 +187,11 @@ class ExcelController extends Controller
         }
     }
 
+    /**
+     * create
+     *
+     * @return void
+     */
     public function create()
     {
         $managers = Manager::all();
@@ -160,6 +199,12 @@ class ExcelController extends Controller
         return view('excel.create', compact('managers', 'customers'));
     }
 
+    /**
+     * save
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function save(PaymentRequest $request)
     {
 
@@ -186,6 +231,12 @@ class ExcelController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * edit
+     *
+     * @param  mixed $id
+     * @return void
+     */
     public function edit($id)
     {
         $now = Str::substr(Carbon::now(), 0, 10);
@@ -202,6 +253,13 @@ class ExcelController extends Controller
         return view('excel.edit', compact('payment', 'customers', 'managers', 'amount_percent'));
     }
 
+    /**
+     * update
+     *
+     * @param  mixed $request
+     * @param  mixed $id
+     * @return void
+     */
     public function update(Request $request, $id)
     {
         $payment = Payment::findOrFail($id);
@@ -222,6 +280,12 @@ class ExcelController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * delete
+     *
+     * @param  mixed $payment
+     * @return void
+     */
     public function delete(Payment $payment)
     {
         $payment->delete();

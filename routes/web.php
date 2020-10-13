@@ -39,8 +39,10 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('sms/get-region/{region}', 'SmsController@region');
     Route::post('sms/get-date', 'SmsController@data');
     Route::post('sms/contract-data', 'SmsController@contractData');
+    Route::post('sms/status', 'SmsController@smsStatus');
     //Analyzer
     Route::get('analyzer', 'AnalyzerController@index')->name('analyze');
+    Route::get('analyzer/upload', 'AnalyzerController@upload')->name('analyze.upload');
     Route::get('/analyzer/get', 'AnalyzerController@getData');
     Route::post('analyzer/get-analyze', 'AnalyzerController@getFilter');
     Route::get('get-manager/{manager}', 'AnalyzerController@getManager');

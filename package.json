@@ -37,6 +37,7 @@
         "vue-chartkick": "^0.6.1",
         "vue-good-table": "^2.21.0",
         "vue-select2": "^0.2.6",
+        "vue-spinner": "^1.0.4",
         "vue2-datepicker": "^3.6.2",
         "vuejs-datepicker": "^1.6.2",
         "winston": "^3.3.3"

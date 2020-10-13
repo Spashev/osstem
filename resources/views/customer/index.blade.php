@@ -36,6 +36,7 @@
                     </div>
                 </form>
             </div>
+            @if(count($customers)>0)
             <table border="1" cellpadding="5" class="table table-bordered table-striped table-vcenter" >
                 <thead>
                     <tr>
@@ -87,6 +88,7 @@
                     @endforeach
                 </tbody>
             </table>
+            @endif
         </div>
         @if($customers instanceof \Illuminate\Pagination\LengthAwarePaginator )
         <div class="ml-3 text-size-md float-right">
@@ -141,7 +143,7 @@
                         <input type="text" name="region_id" class="form-control" id="exampleInputPassword4" placeholder="Region id">
                     </div>
                     <div class="custom-control custom-switch custom-control-primary custom-control-lg mb-2">
-                    <input type="checkbox" class="custom-control-input" id="example-sw-custom-primary-lg2" name="sms_status"  {{$customer->sms_status == 'on' ? 'checked' : ''}}>
+                    <input type="checkbox" class="custom-control-input" id="example-sw-custom-primary-lg2" name="sms_status"  checked>
                         <label class="custom-control-label" for="example-sw-custom-primary-lg2">Send sms</label>
                     </div>
                     <hr>

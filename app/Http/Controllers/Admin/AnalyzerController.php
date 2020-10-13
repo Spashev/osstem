@@ -18,6 +18,11 @@ class AnalyzerController extends Controller
         return view('analyzer.index');
     }
 
+    public function upload()
+    {
+        return view('analyzer.upload');
+    }
+
     public function getFilter(Request $request)
     {
         dd($request->toArray());

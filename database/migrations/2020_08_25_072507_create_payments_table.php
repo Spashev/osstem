@@ -25,7 +25,8 @@ class CreatePaymentsTable extends Migration
             $table->timestamp('deadline', 0)->nullable();
             $table->string('paid')->default(0);
             $table->string('remain');
-            $table->string('percent')->default(0);
+            $table->string('percent')->default(2);
+            $table->string('sms_status')->default('on');
         });
     }
 

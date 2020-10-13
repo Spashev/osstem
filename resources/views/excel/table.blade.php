@@ -46,6 +46,7 @@
                             </div>
                         </form>
                     </div>
+                    @if(count($payments) > 0)
                     <table class="table table-bordered table-vcenter">
                         <thead>
                             <tr>
@@ -109,6 +110,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    @endif
                 </div>
                 @if($payments instanceof \Illuminate\Pagination\LengthAwarePaginator )
                     <div class="ml-3 mt-3 text-size-md">

@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
 {
+    /**
+     * customer
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function customer(Request $request)
     {
         $managers = Manager::all();
@@ -27,6 +33,12 @@ class CustomerController extends Controller
         return view('customer.index', compact('customers', 'managers'));
     }
 
+    /**
+     * get_csv
+     *
+     * @param  mixed $id
+     * @return void
+     */
     public function get_csv($id)
     {
         $customer = Customer::with('contracts', 'manager')->find($id);
@@ -89,6 +101,12 @@ class CustomerController extends Controller
         return response()->download('storage/upload/customer.csv');
     }
 
+    /**
+     * invoice
+     *
+     * @param  mixed $id
+     * @return void
+     */
     public function invoice($id)
     {
         $customer = Customer::with('contracts')->findOrFail($id);
@@ -104,6 +122,12 @@ class CustomerController extends Controller
     }
 
 
+    /**
+     * store
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function store(CustomerRequest $request)
     {
         Customer::create([
@@ -121,18 +145,36 @@ class CustomerController extends Controller
     }
 
 
+    /**
+     * show
+     *
+     * @param  mixed $id
+     * @return void
+     */
     public function show($id)
     {
         $customer = Customer::with('manager', 'contracts')->findOrFail($id);
         return view('customer.show', compact('customer'));
     }
 
+    /**
+     * destroy
+     *
+     * @param  mixed $manager
+     * @return void
+     */
     public function destroy(Manager $manager)
     {
         $manager->delete();
         return redirect()->back();
     }
 
+    /**
+     * edit
+     *
+     * @param  mixed $id
+     * @return void
+     */
     public function edit($id)
     {
         $customer = Customer::with('manager', 'contracts')->findOrFail($id);
@@ -140,6 +182,13 @@ class CustomerController extends Controller
         return view('customer.edit', compact('customer', 'managers'));
     }
 
+    /**
+     * update
+     *
+     * @param  mixed $request
+     * @param  mixed $id
+     * @return void
+     */
     public function update(Request $request, $id)
     {
         $customer = Customer::findOrFail($id);
@@ -150,6 +199,12 @@ class CustomerController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * delete
+     *
+     * @param  mixed $customer
+     * @return void
+     */
     public function delete(Customer $customer)
     {
         $customer->delete();

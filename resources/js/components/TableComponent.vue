@@ -54,80 +54,90 @@
         </div>
       </form>
 
-      <table class="table table-bordered table-vcenter" v-if="table_flag">
-        <thead>
-          <tr>
-            <th class="text-center" style="width: 50px">#</th>
-            <th>Contract_no</th>
-            <th class="text-center" style="width: 100px">Remain</th>
-            <th class="text-center" style="width: 100px">Paid</th>
-            <th class="d-none d-sm-table-cell" style="width: 15%">Deadline</th>
-            <th class="d-none d-sm-table-cell" style="width: 15%">
-              Confirmation
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="payment in payments" v-bind:key="payment.id">
-            <th class="text-center" scope="row">
-              {{ payment.id }}
-            </th>
-            <td class="font-w600 font-size-sm">
-              <a
-                href="javascript:void(0);"
-                @click="getContractData(payment.contract_no)"
-                >{{ payment.contract_no }}</a
-              >
-            </td>
-            <td class="d-none d-sm-table-cell">
-              <span>{{ payment.total_remain }}</span>
-            </td>
-            <td class="d-none d-sm-table-cell">
-              <span>{{ payment.total_paid }}</span>
-            </td>
-            <td class="d-none d-sm-table-cell">
-              <span>{{ payment.deadline }}</span>
-            </td>
-            <td class="text-center">
-              <div
-                v-if="payment.sms_status == 'on'"
-                class="custom-control custom-switch custom-control-success custom-control-lg mb-2"
-              >
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  :id="'example-sw-custom-success-lg2_' + payment.id"
-                  :name="'sms_status_' + payment.id"
-                  checked
-                  @click="smsStatusEvent(payment.contract_no)"
-                />
-                <label
-                  class="custom-control-label"
-                  :for="'example-sw-custom-success-lg2_' + payment.id"
-                  >SMS</label
+      <div v-if="table_flag">
+        <button
+          class="btn btn-outline-info float-right mb-2"
+          onclick="exportTableToCSV('sms.csv')"
+        >
+          <i class="si si-cloud-download"></i>
+        </button>
+        <table class="table table-bordered table-vcenter">
+          <thead>
+            <tr>
+              <th class="text-center" style="width: 50px">#</th>
+              <th>Contract_no</th>
+              <th class="text-center" style="width: 100px">Remain</th>
+              <th class="text-center" style="width: 100px">Paid</th>
+              <th class="d-none d-sm-table-cell" style="width: 15%">
+                Deadline
+              </th>
+              <th class="d-none d-sm-table-cell" style="width: 15%">
+                Confirmation
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="payment in payments" v-bind:key="payment.id">
+              <th class="text-center" scope="row">
+                {{ payment.id }}
+              </th>
+              <td class="font-w600 font-size-sm">
+                <a
+                  href="javascript:void(0);"
+                  @click="getContractData(payment.contract_no)"
+                  >{{ payment.contract_no }}</a
                 >
-              </div>
-              <div
-                v-else
-                class="custom-control custom-switch custom-control-success custom-control-lg mb-2"
-              >
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  :id="'example-sw-custom-success-lg2_' + payment.id"
-                  :name="'sms_status_' + payment.id"
-                  @click="smsStatusEvent(payment.contract_no)"
-                />
-                <label
-                  class="custom-control-label"
-                  :for="'example-sw-custom-success-lg2_' + payment.id"
-                  >SMS</label
+              </td>
+              <td class="d-none d-sm-table-cell">
+                <span>{{ payment.total_remain }}</span>
+              </td>
+              <td class="d-none d-sm-table-cell">
+                <span>{{ payment.total_paid }}</span>
+              </td>
+              <td class="d-none d-sm-table-cell">
+                <span>{{ payment.deadline }}</span>
+              </td>
+              <td class="text-center">
+                <div
+                  v-if="payment.sms_status == 'on'"
+                  class="custom-control custom-switch custom-control-success custom-control-lg mb-2"
                 >
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    :id="'example-sw-custom-success-lg2_' + payment.id"
+                    :name="'sms_status_' + payment.id"
+                    checked
+                    @click="smsStatusEvent(payment.contract_no)"
+                  />
+                  <label
+                    class="custom-control-label"
+                    :for="'example-sw-custom-success-lg2_' + payment.id"
+                    >SMS</label
+                  >
+                </div>
+                <div
+                  v-else
+                  class="custom-control custom-switch custom-control-success custom-control-lg mb-2"
+                >
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    :id="'example-sw-custom-success-lg2_' + payment.id"
+                    :name="'sms_status_' + payment.id"
+                    @click="smsStatusEvent(payment.contract_no)"
+                  />
+                  <label
+                    class="custom-control-label"
+                    :for="'example-sw-custom-success-lg2_' + payment.id"
+                    >SMS</label
+                  >
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Modal -->

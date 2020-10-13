@@ -81,7 +81,7 @@ class SmsNotificationCommand extends Command
                     $first_paymant_day = $contract_payments->first()->deadline;
                     $delay = Carbon::createFromDate($first_paymant_day)->diffInDays($now);
                     if ($contract_payments->first()->percent == 0) {
-                        $payment_percent = ((($contract_payments->first()->percent * $contract_payments->first()->amount) / 100) * $delay) + $contract_payments->first()->amount;
+                        $payment_percent = (Carbon::now()->month - Carbon::createFromDate($first_paymant_day)->month) * $contract_payments->first()->amount;
                     } else {
                         $payment_percent = ((($contract_payments->first()->percent * $contract_payments->first()->amount) / 100) * $delay) + $contract_payments->first()->amount;
                     }

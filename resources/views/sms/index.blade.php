@@ -8,3 +8,7 @@
     <table-component>
     </table-component>
 @endsection
+
+@section('script')
+<script src="{{asset('js/download.js')}}"></script>
+@endsection

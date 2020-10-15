@@ -147,6 +147,7 @@
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
+      v-if="modal_flag"
     >
       <div class="modal-dialog">
         <div class="modal-content">
@@ -231,6 +232,7 @@ export default {
       modal_data: [],
       table_flag: false,
       show_loader: false,
+      modal_flag: false,
     };
   },
   mounted: function () {
@@ -246,6 +248,7 @@ export default {
         url: "sms/contract-data/",
         data: form,
       }).then(function (response) {
+        vue.modal_flag = true;
         console.log(response.data);
         vue.modal_data = response.data;
         $("#exampleModal").modal("show");
@@ -257,6 +260,7 @@ export default {
         method: "get",
         url: "sms/get-customer/" + val,
       }).then(function (response) {
+        vue.modal_flag = false;
         vue.payments = response.data;
         vue.table_flag = true;
       });
@@ -277,6 +281,7 @@ export default {
           vue.table_flag = true;
         }
         vue.show_loader = false;
+        vue.modal_flag = false;
       });
     },
     dateEvent(val) {
@@ -293,6 +298,7 @@ export default {
         vue.show_loader = false;
         vue.payments = response.data;
         vue.table_flag = true;
+        vue.modal_flag = false;
       });
     },
     getData: function () {
@@ -304,6 +310,7 @@ export default {
         vue.customers = response.data.customers;
         vue.regions = response.data.regions;
         vue.table_flag = true;
+        vue.modal_flag = false;
       });
     },
     smsStatusEvent(val) {
@@ -316,6 +323,7 @@ export default {
         data: form,
       }).then(function (response) {
         alert(response.data.msg);
+        vue.modal_flag = false;
       });
     },
   },

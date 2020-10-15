@@ -28,6 +28,7 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::post('excel/upload', 'ExcelController@upload')->name('excel.upload');
     Route::get('excel/table', 'ExcelController@table')->name('excel.table');
     Route::post('excel/filter', 'ExcelController@filter')->name('excel.filter');
+    Route::post('excel/table', 'ExcelController@filters')->name('excel.filters');
     Route::get('payment/{id}/edit', 'ExcelController@edit')->name('excel.edit');
     Route::get('payment/{id}/update', 'ExcelController@update')->name('excel.update');
     Route::get('payment/{payment}/delete', 'ExcelController@delete')->name('excel.delete');

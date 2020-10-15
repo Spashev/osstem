@@ -68,7 +68,6 @@
                             </div>
                         </form>
                     </div>
-                    @if(count($payments) > 0)
                     <table class="table table-bordered table-vcenter">
                         <thead>
                             <tr>
@@ -87,43 +86,43 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($payments as $payment)
+                            @foreach($payments_result as $key=>$payment)
                                 <tr>
-                                    <td class="font-size-md" scope="row">{!!$payment->id!!}</td>
-                                    <td class="font-size-md" scope="row">{!!$payment->contract->manager->in_charge ? $payment->contract->manager->in_charge : '<span class="font-w700 badge badge-warning">No manager</span>'!!}</td>
+                                    <td class="font-size-md" scope="row">{{$key + 1}}</td>
+                                    <td class="font-size-md" scope="row">{{$payment['in_charge']}}</td>
                                     <td class="font-size-md" scope="row">
-                                        <a href="{{route('admin.manager.show', $payment->contract->manager->id)}}">{!!$payment->contract->manager->name ? $payment->contract->manager->name : '<span class="font-w700 badge badge-danger">No manager</span>'!!}</a>
+                                        <a href="#">{{$payment['manager']}}</a>
                                     </td>
                                     <td class="font-size-md">
-                                        {!!$payment->contract->customer->region ? $payment->contract->customer->region : '<span class="font-w700 badge badge-warning">No region</span>'!!}
+                                        {{$payment['region']}}
                                     </td>
                                     <td class="font-size-md">
-                                        {{$payment->contract->customer->name}}
+                                        {{$payment['cutomer_name']}}
                                     </td>
                                     <td class="font-size-md">
-                                        {{$payment->contract->contract_no}}
+                                        {{$payment['contract_no']}}
                                     </td>
                                     <td class="font-size-md">
-                                        {{$payment->amount}}
+                                        {{$payment['amount']}}
                                     </td>
                                     <td class="font-size-md">
-                                        {{$payment->seq}}
+                                        {{$payment['seq']}}
                                     </td>
                                     <td class="font-size-sm">
-                                        {!!$payment->deadline ? substr($payment->deadline,0,-9) : '<span class="font-w700 badge badge-warning">No date</span>'!!}
+                                        {!!$payment['deadline'] ? substr($payment['deadline'],0,-9) : '<span class="font-w700 badge badge-warning">No date</span>'!!}
                                     </td>
                                     <td class="font-size-md">
-                                        <span class="badge badge-success font-w700">{{$payment->paid}}</span>
+                                        <span class="badge badge-success font-w700">{{$payment['paid']}}</span>
                                     </td>
                                     <td class="font-size-md">
-                                        <span class="badge badge-danger font-w700">{{$payment->remain}}</span>
+                                        <span class="badge badge-danger font-w700">{{$payment['remain']}}</span>
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <a href="{{route('admin.excel.edit',$payment->id)}}" class="btn btn-sm btn-light js-tooltip-enabled" data-toggle="tooltip" title="" data-original-title="Edit Client">
+                                            <a href="{{route('admin.excel.edit',$payment['id'])}}" class="btn btn-sm btn-light js-tooltip-enabled" data-toggle="tooltip" title="" data-original-title="Edit Client">
                                                 <i class="fa fa-fw fa-pencil-alt"></i>
                                             </a>
-                                            <a href="{{route('admin.excel.delete', $payment->id)}}" class="btn btn-sm btn-light js-tooltip-enabled" data-toggle="tooltip" title="" data-original-title="Remove Client">
+                                            <a href="{{route('admin.excel.delete', $payment['id'])}}" class="btn btn-sm btn-light js-tooltip-enabled" data-toggle="tooltip" title="" data-original-title="Remove Client">
                                                 <i class="fa fa-fw fa-times"></i>
                                             </a>
                                         </div>
@@ -132,13 +131,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    @endif
                 </div>
-                @if($payments instanceof \Illuminate\Pagination\LengthAwarePaginator )
-                    <div class="ml-3 mt-3 text-size-md">
-                        {{ $payments->links() }}
-                    </div>
-                @endif
             </div>
         </div>
     </div>

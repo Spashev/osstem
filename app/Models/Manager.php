@@ -24,4 +24,9 @@ class Manager extends Model
     {
         return $this->hasMany(Customer::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

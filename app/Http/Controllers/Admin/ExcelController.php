@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\ExcelFilterRequest;
 
 
 use League\Csv\Reader;
@@ -160,8 +161,11 @@ class ExcelController extends Controller
         }
 
         $payments = Payment::with('contract')->sortable()->paginate(20);
+        $managers = Manager::all();
+        $customers = Customer::all();
+        $contracts = Contract::all();
 
-        return view('excel.table', compact('payments'));
+        return view('excel.table', compact('payments', 'managers', 'customers', 'contracts'));
     }
 
     /**
@@ -184,6 +188,164 @@ class ExcelController extends Controller
         } else {
             $deadline = Payment::where('deadline', 'LIKE', '%' . $request->deadline . '%')->get();
             dd($deadline->toArray());
+        }
+    }
+
+    public function filters(ExcelFilterRequest $request)
+    {
+        $managers = Manager::all();
+        $customers = Customer::all();
+        $contracts = Contract::all();
+        if ($request->manager != 0) {
+            $manager = Manager::findorFail($request->manager);
+            $payments_result = [];
+            if ($manager and !is_null($request->deadline)) {
+                foreach ($manager->payments as $payment) {
+                    if (Str::substr($payment->deadline, 0, 10) == $request->deadline) {
+                        $customer = $payment->customer;
+                        $payments_result[] = [
+                            'id' => $payment->id,
+                            'in_charge' => $manager->in_charge,
+                            'manager' => $manager->name,
+                            'region' => $customer->region,
+                            'cutomer_name' => $customer->name,
+                            'contract_no' => $payment->contract->contract_no,
+                            'amount' => $payment->amount,
+                            'seq' => $payment->seq,
+                            'deadline' => $payment->deadline,
+                            'paid' => $payment->paid,
+                            'remain' => $payment->remain
+                        ];
+                    }
+                }
+            } else {
+                foreach ($manager->payments as $payment) {
+                    $customer = $payment->customer;
+                    $payments_result[] = [
+                        'id' => $payment->id,
+                        'in_charge' => $manager->in_charge,
+                        'manager' => $manager->name,
+                        'region' => $customer->region,
+                        'cutomer_name' => $customer->name,
+                        'contract_no' => $payment->contract->contract_no,
+                        'amount' => $payment->amount,
+                        'seq' => $payment->seq,
+                        'deadline' => $payment->deadline,
+                        'paid' => $payment->paid,
+                        'remain' => $payment->remain
+                    ];
+                }
+            }
+            // dd($payments_result);
+            return view('excel.table_filter', compact('payments_result', 'managers', 'customers', 'contracts'));
+        }
+        if ($request->customer != 0) {
+            $customer = Customer::findorFail($request->customer);
+            $payments_result = [];
+            $manager = $customer->manager;
+            if (!is_null($request->deadline)) {
+                foreach ($customer->payments as $payment) {
+                    if (Str::substr($payment->deadline, 0, 10) == $request->deadline) {
+                        $customer = $payment->customer;
+                        $payments_result[] = [
+                            'id' => $payment->id,
+                            'in_charge' => $manager->in_charge,
+                            'manager' => $manager->name,
+                            'region' => $customer->region,
+                            'cutomer_name' => $customer->name,
+                            'contract_no' => $payment->contract->contract_no,
+                            'amount' => $payment->amount,
+                            'seq' => $payment->seq,
+                            'deadline' => $payment->deadline,
+                            'paid' => $payment->paid,
+                            'remain' => $payment->remain
+                        ];
+                    }
+                }
+            } else {
+                foreach ($customer->payments as $payment) {
+                    $manager = $customer->manager;
+                    $payments_result[] = [
+                        'id' => $payment->id,
+                        'in_charge' => $manager->in_charge,
+                        'manager' => $manager->name,
+                        'region' => $customer->region,
+                        'cutomer_name' => $customer->name,
+                        'contract_no' => $payment->contract->contract_no,
+                        'amount' => $payment->amount,
+                        'seq' => $payment->seq,
+                        'deadline' => $payment->deadline,
+                        'paid' => $payment->paid,
+                        'remain' => $payment->remain
+                    ];
+                }
+            }
+            return view('excel.table_filter', compact('payments_result', 'managers', 'customers', 'contracts'));
+        }
+        if ($request->contract_no != 0) {
+            $contract = Contract::findOrFail($request->contract_no);
+            $payments_result = [];
+            $manager = $contract->manager;
+            if (!is_null($request->deadline)) {
+                foreach ($contract->payments as $payment) {
+                    if (Str::substr($payment->deadline, 0, 10) == $request->deadline) {
+                        $customer = $payment->customer;
+                        $payments_result[] = [
+                            'id' => $payment->id,
+                            'in_charge' => $manager->in_charge,
+                            'manager' => $manager->name,
+                            'region' => $customer->region,
+                            'cutomer_name' => $customer->name,
+                            'contract_no' => $payment->contract->contract_no,
+                            'amount' => $payment->amount,
+                            'seq' => $payment->seq,
+                            'deadline' => $payment->deadline,
+                            'paid' => $payment->paid,
+                            'remain' => $payment->remain
+                        ];
+                    }
+                }
+            } else {
+                foreach ($contract->payments as $payment) {
+                    $customer = $payment->customer;
+                    $payments_result[] = [
+                        'id' => $payment->id,
+                        'in_charge' => $manager->in_charge,
+                        'manager' => $manager->name,
+                        'region' => $customer->region,
+                        'cutomer_name' => $customer->name,
+                        'contract_no' => $payment->contract->contract_no,
+                        'amount' => $payment->amount,
+                        'seq' => $payment->seq,
+                        'deadline' => $payment->deadline,
+                        'paid' => $payment->paid,
+                        'remain' => $payment->remain
+                    ];
+                }
+            }
+            return view('excel.table_filter', compact('payments_result', 'managers', 'customers', 'contracts'));
+        }
+        if (!is_null($request->deadline)) {
+            $payments = Payment::where('deadline', $request->deadline)->get();
+            $payments_result = [];
+            foreach ($payments as $payment) {
+                $customer = $payment->customer;
+                $manager = $payment->manager;
+                $payments_result[] = [
+                    'id' => $payment->id,
+                    'in_charge' => $manager->in_charge,
+                    'manager' => $manager->name,
+                    'region' => $customer->region,
+                    'cutomer_name' => $customer->name,
+                    'contract_no' => $payment->contract->contract_no,
+                    'amount' => $payment->amount,
+                    'seq' => $payment->seq,
+                    'deadline' => $payment->deadline,
+                    'paid' => $payment->paid,
+                    'remain' => $payment->remain
+                ];
+            }
+            return view('excel.table_filter', compact('payments_result', 'managers', 'customers', 'contracts'));
         }
     }
 

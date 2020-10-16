@@ -10,6 +10,7 @@ use App\Models\Region;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Smsc\SmsService;
 
 class SmsController extends Controller
 {
@@ -83,6 +84,7 @@ class SmsController extends Controller
             if (count($payment->notifications) == 0) {
                 $payment->setReaminAndPaid();
                 $customer[] = [
+                    'payment_id' => $payment->id,
                     'id' => $key + 1,
                     'contract_no' => $payment->contract->contract_no,
                     'total_remain' => $payment->getTotalRemain(),
@@ -130,6 +132,7 @@ class SmsController extends Controller
                 if (count($payment->notifications) == 0) {
                     $payment->setReaminAndPaid();
                     $result[] = [
+                        'payment_id' => $payment->id,
                         'id' => $key + 1,
                         'contract_no' => $payment->contract->contract_no,
                         'total_remain' => $payment->getTotalRemain(),
@@ -165,6 +168,7 @@ class SmsController extends Controller
                 if (count($payment->notifications) == 0) {
                     $payment->setReaminAndPaid();
                     $result[] = [
+                        'payment_id' => $payment->id,
                         'id' => $key + 1,
                         'contract_no' => $payment->contract->contract_no,
                         'total_remain' => $payment->getTotalRemain(),
@@ -195,6 +199,7 @@ class SmsController extends Controller
         foreach ($payments as $key => $payment) {
             if (count($payment->notifications) == 0) {
                 $result[] = [
+                    'payment_id' => $payment->id,
                     'id' => $key + 1,
                     'contract_no' => $payment->contract->contract_no,
                     'total_remain' => $payment->remain,
@@ -232,9 +237,51 @@ class SmsController extends Controller
             200
         );
     }
-
+    
+    /**
+     * sendSms
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function sendSms(Request $request)
     {
-        dd($request->toArray());
+        $payment = Payment::findOrFail($request->payment_id);
+        $customer = $payment->customer;
+        $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг просрочен, сумма с процентом %s  дата %s.";
+        $now = Carbon::now()->format('Y-m-d');
+        $sum = 0;
+        $contract_payments = Payment::where('contract_id', $payment->contract_id)->where('deadline', '<', $now)->where('sms_status', 'on')->where('remain', '>', 0)->get();
+
+        foreach ($contract_payments as $payment_contract) {
+            $delayInDays = Carbon::createFromDate($payment_contract->deadline)->addMonth()->diffInDays($payment_contract->deadline);
+            if ($contract_payments->first()->percent == 0) {
+                $sum += (Carbon::now()->month - Carbon::createFromDate($payment_contract->deadline)->month) * $payment_contract->remain;
+            } else {
+                $sum += (($payment_contract->percent * $payment_contract->remain) / 100) * $delayInDays + $payment_contract->remain;
+            }
+        }
+        $result = [
+            'customer_name' => $customer->name,
+            'customer_phone' => $customer->phone,
+            'amount' => $payment->amount,
+            'deadline' => Str::substr($payment->deadline, 0, 10)
+        ];
+        $text = sprintf($message, $result['customer_name'], $result['amount'], $sum, $result['deadline']);
+        // $sms = new SmsService();
+        // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+        // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+        $status = true;
+        if ($status) {
+            $payment->notifications()->create([
+                'payment_id' => $payment->id,
+                'customer_name' => $result['customer_name'],
+                'phone_number' => $result['customer_phone'],
+                'amount' => $result['amount'],
+                'status' => 1
+            ]);
+            $payment->save();
+        }
+        dd($text);
     }
 }

@@ -81,13 +81,17 @@ class SmsNotificationCommand extends Command
             foreach ($payments as $payment) {
                 dump($payment->notifications);
                 if ($payment->contract->customer->sms_status == 'on' && count($payment->notifications) == 0) {
-                    $contract_payments = Payment::where('contract_id', $payment->contract_id)->where('sms_status', 'on')->where('remain', '>', 0)->get();
+                    $contract_payments = Payment::where('contract_id', $payment->contract_id)->where('deadline', '<', $now)->where('sms_status', 'on')->where('remain', '>', 0)->get();
                     $first_paymant_day = $contract_payments->first()->deadline;
                     $delay = Carbon::createFromDate($first_paymant_day)->diffInDays($now);
-                    if ($contract_payments->first()->percent == 0) {
-                        $payment_percent = (Carbon::now()->month - Carbon::createFromDate($first_paymant_day)->month) * $contract_payments->first()->amount;
-                    } else {
-                        $payment_percent = ((($contract_payments->first()->percent * $contract_payments->first()->amount) / 100) * $delay) + $contract_payments->first()->amount;
+                    $sum = 0;
+                    foreach ($contract_payments as $payment_contract) {
+                        $delayInDays = Carbon::createFromDate($payment_contract->deadline)->addMonth()->diffInDays($payment_contract->deadline);
+                        if ($contract_payments->first()->percent == 0) {
+                            $sum += (Carbon::now()->month - Carbon::createFromDate($payment_contract->deadline)->month) * $payment_contract->remain;
+                        } else {
+                            $sum += (($payment_contract->percent * $payment_contract->remain) / 100) * $delayInDays + $payment_contract->remain;
+                        }
                     }
                     $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг просрочен, сумма с процентом %s  дата %s.";
                     $result = [
@@ -95,10 +99,9 @@ class SmsNotificationCommand extends Command
                         'customer_phone' => $contract_payments->first()->contract->customer->phone,
                         'amount' => $contract_payments->first()->amount,
                         'deadline' => Str::substr($payment->deadline, 0, 10),
-                        'percent_amount' => $payment_percent
                     ];
-                    $text = sprintf($message, $result['customer_name'], $result['amount'], $payment_percent, $now);
-                    dump($text, $delay, $first_paymant_day, $payment_percent);
+                    $text = sprintf($message, $result['customer_name'], $result['amount'], $sum, $now);
+                    dump($text, $delay, $first_paymant_day, $sum);
                     $sms = new SmsService();
                     list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = ' Union Partners LLP');
                     list($status) = $sms->get_status($sms_id, $result['customer_phone']);

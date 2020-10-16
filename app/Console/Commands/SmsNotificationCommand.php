@@ -45,6 +45,7 @@ class SmsNotificationCommand extends Command
         $payments = Payment::with('contract')->where('payment_date', $to)->where('sms_status', 'on')->where('paid', '<', 'amount')->where('remain', '>', 0)->get();
         $result = [];
         if (count($payments) > 0) {
+            dump('За 3 дня оплаты смс');
             foreach ($payments as $payment) {
                 if ($payment->contract->customer->sms_status == 'on') {
                     $message = "Unionp\nУважаемый %s!, Уведомляем вас, что ежемесячный платеж %sтг до %s.";
@@ -55,9 +56,10 @@ class SmsNotificationCommand extends Command
                         'deadline' => Str::substr($payment->deadline, 0, 10)
                     ];
                     $text = sprintf($message, $result['customer_name'], $result['amount'], $result['deadline']);
-                    // $sms = new SmsService();
-                    // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
-                    // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                    $sms = new SmsService();
+                    list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+                    list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                    dump($text);
                     $status = true;
                     if ($status) {
                         $payment->notifications()->create([
@@ -75,9 +77,11 @@ class SmsNotificationCommand extends Command
         $now = Carbon::now()->format('Y-m-d');
         $payments = Payment::with('contract', 'notifications')->where('deadline', $now)->where('sms_status', 'on')->where('remain', '>', 0)->get();
         if (count($payments) > 0) {
+            dump('Просрочка');
             foreach ($payments as $payment) {
+                dump($payment->notifications);
                 if ($payment->contract->customer->sms_status == 'on' && count($payment->notifications) == 0) {
-                    $contract_payments = Payment::where('contract_id', $payment->contract_id)->where('remain', '>', 0)->get();
+                    $contract_payments = Payment::where('contract_id', $payment->contract_id)->where('sms_status', 'on')->where('remain', '>', 0)->get();
                     $first_paymant_day = $contract_payments->first()->deadline;
                     $delay = Carbon::createFromDate($first_paymant_day)->diffInDays($now);
                     if ($contract_payments->first()->percent == 0) {
@@ -95,9 +99,9 @@ class SmsNotificationCommand extends Command
                     ];
                     $text = sprintf($message, $result['customer_name'], $result['amount'], $payment_percent, $now);
                     dump($text, $delay, $first_paymant_day, $payment_percent);
-                    // $sms = new SmsService();
-                    // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = ' Union Partners LLP');
-                    // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                    $sms = new SmsService();
+                    list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = ' Union Partners LLP');
+                    list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                     $status = true;
                     if ($status) {
                         $payment->notifications()->create([

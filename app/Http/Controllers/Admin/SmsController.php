@@ -35,7 +35,7 @@ class SmsController extends Controller
         $payments = $payments->unique('customer_id');
         $regions = $customers = [];
         foreach ($payments as $payment) {
-            if (count($payment->notifications) == 0) {
+            if (count($payment->notifications) == 0 or Str::substr($payment->notifications->last()->created_at, 0, 10) == Str::substr(Carbon::now()->subMonth(), 0, 10)) {
                 $customers[] = $payment->customer;
             }
         }

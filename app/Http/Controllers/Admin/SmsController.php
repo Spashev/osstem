@@ -32,7 +32,7 @@ class SmsController extends Controller
     public function getData()
     {
         $now = Carbon::now()->format('Y-m-d');
-        $payments = Payment::with('contract', 'notifications')->where('deadline', '<', $now)->where('remain', '>', 0)->get();
+        $payments = Payment::with('contract', 'notifications')->where('deadline', '<=', $now)->where('remain', '>', 0)->get();
         $payments = $payments->unique('customer_id');
         $regions = $customers = [];
         foreach ($payments as $payment) {
@@ -237,7 +237,7 @@ class SmsController extends Controller
             200
         );
     }
-    
+
     /**
      * sendSms
      *

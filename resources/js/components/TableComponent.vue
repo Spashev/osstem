@@ -199,10 +199,10 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
+              class="btn btn-warning"
+              @click="sendSms(modal_data[0].contract_no)"
             >
-              Close
+              Send sms
             </button>
           </div>
         </div>
@@ -323,6 +323,19 @@ export default {
         data: form,
       }).then(function (response) {
         alert(response.data.msg);
+        vue.modal_flag = false;
+      });
+    },
+    sendSms(val) {
+      var vue = this;
+      const form = new FormData();
+      form.append("contract_no", val);
+      axios({
+        method: "post",
+        url: "send/sms/",
+        data: form,
+      }).then(function (response) {
+        console.log(response.data);
         vue.modal_flag = false;
       });
     },

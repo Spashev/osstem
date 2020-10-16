@@ -41,6 +41,7 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::post('sms/get-date', 'SmsController@data');
     Route::post('sms/contract-data', 'SmsController@contractData');
     Route::post('sms/status', 'SmsController@smsStatus');
+    Route::post('send/sms', 'SmsController@sendSms');
     //Analyzer
     Route::get('analyzer', 'AnalyzerController@index')->name('analyze');
     Route::get('analyzer/upload', 'AnalyzerController@upload')->name('analyze.upload');

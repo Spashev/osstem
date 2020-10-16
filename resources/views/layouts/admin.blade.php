@@ -42,7 +42,8 @@
     <body>
         <!-- Page Container -->
 
-        <div id="page-container" class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed side-trans-enabled sidebar-mini sidebar-o-xs">
+        <div id="page-container" 
+        class="sidebar-o sidebar-dark sidebar-mini enable-page-overlay side-scroll page-header-fixed">
 
             <!-- END Side Overlay -->
 

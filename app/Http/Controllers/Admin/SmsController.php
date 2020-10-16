@@ -232,4 +232,9 @@ class SmsController extends Controller
             200
         );
     }
+
+    public function sendSms(Request $request)
+    {
+        dd($request->toArray());
+    }
 }

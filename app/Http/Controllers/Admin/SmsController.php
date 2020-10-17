@@ -271,6 +271,7 @@ class SmsController extends Controller
         // $sms = new SmsService();
         // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
         // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+        info($text);
         $status = true;
         if ($status) {
             $payment->notifications()->create([
@@ -283,5 +284,6 @@ class SmsController extends Controller
             $payment->save();
         }
         dd($text);
+    
     }
 }

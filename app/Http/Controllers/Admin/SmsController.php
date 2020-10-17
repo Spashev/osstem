@@ -268,9 +268,9 @@ class SmsController extends Controller
             'deadline' => Str::substr($payment->deadline, 0, 10)
         ];
         $text = sprintf($message, $result['customer_name'], $result['amount'], $sum, $result['deadline']);
-        // $sms = new SmsService();
-        // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
-        // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+        $sms = new SmsService();
+        list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+        list($status) = $sms->get_status($sms_id, $result['customer_phone']);
         info($text);
         $status = true;
         if ($status) {
@@ -284,6 +284,5 @@ class SmsController extends Controller
             $payment->save();
         }
         dd($text);
-    
     }
 }

@@ -56,9 +56,9 @@ class SmsNotificationCommand extends Command
                         'deadline' => Str::substr($payment->deadline, 0, 10)
                     ];
                     $text = sprintf($message, $result['customer_name'], $result['amount'], $result['deadline']);
-                    // $sms = new SmsService();
-                    // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
-                    // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                    $sms = new SmsService();
+                    list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+                    list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                     dump($text);
                     info($text);
                     $status = true;
@@ -104,20 +104,20 @@ class SmsNotificationCommand extends Command
                     $text = sprintf($message, $result['customer_name'], $result['amount'], $sum, $now);
                     dump($text, $delay, $first_paymant_day, $sum);
                     info($text);
-                    // $sms = new SmsService();
-                    // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = ' Union Partners LLP');
-                    // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                    $sms = new SmsService();
+                    list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = ' Union Partners LLP');
+                    list($status) = $sms->get_status($sms_id, $result['customer_phone']);
                     $status = true;
-                    // if ($status) {
-                    //     $payment->notifications()->create([
-                    //         'payment_id' => $payment->id,
-                    //         'customer_name' => $result['customer_name'],
-                    //         'phone_number' => $result['customer_phone'],
-                    //         'amount' => $result['amount'],
-                    //         'status' => 1
-                    //     ]);
-                    //     $payment->save();
-                    // }
+                    if ($status) {
+                        $payment->notifications()->create([
+                            'payment_id' => $payment->id,
+                            'customer_name' => $result['customer_name'],
+                            'phone_number' => $result['customer_phone'],
+                            'amount' => $result['amount'],
+                            'status' => 1
+                        ]);
+                        $payment->save();
+                    }
                 }
             }
         }

@@ -251,11 +251,11 @@ export default {
                     vue.table_flag = false;
                     vue.show_loader = false;
                 } else {
-                    vue.show_loader = false;
                     vue.payments = response.data;
                     vue.customers = response.data;
                     vue.table_flag = true;
                     $("input:checkbox.confirmation-select").prop('checked', true);
+                    vue.show_loader = false;
                 }
             });
         },

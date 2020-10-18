@@ -40,8 +40,19 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('sms/get-region/{region}', 'SmsController@region');
     Route::post('sms/get-date', 'SmsController@data');
     Route::post('sms/contract-data', 'SmsController@contractData');
+    Route::post('sms/customer-data', 'SmsController@customerData');
     Route::post('sms/status', 'SmsController@smsStatus');
     Route::post('send/sms', 'SmsController@sendSms');
+    //Notification
+    Route::get('notify', 'NotificationContrller@index')->name('notify');
+    Route::get('notify/get', 'NotificationContrller@getData');
+    Route::get('notify/get-customer/{customer}', 'NotificationContrller@customer');
+    Route::get('notify/get-region/{region}', 'NotificationContrller@region');
+    Route::post('notify/get-date', 'NotificationContrller@data');
+    Route::post('notify/contract-data', 'NotificationContrller@contractData');
+    Route::post('notify/customer-data', 'NotificationContrller@customerData');
+    Route::post('notify/status', 'NotificationContrller@smsStatus');
+    Route::post('send/notify', 'NotificationContrller@sendSms');
     //Analyzer
     Route::get('analyzer', 'AnalyzerController@index')->name('analyze');
     Route::get('analyzer/upload', 'AnalyzerController@upload')->name('analyze.upload');
@@ -61,6 +72,7 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     //Customer
     Route::get('/customers', 'CustomerController@customer')->name('excel.customers');
     Route::post('/customer', 'CustomerController@store')->name('customer.save');
+    Route::get('/customer/upload', 'CustomerController@upload')->name('customers.upload');
     Route::get('/customer/{customer}', 'CustomerController@show')->name('customer.show');
     Route::get('/customer/csv/{id}', 'CustomerController@get_csv')->name('customer.csv');
     Route::get('/customer/{id}/invoice', 'CustomerController@invoice')->name('customer.invoice');

@@ -89,9 +89,19 @@
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link"  href="{{ route('admin.excel.customers') }}">
-                                        <span class="nav-main-link-name">Customers</span>
+                                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+                                        <span class="nav-main-link-name">Customer</span>
                                     </a>
+                                    <ul class="nav-main-submenu">
+                                        <a class="nav-main-link"  href="{{ route('admin.excel.customers') }}">
+                                            <span class="nav-main-link-name">Customers</span>
+                                        </a>
+                                        <li class="nav-main-item">
+                                            <a class="nav-main-link"  href="{{ route('admin.customers.upload') }}">
+                                                <span class="nav-main-link-name">Upload</span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </li>
@@ -137,6 +147,11 @@
                                     <span class="nav-main-link-name">Sms</span>
                             </a>
                             <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link"  href="{{ route('admin.notify') }}">
+                                        <span class="nav-main-link-name">Notify</span>
+                                    </a>
+                                </li>
                                 <li class="nav-main-item">
                                     <a class="nav-main-link"  href="{{ route('admin.sms') }}">
                                         <span class="nav-main-link-name">Confirm</span>

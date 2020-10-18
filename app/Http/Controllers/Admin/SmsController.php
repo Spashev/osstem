@@ -32,7 +32,7 @@ class SmsController extends Controller
     public function getData()
     {
         $now = Carbon::now()->format('Y-m-d');
-        $payments = Payment::with('contract', 'notifications')->where('deadline', '<=', $now)->where('remain', '>', 0)->get();
+        $payments = Payment::with('contract', 'notifications')->where('deadline', '<', $now)->where('remain', '>', 0)->get();
         $payments = $payments->unique('customer_id');
         $regions = $customers = [];
         foreach ($payments as $payment) {
@@ -100,6 +100,36 @@ class SmsController extends Controller
         );
     }
 
+    public function customerData(Request $request)
+    {
+        $contract = Contract::where('contract_no', $request->contract_no)->first();
+        $now = Carbon::now()->format('Y-m-d');
+        $payments = Payment::where('contract_id', $contract->id)->where('remain', '>', 0)->where('deadline', '<', $now)->get();
+        $result = [];
+        foreach ($payments as $key => $payment) {
+            if (count($payment->notifications) == 0) {
+                $result[] = [
+                    'payment_id' => $payment->id,
+                    'id' => $key + 1,
+                    'contract_no' => $payment->contract->contract_no,
+                    'total_remain' => $payment->remain,
+                    'total_paid' => $payment->paid,
+                    'deadline' => Str::substr($payment->deadline, 0, 11),
+                    'sms_status' => $payment->sms_status
+                ];
+            }
+        }
+        if (count($result) == 0) {
+            $customer_result = [
+                'msg' => 'there are no unpaid customers in this region'
+            ];
+        }
+        return response()->json(
+            $result,
+            200
+        );
+    }
+
     /**
      * return customers from region and payments(должники)
      *
@@ -110,41 +140,27 @@ class SmsController extends Controller
     {
         $now = Carbon::now()->format('Y-m-d');
         $customers = $region->customers;
-        $payments = collect();
         $customer_result = [];
         foreach ($customers as $customer) {
-            $item = Payment::with('contract')->where('customer_id', $customer->id)->where('deadline', '<=', $now)->where('remain', '>', 0)->get()->unique('contract_id');
+            $item = Payment::with('contract')->where('customer_id', $customer->id)->where('deadline', '<', $now)->where('remain', '>', 0)->get()->unique('contract_id');
             if (count($item) > 0 && count($item->last()->notifications) == 0) {
-                $payments = $payments->merge($item);
                 $customer_result[] = [
                     'text' => $customer->name,
-                    'id' => $customer->id
+                    'id' => $customer->id,
+                    'customer_code' => $customer->customer_id,
+                    'total_remain' => $item->sum('remain'),
+                    'total_paid' => $item->sum('paid'),
+                    'sms_status' => $customer->sms_status
                 ];
             }
         }
-        if (count($payments) == 0) {
-            $result = [
+        if (count($customer_result) == 0) {
+            $customer_result = [
                 'msg' => 'there are no unpaid customers in this region'
             ];
-        } else {
-            $result = [];
-            foreach ($payments as $key => $payment) {
-                if (count($payment->notifications) == 0) {
-                    $payment->setReaminAndPaid();
-                    $result[] = [
-                        'payment_id' => $payment->id,
-                        'id' => $key + 1,
-                        'contract_no' => $payment->contract->contract_no,
-                        'total_remain' => $payment->getTotalRemain(),
-                        'total_paid' => $payment->getTotalPaid(),
-                        'deadline' => Str::substr($payment->deadline, 0, 11),
-                        'sms_status' => $payment->sms_status
-                    ];
-                }
-            }
         }
         return response()->json(
-            [$result, $customer_result],
+            $customer_result,
             200
         );
     }
@@ -193,8 +209,9 @@ class SmsController extends Controller
      */
     public function contractData(Request $request)
     {
-        $contract = Contract::where('contract_no', $request->from)->first();
-        $payments = Payment::where('contract_id', $contract->id)->where('remain', '>', 0)->get();
+        $now = Carbon::now()->format('Y-m-d');
+        $customer = Customer::where('customer_id', $request->customer_id)->first();
+        $payments = Payment::where('customer_id', $customer->id)->where('remain', '>', 0)->where('deadline', '<', $now)->get();
         $result = [];
         foreach ($payments as $key => $payment) {
             if (count($payment->notifications) == 0) {
@@ -208,6 +225,11 @@ class SmsController extends Controller
                     'sms_status' => $payment->sms_status
                 ];
             }
+        }
+        if (count($result) == 0) {
+            $result = [
+                'msg' => 'there are no unpaid customers in this region'
+            ];
         }
         return response()->json(
             $result,
@@ -223,19 +245,34 @@ class SmsController extends Controller
      */
     public function smsStatus(Request $request)
     {
-        $contract = Contract::where('contract_no', $request->from)->first();
-        $payments = $contract->payments;
-        foreach ($payments as $payment) {
-            $payment->sms_status = $payment->sms_status == 'on' ? 'off' : 'on';
-            $payment->save();
+        $result = [];
+        if ($request->type == 'contract') {
+            $contract = Contract::where('contract_no', $request->contract_code)->first();
+            $payments = $contract->payments;
+            foreach ($payments as $payment) {
+                $payment->sms_status = $payment->sms_status == 'on' ? 'off' : 'on';
+                $payment->save();
+            }
+            $result = [
+                'msg' => 'Customer, ' . $contract->customer->name . ', status changed: ' . $payment->sms_status
+            ];
+
+            return response()->json(
+                $result,
+                200
+            );
+        } else {
+            if($request->customer_code != "null"){
+                $status_list = explode(',', $request->customer_code);
+                foreach($status_list as $status) {
+                    if($status != "") {
+                        $customer = Customer::where('customer_id', $status)->first();
+                        $customer->sms_status = $customer->sms_status == 'on' ? 'off' : 'on';
+                        $customer->save();
+                    }
+                }
+            }
         }
-        $result = [
-            'msg' => 'Customer, ' . $contract->customer->name . ', status changed: ' . $payment->sms_status
-        ];
-        return response()->json(
-            $result,
-            200
-        );
     }
 
     /**
@@ -268,9 +305,9 @@ class SmsController extends Controller
             'deadline' => Str::substr($payment->deadline, 0, 10)
         ];
         $text = sprintf($message, $result['customer_name'], $result['amount'], $sum, $result['deadline']);
-        $sms = new SmsService();
-        list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
-        list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+        // $sms = new SmsService();
+        // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = 'UnionP');
+        // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
         info($text);
         $status = true;
         if ($status) {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
@@ -42,6 +43,7 @@ class Payment extends Model
     {
         $payments = Payment::where('contract_id', $this->contract_id)
             ->where('remain', '>', 0)
+            ->where('deadline', '<', Carbon::now()->format('Y-m-d'))
             ->get();
         $this->total_remain = $payments->sum('remain');
         $this->total_paid = $payments->sum('paid');
@@ -55,5 +57,19 @@ class Payment extends Model
     public function getTotalPaid()
     {
         return $this->total_paid;
+    }
+
+    public function getPaid()
+    {
+        return Payment::where('contract_id', $this->contract_id)
+            ->where('deadline', '<=', Carbon::now()->format('Y-m-d'))
+            ->get()->sum('paid');
+    }
+
+    public function getRemain()
+    {
+        return Payment::where('contract_id', $this->contract_id)
+            ->where('deadline', '<=', Carbon::now()->format('Y-m-d'))
+            ->get()->sum('remain');
     }
 }

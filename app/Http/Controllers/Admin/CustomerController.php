@@ -210,4 +210,9 @@ class CustomerController extends Controller
         $customer->delete();
         return redirect()->route('admin.excel.customers');
     }
+
+    public function upload()
+    {
+        return view('customer.upload');
+    }
 }

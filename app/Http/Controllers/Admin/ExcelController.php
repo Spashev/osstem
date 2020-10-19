@@ -12,17 +12,11 @@ use App\Models\Manager;
 use App\Models\Payment;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\ExcelFilterRequest;
-
-
-use League\Csv\Reader;
+use App\Jobs\ImportJob;
 
 class ExcelController extends Controller
 {
@@ -236,7 +230,6 @@ class ExcelController extends Controller
                     ];
                 }
             }
-            // dd($payments_result);
             return view('excel.table_filter', compact('payments_result', 'managers', 'customers', 'contracts'));
         }
         if ($request->customer != 0) {
@@ -264,7 +257,6 @@ class ExcelController extends Controller
                 }
             } else {
                 foreach ($customer->payments as $payment) {
-                    $manager = $customer->manager;
                     $payments_result[] = [
                         'id' => $payment->id,
                         'in_charge' => $manager->in_charge,
@@ -454,23 +446,36 @@ class ExcelController extends Controller
         return redirect()->back();
     }
 
-    public function import()
+    /**
+     * import
+     *
+     * @return void
+     */
+    public function import(Request $request)
     {
-        $inputFileName = public_path('client_address.csv');
-        $reader = Reader::createFromPath($inputFileName, 'r');
-        $reader->setHeaderOffset(0);
-        $records = $reader->getRecords();
-        foreach ($records as $record) {
-            $nomer = $record['CELL'] ? $record['CELL'] : $record['TEL NO'];
-            $customer = Customer::where('customer_id', $record['CODE'])->first();
-            if ($customer) {
-                $customer->phone = $nomer;
-                $customer->city = $record['(Bill To)'];
-                $customer->district = $record['__EMPTY_1'];
-                $customer->address = $record['address'];
-                $customer->save();
+        $validator = Validator::make(
+            [
+                'file'      => $request->file,
+                'extension' => strtolower($request->file->getClientOriginalExtension()),
+            ],
+            [
+                'file'          => 'required',
+                'extension'      => 'required|in:csv',
+            ]
+        );
+        if ($validator) {
+            $title = $request->file('file')->getClientOriginalName();
+            if ($request->hasFile('file')) {
+                $file = $request->file('file')->store('upload', 'public');
+            }
+            $excel = Excel::updateOrCreate(
+                ['title' => $title],
+                ['path' => $file]
+            );
+            $result = ImportJob::dispatch($excel);
+            if (isset($result)) {
+                dump($result);
             }
         }
-        return 'All customer contacts saved successfully';
     }
 }

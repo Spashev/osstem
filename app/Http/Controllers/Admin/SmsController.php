@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Contract;
 use App\Models\Customer;
+use App\Models\Notification;
 use App\Models\Payment;
 use App\Models\Region;
 use Carbon\Carbon;
@@ -22,6 +23,88 @@ class SmsController extends Controller
     public function index()
     {
         return view('sms.index');
+    }
+
+    /**
+     * history
+     *
+     * @return void
+     */
+    public function history()
+    {
+        return view('sms.history');
+    }
+
+    /**
+     * historyPaginations
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function historyPaginations(Request $request)
+    {
+        $pagination = Notification::paginate(25);
+        $customers = Customer::get(['name', 'id']);
+        $phones = Notification::get(['phone_number', 'id'])->unique('phone_number');
+        $customers = $customers->map(function ($customer, $inex) {
+            return collect($customer)->keyBy(function ($value, $key) {
+                if ($key == 'name') {
+                    return 'text';
+                } else {
+                    return $key;
+                }
+            });
+        });
+        $phones = $phones->map(function ($phone, $inex) {
+            return collect($phone)->keyBy(function ($value, $key) {
+                if ($key == 'phone_number') {
+                    return 'text';
+                } else {
+                    return $key;
+                }
+            });
+        });
+        return response()->json(
+            [
+                'paginate' => $pagination,
+                'customers' => $customers,
+                'phones' => $phones,
+            ],
+            200
+        );
+    }
+
+    /**
+     * customerSms
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function customerSms(Customer $customer)
+    {
+        $customerSms = Notification::where('customer_name', $customer->name)->get();
+        if (count($customerSms) == 0) {
+            $customerSms = [
+                'msg' => 'User did not receive SMS notification'
+            ];
+        }
+        return response()->json(
+            [
+                'paginate' => $customerSms
+            ],
+            200
+        );
+    }
+
+    public function phoneSms(Notification $notification)
+    {
+        $phone_numbers = Notification::where('phone_number', $notification->phone_number)->get();
+        return response()->json(
+            [
+                'paginate' => $phone_numbers
+            ],
+            200
+        );
     }
 
     /**
@@ -120,7 +203,7 @@ class SmsController extends Controller
             }
         }
         if (count($result) == 0) {
-            $customer_result = [
+            $result = [
                 'msg' => 'there are no unpaid customers in this region'
             ];
         }
@@ -262,10 +345,10 @@ class SmsController extends Controller
                 200
             );
         } else {
-            if($request->customer_code != "null"){
+            if ($request->customer_code != "null") {
                 $status_list = explode(',', $request->customer_code);
-                foreach($status_list as $status) {
-                    if($status != "") {
+                foreach ($status_list as $status) {
+                    if ($status != "") {
                         $customer = Customer::where('customer_id', $status)->first();
                         $customer->sms_status = $customer->sms_status == 'on' ? 'off' : 'on';
                         $customer->save();
@@ -314,6 +397,7 @@ class SmsController extends Controller
             $payment->notifications()->create([
                 'payment_id' => $payment->id,
                 'customer_name' => $result['customer_name'],
+                'contract_no' => $payment->contract->contract_no,
                 'phone_number' => $result['customer_phone'],
                 'amount' => $result['amount'],
                 'status' => 1

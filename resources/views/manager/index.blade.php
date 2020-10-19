@@ -13,7 +13,7 @@
         <h3 class="block-title">Managers</h3>
         <div class="block-options">
             <button class="btn-block-option" data-toggle="modal" data-target="#exampleModal">
-                <i class="fa fa-user-plus fa-2x"></i>
+                <i class="fa fa-user-plus"></i>
             </button>
         </div>
     </div>

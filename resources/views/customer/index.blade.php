@@ -8,13 +8,13 @@
             <h3 class="block-title">Customers</h3>
             <div class="block-options">
                 <button class="btn-block-option" data-toggle="modal" data-target="#exampleModal">
-                    <i class="fa fa-user-plus fa-2x"></i>
+                    <i class="fa fa-user-plus"></i>
                 </button>
                 <button class="btn-block-option" onclick="printDiv()">
-                    <i class="fa fa-print fa-2x"></i>
+                    <i class="fa fa-print"></i>
                 </button>
                 <button class="btn-block-option buttonCsv">
-                    <i class="fa fa-file-csv fa-2x"></i>
+                    <i class="fa fa-file-csv"></i>
                 </button>
             </div>
         </div>

@@ -148,6 +148,11 @@
                             </a>
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
+                                    <a class="nav-main-link"  href="{{ route('admin.sms.history') }}">
+                                        <span class="nav-main-link-name">History</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
                                     <a class="nav-main-link"  href="{{ route('admin.notify') }}">
                                         <span class="nav-main-link-name">Notify</span>
                                     </a>

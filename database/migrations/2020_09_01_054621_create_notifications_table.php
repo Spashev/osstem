@@ -17,6 +17,7 @@ class CreateNotificationsTable extends Migration
             $table->id();
             $table->bigInteger('payment_id');
             $table->string('customer_name');
+            $table->string('contract_no');
             $table->string('phone_number');
             $table->string('amount');
             $table->tinyInteger('status');

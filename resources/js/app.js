@@ -31,6 +31,10 @@ Vue.component(
     "table-component",
     require("./components/TableComponent.vue").default
 );
+Vue.component(
+    "sms-history-component",
+    require("./components/SmsHistoryComponent.vue").default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -53,6 +57,16 @@ import "vue2-datepicker/index.css";
 //Select2
 import Select2 from "v-select2-component";
 
+var filter = function(text, length, clamp) {
+    clamp = clamp || '...';
+    var node = document.createElement('div');
+    node.innerHTML = text;
+    var content = node.textContent;
+    return content.length > length ? content.slice(0, length) + clamp : content;
+};
+
+Vue.filter('truncate', filter);
+Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.use(Chartkick.use(Chart));
 Vue.use(VueGoodTablePlugin);
 Vue.use(DatePicker);

@@ -35,6 +35,10 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('/payments', 'ExcelController@payment')->name('excel.payments');
     //Sms
     Route::get('sms', 'SmsController@index')->name('sms');
+    Route::get('sms/history', 'SmsController@history')->name('sms.history');
+    Route::get('send-sms/history', 'SmsController@historyPaginations');
+    Route::get('sms/history/{customer}', 'SmsController@customerSms');
+    Route::get('sms/history-phone/{notification}', 'SmsController@phoneSms');
     Route::get('sms/get', 'SmsController@getData');
     Route::get('sms/get-customer/{customer}', 'SmsController@customer');
     Route::get('sms/get-region/{region}', 'SmsController@region');
@@ -81,5 +85,5 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('/customer/{customer}/delete', 'CustomerController@delete')->name('customer.delete');
     //Update
     Route::get('/payment_update', 'ExcelController@download')->name('download');
+    Route::post('import', 'ExcelController@import')->name('import');
 });
-Route::get('import', 'Admin\ExcelController@import');

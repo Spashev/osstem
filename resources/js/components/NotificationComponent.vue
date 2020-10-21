@@ -12,7 +12,7 @@
             <h3 class="block-title">Customer</h3>
             <div class="block-options">
                 <div class="block-options-item">
-                    <code>notifications</code>
+                    <code>notifications table</code>
                 </div>
             </div>
         </div>

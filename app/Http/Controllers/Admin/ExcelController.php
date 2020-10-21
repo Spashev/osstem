@@ -418,6 +418,7 @@ class ExcelController extends Controller
     {
         $payment = Payment::findOrFail($id);
         $payment->contract->manager_id = $request->manager;
+        $customer = Customer::where('name', $request->customer_name)->first();
         if ($request->contract_no) {
             $payment->contract->contract_no = $request->contract_no;
         }
@@ -427,6 +428,7 @@ class ExcelController extends Controller
         $payment->remain = $request->paid <= $payment->remain ? $payment->remain - $request->paid : $payment->amount;
         $payment->payment_date = Carbon::parse($request->payment_day)->format('Y-m-d');
         $payment->deadline = Carbon::parse($request->deadline)->format('Y-m-d');
+        $payment->customer_id = $customer->id;
         $payment->save();
         $payment->contract->save();
 

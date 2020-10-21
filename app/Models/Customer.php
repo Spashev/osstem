@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
@@ -33,5 +34,20 @@ class Customer extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function deadlinePayments()
+    {
+        return $this->payments()->where('deadline', '<', Carbon::now()->format('Y-m-d'));
+    }
+
+    public function notifyPayments()
+    {
+        return $this->payments()->where('deadline', Carbon::now()->addDays(3)->format('Y-m-d'));
     }
 }

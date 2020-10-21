@@ -37,12 +37,8 @@ class NotificationContrller extends Controller
         foreach($payments as $payment) {
             $customer = $payment->customer;
             $result[] = [
-                // 'payment_id' => $payment->id,
                 'text' => $customer->name,
                 'id' => $customer->customer_id,
-                // 'amount' => $payment->amount,
-                // 'total_paid' => $payment->getPaid(),
-                // 'total_remain' => $payment->getRemain()
             ];
         }
         

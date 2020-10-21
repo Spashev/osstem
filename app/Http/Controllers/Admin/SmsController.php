@@ -44,8 +44,9 @@ class SmsController extends Controller
     public function historyPaginations(Request $request)
     {
         $pagination = Notification::paginate(25);
-        $customers = Customer::get(['name', 'id']);
-        $phones = Notification::get(['phone_number', 'id'])->unique('phone_number');
+        $customers = Customer::whereHas('notifications', function ($q) {
+            return $q;
+        })->get(['name', 'id']);
         $customers = $customers->map(function ($customer, $inex) {
             return collect($customer)->keyBy(function ($value, $key) {
                 if ($key == 'name') {
@@ -55,6 +56,7 @@ class SmsController extends Controller
                 }
             });
         });
+        $phones = Notification::get(['phone_number', 'id'])->unique('phone_number');
         $phones = $phones->map(function ($phone, $inex) {
             return collect($phone)->keyBy(function ($value, $key) {
                 if ($key == 'phone_number') {
@@ -119,7 +121,8 @@ class SmsController extends Controller
         $payments = $payments->unique('customer_id');
         $regions = $customers = [];
         foreach ($payments as $payment) {
-            if (count($payment->notifications) == 0 or Str::substr($payment->notifications->last()->created_at, 0, 10) == Str::substr(Carbon::now()->subMonth(), 0, 10)) {
+            if (count($payment->customer->notifications) == 0 or Str::substr($payment->customer->notifications->last()->created_at, 0, 10) == Str::substr(Carbon::now()->subMonth(), 0, 10)) {
+                # payment поменял на customer
                 $customers[] = $payment->customer;
             }
         }
@@ -221,20 +224,25 @@ class SmsController extends Controller
      */
     public function region(Region $region)
     {
-        $now = Carbon::now()->format('Y-m-d');
         $customers = $region->customers;
+        $now = Carbon::now()->format('Y-m-d');
         $customer_result = [];
+        $result = [];
         foreach ($customers as $customer) {
-            $item = Payment::with('contract')->where('customer_id', $customer->id)->where('deadline', '<', $now)->where('remain', '>', 0)->get()->unique('contract_id');
-            if (count($item) > 0 && count($item->last()->notifications) == 0) {
-                $customer_result[] = [
-                    'text' => $customer->name,
-                    'id' => $customer->id,
-                    'customer_code' => $customer->customer_id,
-                    'total_remain' => $item->sum('remain'),
-                    'total_paid' => $item->sum('paid'),
-                    'sms_status' => $customer->sms_status
-                ];
+            if ($customer->sms_status == 'on') {
+                $payments = Payment::where('customer_id', $customer->id)->where('sms_status', 'on')->where('remain', '>', 0)->where('deadline', '<', Carbon::now()->format('Y-m-d'))->get()->unique('customer_id');
+                if (count($payments) > 0 && ($customer->notifications->count() == 0 or Str::substr($customer->notifications->last()->created_at, 0, 10) == Str::substr(Carbon::now()->subMonth(), 0, 10))) {
+                    foreach ($payments as $payment) {
+                        $customer_result[] = [
+                            'text' => $customer->name,
+                            'id' => $customer->id,
+                            'customer_code' => $customer->customer_id,
+                            'total_remain' => $payment->getCustomerRemain(),
+                            'total_paid' => $payment->getCustomerPaid(),
+                            'sms_status' => $customer->sms_status
+                        ];
+                    }
+                }
             }
         }
         if (count($customer_result) == 0) {
@@ -242,6 +250,7 @@ class SmsController extends Controller
                 'msg' => 'there are no unpaid customers in this region'
             ];
         }
+
         return response()->json(
             $customer_result,
             200
@@ -256,30 +265,45 @@ class SmsController extends Controller
      */
     public function data(Request $request)
     {
-        $payments = Payment::with('manager', 'customer')->whereBetween('deadline', [$request->from, $request->to])->where('remain', '>', 0)->get()->unique('contract_id');
+        $payments = Payment::with('customer')->whereBetween('deadline', [$request->from, $request->to])->where('remain', '>', 0)->get()->unique('customer_id');
+        $customer_result = [];
         if (count($payments) == 0) {
-            $result = [
+            $customer_result = [
                 'msg' => 'there are no unpaid customers in this region'
             ];
         } else {
-            $result = [];
-            foreach ($payments as $key => $payment) {
-                if (count($payment->notifications) == 0) {
-                    $payment->setReaminAndPaid();
-                    $result[] = [
-                        'payment_id' => $payment->id,
-                        'id' => $key + 1,
-                        'contract_no' => $payment->contract->contract_no,
-                        'total_remain' => $payment->getTotalRemain(),
-                        'total_paid' => $payment->getTotalPaid(),
-                        'deadline' => Str::substr($payment->deadline, 0, 11),
-                        'sms_status' => $payment->sms_status
-                    ];
+            foreach ($payments as $payment) {
+                $customer = $payment->customer;
+                if ($customer->sms_status == 'on') {
+                    // $item = Payment::where('customer_id', $customer->id)->whereBetween('deadline', [$request->from, $request->to])->where('sms_status', 'on')->where('remain', '>', 0)->get();
+                    // if (count($item) > 0 && ($customer->notifications->count() == 0 or Str::substr($customer->notifications->last()->created_at, 0, 10) == Str::substr(Carbon::now()->subMonth(), 0, 10))) {
+                    //     $customer_result[] = [
+                    //         'text' => $customer->name,
+                    //         'id' => $customer->id,
+                    //         'customer_code' => $customer->customer_id,
+                    //         'total_remain' => $item->getCustomerRemain(),
+                    //         'total_paid' => $item->getCustomerPaid(),
+                    //         'sms_status' => $customer->sms_status
+                    //     ];
+                    // }
+                    $payments = Payment::where('customer_id', $customer->id)->where('sms_status', 'on')->where('remain', '>', 0)->where('deadline', '<', Carbon::now()->format('Y-m-d'))->get()->unique('customer_id');
+                    if (count($payments) > 0 && ($customer->notifications->count() == 0 or Str::substr($customer->notifications->last()->created_at, 0, 10) == Str::substr(Carbon::now()->subMonth(), 0, 10))) {
+                        foreach ($payments as $payment) {
+                            $customer_result[] = [
+                                'text' => $customer->name,
+                                'id' => $customer->id,
+                                'customer_code' => $customer->customer_id,
+                                'total_remain' => $payment->getCustomerRemain(),
+                                'total_paid' => $payment->getCustomerPaid(),
+                                'sms_status' => $customer->sms_status
+                            ];
+                        }
+                    }
                 }
             }
         }
         return response()->json(
-            $result,
+            $customer_result,
             200
         );
     }

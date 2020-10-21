@@ -1,10 +1,10 @@
 <template>
     <div class="block m-3">
         <div class="block-header">
-            <h3 class="block-title">Customer</h3>
+            <h3 class="block-title">Send sms</h3>
             <div class="block-options">
                 <div class="block-options-item">
-                    <code>notifications</code>
+                    <code>history table</code>
                 </div>
             </div>
         </div>
@@ -150,9 +150,8 @@ export default {
                 method: "get",
                 url: "/send-sms/history?page=" + page
             }).then(function(response) {
-                console.log(response.data);
                 vue.customers = response.data.customers;
-                vue.phones = response.data.phones;
+                vue.phones = Object.keys(response.data.phones).map((key) => response.data.phones[key]);
                 vue.pagination_data = response.data.paginate;
                 vue.payments = response.data.paginate.data;
                 vue.table_flag = true;
@@ -167,7 +166,6 @@ export default {
                 method: "get",
                 url: "/sms/history/" + val
             }).then(function(response) {
-                console.log(response.data);
                 if (response.data.paginate.hasOwnProperty("msg")) {
                     alert(response.data.paginate.msg);
                     vue.table_flag = false;
@@ -186,7 +184,6 @@ export default {
                 method: "get",
                 url: "/sms/history-phone/" + val
             }).then(function(response) {
-                console.log(response.data);
                 if (response.data.hasOwnProperty("msg")) {
                     alert(response.data.msg);
                     vue.table_flag = false;

@@ -425,19 +425,19 @@ class SmsController extends Controller
                 // $sms = new SmsService();
                 // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = ' Union Partners LLP');
                 // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
-                // $status = true;
-                // if ($status) {
-                //     $customer->notifications()->create([
-                //         'customer_id' => $customer->id,
-                //         'customer_name' => $result['customer_name'],
-                //         'contract_no' => $sum,
-                //         'phone_number' => $result['customer_phone'],
-                //         'amount' => $result['total_remain'],
-                //         'amount_percent' => $result['amount'],
-                //         'status' => 1
-                //     ]);
-                //     $customer->save();
-                // }
+                $status = true;
+                if ($status) {
+                    $customer->notifications()->create([
+                        'customer_id' => $customer->id,
+                        'customer_name' => $result['customer_name'],
+                        'contract_no' => $sum,
+                        'phone_number' => $result['customer_phone'],
+                        'amount' => $result['total_remain'],
+                        'amount_percent' => $result['amount'],
+                        'status' => 1
+                    ]);
+                    $customer->save();
+                }
             }
         }
     }

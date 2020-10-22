@@ -43,7 +43,7 @@ class SmsController extends Controller
      */
     public function historyPaginations(Request $request)
     {
-        $pagination = Notification::paginate(25);
+        $pagination = Notification::orderBy('created_at', 'desc')->paginate(25);
         $customers = Customer::whereHas('notifications', function ($q) {
             return $q;
         })->get(['name', 'id']);

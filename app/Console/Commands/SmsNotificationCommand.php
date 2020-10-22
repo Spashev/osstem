@@ -88,7 +88,6 @@ class SmsNotificationCommand extends Command
                     ];
                     $text = sprintf($message, $result['customer_name'], $result['amount'], $result['deadline']);
                     dump($text);
-                    info($text);
                     // $sms = new SmsService();
                     // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = ' Union Partners LLP');
                     // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
@@ -151,7 +150,6 @@ class SmsNotificationCommand extends Command
                     ];
                     $text = sprintf($message, $result['customer_name'], $now, $result['total_remain'], $result['amount']);
                     dump($text);
-                    info($text);
                     // $sms = new SmsService();
                     // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = ' Union Partners LLP');
                     // list($status) = $sms->get_status($sms_id, $result['customer_phone']);

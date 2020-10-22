@@ -19,9 +19,9 @@ class CreateNotificationsTable extends Migration
             $table->bigInteger('payment_id')->nullable();
             $table->string('customer_name');
             $table->string('contract_no');
-            $table->string('phone_number');
+            $table->string('phone_number')->nullable();;
             $table->string('amount');
-            $table->string('amount_percnet')->default(0);
+            $table->string('amount_percent')->default(0);
             $table->tinyInteger('status');
             $table->timestamps();
         });

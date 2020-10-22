@@ -21,6 +21,7 @@ class CreateNotificationsTable extends Migration
             $table->string('contract_no');
             $table->string('phone_number');
             $table->string('amount');
+            $table->string('amount_percnet')->default(0);
             $table->tinyInteger('status');
             $table->timestamps();
         });

@@ -49,7 +49,7 @@
             >
                 <thead>
                     <th class="text-center" style="width: 50px">#</th>
-                    <th>Contract no</th>
+                    <!-- <th>Contract no</th> -->
                     <th>Customer name</th>
                     <th>Amount</th>
                     <th>Phone_number</th>
@@ -67,11 +67,11 @@
                         <th class="text-center" scope="row">
                             {{ item.id }}
                         </th>
-                        <td class="font-w600 font-size-sm">
+                        <!-- <td class="font-w600 font-size-sm">
                             <a href="javascript:void(0);">{{
                                 item.contract_no
                             }}</a>
-                        </td>
+                        </td> -->
                         <td class="d-none d-sm-table-cell">
                             <a href="javascript:void(0);">
                                 {{ item.customer_name }}

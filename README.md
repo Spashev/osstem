@@ -1,4 +1,4 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+<p align="center"><img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fru.m.wikipedia.org%2Fwiki%2F%25D0%25A4%25D0%25B0%25D0%25B9%25D0%25BB%3ALogo.min.svg&psig=AOvVaw0zFWdLJVMv54XVLEaQuDni&ust=1603433287159000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCIj15s7Ex-wCFQAAAAAdAAAAABAD" width="400"></p>
 
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
@@ -8,15 +8,16 @@
 </p>
 
 ## About Project
-About our project.
 
+About our project.
 
 ## Website unionp
 
 -   [UnionPartners](http://www.unionp.kz/).
 
 ## Technologies used
-``` bash
+
+```bash
 #  Backend
 -   Php 7.4
 -   Laravel 7
@@ -37,6 +38,7 @@ About our project.
 -   html5
 -   oneui
 ```
+
 ## Composer
 
 -   COMPOSER_MEMORY_LIMIT=-1 composer require league/csv
@@ -51,11 +53,11 @@ About our project.
 -   COMPOSER_MEMORY_LIMIT=-1 composer require pusher/pusher-php-server "~3.0"
 
 ## Error
-``` bash
+
+```bash
 memory_limit /etc/php/php.ini memory_limit=512M
 redis install redis
 
-*/1 * * * * flock -n /tmp/bot-cron.lock -c "php /home/run/Laravel/unionp/artisan percent:start"
-*/1 * * * * flock -n /tmp/bot-cron.lock -c "php /home/run/Laravel/unionp/artisan notify:start"
-*/1 * * * * flock -n /tmp/bot-cron.lock -c "php /home/run/Laravel/unionp/artisan payment:start"
+*/1 * * * * flock -n /tmp/bot-cron.lock -c "php /home/run/Laravel/unionp/artisan queue:work"
+30 08 * * * flock -n /tmp/bot-cron.lock -c "php /home/run/Laravel/unionp/artisan start:sms"
 ```

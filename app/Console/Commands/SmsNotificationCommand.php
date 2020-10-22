@@ -100,6 +100,7 @@ class SmsNotificationCommand extends Command
                             'contract_no' => $sum,
                             'phone_number' => $result['customer_phone'],
                             'amount' => $result['amount'],
+                            'amount_percent' => 0,
                             'status' => 0
                         ]);
                         $customer->save();
@@ -161,7 +162,8 @@ class SmsNotificationCommand extends Command
                             'customer_name' => $result['customer_name'],
                             'contract_no' => $sum,
                             'phone_number' => $result['customer_phone'],
-                            'amount' => $result['amount'],
+                            'amount' => $result['total_remain'],
+                            'amount_percent' => $result['amount'],
                             'status' => 1
                         ]);
                         $customer->save();

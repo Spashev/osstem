@@ -238,7 +238,7 @@
                         <button
                             type="button"
                             class="btn btn-warning"
-                            @click="sendSms(modal_data[0].payment_id)"
+                            @click="sendSms(modal_data[0].contract_no)"
                         >
                             Send sms
                         </button>
@@ -315,11 +315,11 @@ export default {
                 } else {
                     vue.payments = response.data;
                     vue.customers = response.data;
-                    vue.table_flag = true;
                     $("input:checkbox.confirmation-select").prop(
                         "checked",
                         true
                     );
+                    vue.table_flag = true;
                 }
                 vue.show_loader = false;
             });
@@ -359,7 +359,21 @@ export default {
             }).then(function(response) {
                 vue.modal_flag = false;
             });
-        }
+        },
+        sendSms(val) {
+            var vue = this;
+            const form = new FormData();
+            form.append("contract_no", val);
+            axios({
+                method: "post",
+                url: "send/sms/",
+                data: form
+            }).then(function(response) {
+                console.log(response.data);
+                vue.modal_flag = false;
+                $("#exampleModal").modal("hide");
+            });
+        },
     }
 };
 </script>

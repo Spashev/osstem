@@ -386,7 +386,7 @@
                         <button
                             type="button"
                             class="btn btn-warning"
-                            @click="sendSms(modal_data[0].payment_id)"
+                            @click="sendSms(modal_data[0].contract_no)"
                         >
                             Send sms
                         </button>
@@ -568,7 +568,7 @@ export default {
         sendSms(val) {
             var vue = this;
             const form = new FormData();
-            form.append("payment_id", val);
+            form.append("contract_no", val);
             axios({
                 method: "post",
                 url: "send/sms/",

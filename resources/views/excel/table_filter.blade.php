@@ -22,16 +22,6 @@
                 
                 <div class="col-md-12 col-lg-12" style="overflow-x: scroll;">
                     <div class="mb-4 d-flex justify-content-center">
-                        {{-- <form action="{{ route('admin.excel.filter') }}"  class="d-none d-sm-inline-block" method="GET">
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control form-control-alt" placeholder="Search.." id="page-header-search-input3" name="search_input" v-model="input">
-                                <div class="input-group-append">
-                                    <span class="input-group-text bg-body border-0">
-                                        <i class="si si-magnifier"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </form> --}}
                         <form action="{{ route('admin.excel.filters') }}" method="post">
                             @csrf
                             <div class="form-group form-row">

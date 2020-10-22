@@ -92,7 +92,7 @@ class ExcelController extends Controller
     }
 
     /**
-     * table
+     * return table of payments
      *
      * @param  mixed $request
      * @return void
@@ -163,7 +163,7 @@ class ExcelController extends Controller
     }
 
     /**
-     * filter
+     * filter don't work(fix it)
      *
      * @param  mixed $request
      * @return void
@@ -185,6 +185,12 @@ class ExcelController extends Controller
         }
     }
 
+    /**
+     * Payment's filters
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function filters(ExcelFilterRequest $request)
     {
         $managers = Manager::all();
@@ -342,7 +348,7 @@ class ExcelController extends Controller
     }
 
     /**
-     * create
+     * return create view
      *
      * @return void
      */
@@ -354,7 +360,7 @@ class ExcelController extends Controller
     }
 
     /**
-     * save
+     * save new Contract and Payments
      *
      * @param  mixed $request
      * @return void
@@ -386,7 +392,7 @@ class ExcelController extends Controller
     }
 
     /**
-     * edit
+     * edit view
      *
      * @param  mixed $id
      * @return void
@@ -408,7 +414,7 @@ class ExcelController extends Controller
     }
 
     /**
-     * update
+     * updated customer payment
      *
      * @param  mixed $request
      * @param  mixed $id
@@ -449,7 +455,7 @@ class ExcelController extends Controller
     }
 
     /**
-     * import
+     * import customer address, email, phone ...
      *
      * @return void
      */

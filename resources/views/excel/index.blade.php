@@ -10,7 +10,7 @@
         <div class="block-header">
             <h3 class="block-title">Upload excel</h3>   
             <div class="block-options">
-                <a href="{{route('admin.download')}}" class="btn-block-option float-right"><i class="fa fa-file-download fa-2x"></i></a>
+                <a href="{{route('admin.download')}}" class="btn-block-option float-right"><i class="fa fa-file-download"></i></a>
             </div>
         </div>
         <div class="block-content block-content-full">

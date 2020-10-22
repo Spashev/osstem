@@ -54,7 +54,6 @@ class ExcelJob implements ShouldQueue
 
         $payments_hash = Payment::all();
         foreach ($records as $record) {
-            info($record);
             $hash = '$_' . $record['CONTRACT NO'] . '_S_' . $record['SEQ'];
             $hash_p = $payments_hash->filter(function ($value, $key) use ($hash) {
                 return $value->hash == $hash;
@@ -114,7 +113,6 @@ class ExcelJob implements ShouldQueue
                 ]);
             } else {
                 foreach ($hash_p as $item) {
-                    info('update data');
                     if ($item->paid !== $record['PAID']) {
                         $item->paid = $record['PAID'];
                         $item->remain = $record['REMAIN'];

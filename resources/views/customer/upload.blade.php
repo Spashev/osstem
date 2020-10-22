@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-lg-8 col-xl-5">
                     <!-- DropzoneJS Container -->
-                <form class="dropzone dz-clickable" action="{{route('admin.import')}}" method="POST">
+                <form class="dropzone dz-clickable" action="{{route('admin.import')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                         <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
                     </form>

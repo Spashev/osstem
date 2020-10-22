@@ -4,7 +4,7 @@
             <h3 class="block-title">Send sms</h3>
             <div class="block-options">
                 <div class="block-options-item">
-                    <code>history table</code>
+                    <code>History table</code>
                 </div>
             </div>
         </div>

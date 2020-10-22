@@ -97,62 +97,62 @@
         @endif
     </div>
     <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Customer</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{route('admin.customer.save') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Customer name</label>
-                        <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail2">Customer id</label>
-                        <input type="text" name="customer_id" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="Enter customer_id">
-                    </div>
-                    <div class="form-group">
-                        <label for="val-skill">Manager <span class="text-danger">*</span></label>
-                        <select type="text" name="manager_id" class="form-control"  id="val-skill" name="manager_id">
-                            <option>Select manager</option>
-                            @foreach($managers as $manager)
-                                <option value="{{$manager->id}}">{{ $manager->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail3">Email</label>
-                        <input type="email" name="email" class="form-control" id="exampleInputEmail3" aria-describedby="emailHelp" placeholder="Enter email">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword2">Phone</label>
-                        <input type="text" name="phone" class="form-control" id="exampleInputPassword2" placeholder="Phone">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword3">Region</label>
-                        <input type="text" name="region" class="form-control" id="exampleInputPassword3" placeholder="Region">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword4">Region id</label>
-                        <input type="text" name="region_id" class="form-control" id="exampleInputPassword4" placeholder="Region id">
-                    </div>
-                    <div class="custom-control custom-switch custom-control-primary custom-control-lg mb-2">
-                    <input type="checkbox" class="custom-control-input" id="example-sw-custom-primary-lg2" name="sms_status"  checked>
-                        <label class="custom-control-label" for="example-sw-custom-primary-lg2">Send sms</label>
-                    </div>
-                    <hr>
-                    <button type="submit" class="btn btn-primary float-right">Save</button>
-                </form>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Customer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{route('admin.customer.save') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Customer name</label>
+                            <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail2">Customer id</label>
+                            <input type="text" name="customer_id" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="Enter customer_id">
+                        </div>
+                        <div class="form-group">
+                            <label for="val-skill">Manager <span class="text-danger">*</span></label>
+                            <select type="text" name="manager_id" class="form-control"  id="val-skill" name="manager_id">
+                                <option>Select manager</option>
+                                @foreach($managers as $manager)
+                                    <option value="{{$manager->id}}">{{ $manager->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail3">Email</label>
+                            <input type="email" name="email" class="form-control" id="exampleInputEmail3" aria-describedby="emailHelp" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword2">Phone</label>
+                            <input type="text" name="phone" class="form-control" id="exampleInputPassword2" placeholder="Phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword3">Region</label>
+                            <input type="text" name="region" class="form-control" id="exampleInputPassword3" placeholder="Region">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword4">Region id</label>
+                            <input type="text" name="region_id" class="form-control" id="exampleInputPassword4" placeholder="Region id">
+                        </div>
+                        <div class="custom-control custom-switch custom-control-primary custom-control-lg mb-2">
+                        <input type="checkbox" class="custom-control-input" id="example-sw-custom-primary-lg2" name="sms_status"  checked>
+                            <label class="custom-control-label" for="example-sw-custom-primary-lg2">Send sms</label>
+                        </div>
+                        <hr>
+                        <button type="submit" class="btn btn-primary float-right">Save</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 @section('script')
     <script>

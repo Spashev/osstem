@@ -48,6 +48,7 @@ class Customer extends Model
 
     public function notifyPayments()
     {
-        return $this->payments()->where('deadline', Carbon::now()->addDays(3)->format('Y-m-d'));
+        $end = new Carbon('last day of this month');
+        return $this->payments()->where('deadline', '<', $end)->where('remain', '>', 0)->where('sms_status', 'on');
     }
 }

@@ -49,16 +49,15 @@
             >
                 <thead>
                     <th class="text-center" style="width: 50px">#</th>
-                    <!-- <th>Contract no</th> -->
                     <th>Customer name</th>
                     <th>Amount</th>
                     <th>Phone_number</th>
-                    <th>Created_at</th>
+                    <th>Send date</th>
                     <th class="d-none d-sm-table-cell" style="width: 15%">
                         <div
                             class="custom-control custom-checkbox custom-checkbox-rounded-circle custom-control-success mb-1"
                         >
-                            Sms status
+                            Status
                         </div>
                     </th>
                 </thead>
@@ -67,11 +66,6 @@
                         <th class="text-center" scope="row">
                             {{ item.id }}
                         </th>
-                        <!-- <td class="font-w600 font-size-sm">
-                            <a href="javascript:void(0);">{{
-                                item.contract_no
-                            }}</a>
-                        </td> -->
                         <td class="d-none d-sm-table-cell">
                             <a href="javascript:void(0);">
                                 {{ item.customer_name }}
@@ -103,7 +97,7 @@
                                 <label
                                     class="custom-control-label"
                                     for="example-cb-custom-square2"
-                                    >sms</label
+                                    ></label
                                 >
                             </div>
                         </td>

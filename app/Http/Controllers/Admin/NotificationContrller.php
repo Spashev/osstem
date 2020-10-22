@@ -200,25 +200,17 @@ class NotificationContrller extends Controller
             $start = new Carbon('first day of this month');
             $end = new Carbon('last day of this month');
             foreach ($payments as $payment) {
-                $payment_percent = Payment::where('contract_id', $payment->contract_id)->where('remain', '>', 0)->where('deadline', '<=', $to)->get();
-                if ($payment_percent->count() == 1) {
-                    $sum = $payment_percent->first()->remain;
+                if (Carbon::createFromDate($payment->deadline)->between($start, $end)) {
+                    $sum += $payment->remain;
                 } else {
-                    foreach ($payment_percent as $payment) {
-                        if (Carbon::createFromDate($payment->deadline)->between($start, $end)) {
-                            $sum += $payment->remain;
-                        } else {
-                            $delayInDays = Carbon::createFromDate($payment->deadline)->addMonth()->diffInDays($payment->deadline);
-                            if ($payment->percent == 0) {
-                                $sum += $payment->remain;
-                            } else {
-                                $sum += (($payment->percent * $payment->remain) / 100) * $delayInDays + $payment->remain;
-                            }
-                        }
+                    $delayInDays = Carbon::createFromDate($payment->deadline)->addMonth()->diffInDays($payment->deadline);
+                    if ($payment->percent == 0) {
+                        $sum += $payment->remain;
+                    } else {
+                        $sum += (($payment->percent * $payment->remain) / 100) * $delayInDays + $payment->remain;
                     }
-                    $sum += $payment_percent->last()->remian;
                 }
-                // dump($sum, $payment->deadline, $payment->hash);
+                dump($sum, $payment->deadline, $payment->hash);
             }
             if ($sum != 0) {
                 $message = "Уважаемый %s!,\n Просим оплатить %sтг. в срок %s.";

@@ -366,7 +366,7 @@ export default {
             form.append("contract_no", val);
             axios({
                 method: "post",
-                url: "send/sms/",
+                url: "send/notify",
                 data: form
             }).then(function(response) {
                 console.log(response.data);

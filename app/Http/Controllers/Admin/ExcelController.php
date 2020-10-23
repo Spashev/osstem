@@ -48,15 +48,15 @@ class ExcelController extends Controller
                 'extension'      => 'required|in:csv',
             ]
         );
-        if ($validator) {
-            $title = $request->file('file')->getClientOriginalName();
+	if ($validator) {;
+	    $title = $request->file('file')->getClientOriginalName();
             if ($request->hasFile('file')) {
                 $file = $request->file('file')->store('upload', 'public');
-            }
+	    }
             $excel = Excel::updateOrCreate(
                 ['title' => $title],
                 ['path' => $file]
-            );
+	);
             $result = ExcelJob::dispatch($excel);
             if (isset($result)) {
                 dump($result);

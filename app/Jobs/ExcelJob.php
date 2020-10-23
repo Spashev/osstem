@@ -51,14 +51,12 @@ class ExcelJob implements ShouldQueue
         $in_charge = $customer_id = NULL;
         $region_id = NULL;
         $updated_item = [];
-
-        $payments_hash = Payment::all();
+        
         foreach ($records as $record) {
             $hash = '$_' . $record['CONTRACT NO'] . '_S_' . $record['SEQ'];
-            $hash_p = $payments_hash->filter(function ($value, $key) use ($hash) {
-                return $value->hash == $hash;
-            });
+            $hash_p = Payment::where('hash', $hash)->get();
             if (count($hash_p) == 0) {
+                // dump('New item');
                 if (strpos($record['CONTRACT NO'], '> TOTAL') !== false) {
                     continue;
                 }
@@ -116,11 +114,12 @@ class ExcelJob implements ShouldQueue
                     if ($item->paid !== $record['PAID']) {
                         $item->paid = $record['PAID'];
                         $item->remain = $record['REMAIN'];
-                        $item->current_payment_day = Carbon::now()->format('Y-m-d H:i:s');
+                        $item->payment_date = $record['PAYMENT DATE'] == '0000/00/00' ? NULL : Carbon::parse($record['DEADLINE'])->format('Y-m-d H:i:s');
                         $item->save();
-                        $updated_item[] = $item->toArray();
+                        $updated_item[] = $item;
                     }
                 }
+                // dump($updated_item);
             }
         }
         if (count($updated_item) > 0) {

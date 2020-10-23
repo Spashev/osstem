@@ -54,7 +54,7 @@
             <div class="col-lg-6">
                 <div class="block block-rounded block-mode-loading-oneui">
                     <div class="block-header">
-                        <h3 class="block-title">Earnings in $</h3>
+                        <h3 class="block-title">Managers </h3>
                         <div class="block-options">
                             <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
                                 <i class="si si-refresh"></i>
@@ -94,7 +94,7 @@
             <div class="col-lg-6">
                 <div class="block block-rounded block-mode-loading-oneui">
                     <div class="block-header">
-                        <h3 class="block-title">Sales</h3>
+                        <h3 class="block-title">Customers</h3>
                         <div class="block-options">
                             <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
                                 <i class="si si-refresh"></i>

@@ -42,128 +42,129 @@ class SmsNotificationCommand extends Command
      */
     public function handle()
     {
-        $to = Carbon::now()->addDays('3')->format('Y-m-d');
-        $customers = Customer::whereHas('payments', function ($q) use ($to) {
-            $q->where('sms_status', 'on')->where('remain', '>', 0)->where('deadline', $to);
+        $start = new Carbon('first day of this month');
+        $end = new Carbon('last day of this month');
+        $customers = Customer::whereHas('payments', function ($q) use ($start, $end) {
+            $q->where('sms_status', 'on')->where('remain', '>', 0)->whereBetween('deadline', [$start, $end]);
         })->get();
         foreach ($customers as $customer) {
-            $payments = $customer->notifyPayments;
-            $payments = $payments->filter(function ($value, $key) {
-                return $value->remain > 0 and $value->sms_status == 'on' and substr($value->contract->contract_no, 0, 2) !== 'TO' and substr($value->contract->contract_no, 0, 4) !==  'ITEM';
-            });
-            if (count($payments) > 0 and (count($customer->notifications) == 0 or Str::substr($customer->notifications->last()->created_at, 0, 10) == Str::substr(Carbon::now()->subMonth(), 0, 10))) {
-                info('За 3 дня оплаты смс');
-                $sum = 0;
-                $start = new Carbon('first day of this month');
-                $end = new Carbon('last day of this month');
-                foreach ($payments as $payment) {
-                    $payment_percent = Payment::where('contract_id', $payment->contract_id)->where('remain', '>', 0)->where('deadline', '<=', $to)->get();
-                    if ($payment_percent->count() == 1) {
-                        $sum = $payment_percent->first()->remain;
-                    } else {
-                        foreach ($payment_percent as $payment) {
-                            if (Carbon::createFromDate($payment->deadline)->between($start, $end)) {
-                                $sum += $payment->remain;
-                            } else {
-                                $delayInDays = Carbon::now()->diffInDays($payment->deadline);
-                                if ($payment->percent == 0) {
-                                    $sum += $payment->remain;
-                                } else {
-                                    $sum += (($payment->percent * $payment->remain) / 100) * $delayInDays + $payment->remain;
-                                }
-                            }
+            if ($customer->sms_status == 'on' and $customer->notifications->count() == 0) {
+                $payments = $customer->payments->where('remain', '>', 0)->whereBetween('deadline', [$start, $end]);
+                $payments = $payments->filter(function ($value, $key) {
+                    return $value->remain > 0 and $value->sms_status == 'on' and substr($value->contract->contract_no, 0, 2) !== 'TO' and substr($value->contract->contract_no, 0, 4) !==  'ITEM';
+                });
+                if ($payments->count() > 0) {
+                    $sum = 0;
+                    $total_remian = 0;
+                    foreach ($payments as $payment) {
+                        $start = new Carbon('first day of this month');
+                        $end = new Carbon('last day of this month');
+                        if ($payment->first()->percent == 0) {
+                            $sum += $payment->remain;
+                            $total_remian = 0;
+                        } else if (Carbon::createFromDate($payment->deadline)->between($start, $end)) {
+                            $delayInDays = Carbon::now()->diffInDays($payment->deadline);
+                            $sum += (($payment->percent * $payment->remain) / 100) * $delayInDays;
+                            $total_remian += $payment->remain;
+                        } else {
+                            $delayInDays = Carbon::now()->diffInDays($payment->deadline);
+                            $sum += (($payment->percent * $payment->remain) / 100) * $delayInDays;
+                            $total_remian += $payment->remain;
                         }
-                        $sum += $payment_percent->last()->remian;
+                        dump($delayInDays, $total_remian);
                     }
-                    // dump($sum, $payment->deadline, $payment->hash);
-                }
-                if ($sum != 0) {
-                    $message = "Уважаемый Клиент!,\n Просим оплатить %sтг. в срок %s.";
-                    $result = [
-                        'customer_name' => $customer->name,
-                        'customer_phone' => $customer->phone,
-                        'amount' => $sum,
-                        'deadline' => Str::substr($to, 0, 10),
-                    ];
-                    $text = sprintf($message, $result['amount'], $result['deadline']);
-                    info($text);
-                    // $sms = new SmsService();
-                    // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = ' Union Partners LLP');
-                    // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
-                    $status = true;
-                    if ($status) {
-                        $customer->notifications()->create([
-                            'customer_id' => $customer->id,
-                            'customer_name' => $result['customer_name'],
-                            'contract_no' => $sum,
-                            'phone_number' => $result['customer_phone'],
-                            'amount' => $result['amount'],
-                            'amount_percent' => 0,
-                            'status' => 0
-                        ]);
-                        $customer->save();
+                    dump($sum);
+                    if ($sum != 0) {
+                        $message = "Уважаемый Клиент!,\n Просим оплатить %sтг. в срок %s.";
+                        $result = [
+                            'customer_name' => $customer->name,
+                            'customer_phone' => $customer->phone,
+                            'amount' => $sum + $total_remian,
+                            'deadline' => Str::substr(Carbon::now()->format('Y-m-d'), 0, 10),
+                        ];
+                        $text = sprintf($message, $result['amount'], $result['deadline']);
+                        info($text);
+                        dump($text);
+                        // $sms = new SmsService();
+                        // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = ' Union Partners LLP');
+                        // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                        // $status = true;
+                        // if ($status) {
+                        //     $customer->notifications()->create([
+                        //         'customer_id' => $customer->id,
+                        //         'payment_id' => $payment->id,
+                        //         'customer_name' => $result['customer_name'],
+                        //         'contract_no' => $payment->contract->contract_no,
+                        //         'phone_number' => $result['customer_phone'],
+                        //         'amount' => $result['amount'],
+                        //         'amount_percent' => 0,
+                        //         'status' => 0
+                        //     ]);
+                        //     $customer->save();
+                        // }
                     }
                 }
-            }
-        }
-
-        $now = Carbon::now()->format('Y-m-d');
-        $customers = Customer::whereHas('payments', function ($q) use ($now) {
-            $q->where('deadline', '<', $now)->where('sms_status', 'on')->where('remain', '>', 0);
-        })->get();
-        foreach ($customers as $customer) {
-            $payments = $customer->deadlinePayments;
-            $payments = $payments->filter(function ($value, $key) {
-                return $value->remain > 0 and $value->sms_status == 'on' and substr($value->contract->contract_no, 0, 2) !== 'TO' and substr($value->contract->contract_no, 0, 4) !==  'ITEM';
-            });
-
-            if (count($payments) > 0 and (count($customer->notifications) == 0 or Str::substr($customer->notifications->last()->created_at, 0, 10) == Str::substr(Carbon::now()->subMonth(), 0, 10))) {
-                info('Пения');
-                $sum = 0;
-                $total_remian = 0;
-                foreach ($payments as $payment) {
-                    $start = new Carbon('first day of this month');
-                    $end = new Carbon('last day of this month');
-                    if ($payment->first()->percent == 0) {
-                        $sum += $payment->remain;
-                        $total_remian = 0;
-                    } else if (Carbon::createFromDate($payment->deadline)->between($start, $end)) {
-                        $delayInDays = Carbon::now()->diffInDays($payment->deadline);
-                        $sum += (($payment->percent * $payment->remain) / 100) * $delayInDays;
-                        $total_remian += $payment->remain;
-                    } else {
-                        $delayInDays = Carbon::now()->diffInDays($payment->deadline);
-                        $sum += (($payment->percent * $payment->remain) / 100) * $delayInDays;
-                        $total_remian += $payment->remain;
+            } else if ($customer->sms_status == 'on' and $customer->notifications->count() > 0) {
+                $notify_flag = true;
+                foreach ($customer->notifications as $notify) {
+                    if ($notify->created_at->between($start, $end) and $notify->status == 0) {
+                        $notify_flag = false;
+                        break;
                     }
-                    // dump($sum, $delayInDays, $payment->remain, $payment->deadline);
                 }
-                if ($sum != 0) {
-                    $message = "Уважаемый Клиент!\nЗадолжность на %s\nДолг: %s\nПеня: %s";
-                    $result = [
-                        'customer_name' => $customer->name,
-                        'customer_phone' => $customer->phone,
-                        'amount' => $sum,
-                        'total_remain' => $total_remian,
-                        'deadline' => Str::substr($payment->deadline, 0, 10),
-                    ];
-                    $text = sprintf($message, $now, $result['total_remain'], $result['amount']);
-                    info($text);
-                    // $sms = new SmsService();
-                    // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = ' Union Partners LLP');
-                    // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
-                    $status = true;
-                    if ($status) {
-                        $customer->notifications()->create([
-                            'customer_id' => $customer->id,
-                            'customer_name' => $result['customer_name'],
-                            'contract_no' => $sum,
-                            'phone_number' => $result['customer_phone'],
-                            'amount' => $result['total_remain'],
-                            'amount_percent' => $result['amount'],
-                            'status' => 1
-                        ]);
-                        $customer->save();
+                if ($notify_flag) {
+                    $total_remian = 0;
+                    $payments = $customer->deadlinePayments;
+                    $payments = $payments->filter(function ($value, $key) {
+                        return $value->remain > 0 and $value->sms_status == 'on' and substr($value->contract->contract_no, 0, 2) !== 'TO' and substr($value->contract->contract_no, 0, 4) !==  'ITEM';
+                    });
+                    $sum = 0;
+                    foreach ($payments as $payment) {
+                        $start = new Carbon('first day of this month');
+                        $end = new Carbon('last day of this month');
+                        if ($payment->first()->percent == 0) {
+                            $sum += $payment->remain;
+                            $total_remian = 0;
+                        } else if (Carbon::createFromDate($payment->deadline)->between($start, $end)) {
+                            $delayInDays = Carbon::now()->diffInDays($payment->deadline);
+                            $sum += (($payment->percent * $payment->remain) / 100) * $delayInDays;
+                            $total_remian += $payment->remain;
+                        } else {
+                            $delayInDays = Carbon::now()->diffInDays($payment->deadline);
+                            $sum += (($payment->percent * $payment->remain) / 100) * $delayInDays;
+                            $total_remian += $payment->remain;
+                        }
+                        dump($delayInDays, $total_remian);
+                    }
+                    dump($sum);
+                    if ($sum != 0) {
+                        $message = "Уважаемый Клиент!,\n Просим оплатить %sтг. в срок %s.";
+                        $result = [
+                            'customer_name' => $customer->name,
+                            'customer_phone' => $customer->phone,
+                            'amount' => $sum + $total_remian,
+                            'deadline' => Str::substr(Carbon::now()->format('Y-m-d'), 0, 10),
+                        ];
+                        $text = sprintf($message, $result['amount'], $result['deadline']);
+                        info($text);
+                        dump($text);
+                        // $sms = new SmsService();
+                        // list($sms_id) = $sms->send_sms($phones = $result['customer_phone'], $message = $text, $sender = ' Union Partners LLP');
+                        // list($status) = $sms->get_status($sms_id, $result['customer_phone']);
+                        // $status = true;
+                        // if ($status) {
+                        //     $customer->notifications()->create([
+                        //         'customer_id' => $customer->id,
+                        //         'payment_id' => $payment->id,
+                        //         'customer_name' => $result['customer_name'],
+                        //         'contract_no' => $payment->contract->contract_no,
+                        //         'phone_number' => $result['customer_phone'],
+                        //         'amount' => $result['amount'],
+                        //         'amount_percent' => 0,
+                        //         'status' => 0
+                        //     ]);
+                        //     $customer->save();
+                        // }
                     }
                 }
             }

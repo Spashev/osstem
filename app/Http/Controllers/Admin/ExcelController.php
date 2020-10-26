@@ -424,14 +424,14 @@ class ExcelController extends Controller
     {
         $payment = Payment::findOrFail($id);
         $payment->contract->manager_id = $request->manager;
-        $customer = Customer::where('name', $request->customer_name)->first();
+        $customer = Customer::findOrFail($request->customer_name);
         if ($request->contract_no) {
             $payment->contract->contract_no = $request->contract_no;
         }
         $payment->amount = $request->amount;
         $payment->paid = $request->paid;
         $payment->percent = $request->percent;
-        $payment->remain = $request->paid <= $payment->remain ? $payment->remain - $request->paid : $payment->amount;
+        $payment->remain = $payment->amount - $request->paid;
         $payment->payment_date = Carbon::parse($request->payment_day)->format('Y-m-d');
         $payment->deadline = Carbon::parse($request->deadline)->format('Y-m-d');
         $payment->customer_id = $customer->id;
@@ -439,7 +439,7 @@ class ExcelController extends Controller
         $payment->contract->save();
 
         Session::flash('msg', 'Data updated');
-        return redirect()->back();
+        return redirect()->route('admin.excel.table');
     }
 
     /**

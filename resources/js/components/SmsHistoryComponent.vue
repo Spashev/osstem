@@ -51,6 +51,7 @@
                     <th class="text-center" style="width: 50px">#</th>
                     <th>Customer name</th>
                     <th>Amount</th>
+                    <th>Surcharge</th>
                     <th>Phone_number</th>
                     <th>Send date</th>
                     <th class="d-none d-sm-table-cell" style="width: 15%">
@@ -73,6 +74,9 @@
                         </td>
                         <td class="d-none d-sm-table-cell">
                             <span>{{ item.amount }}</span>
+                        </td>
+                        <td class="d-none d-sm-table-cell">
+                            <span>{{ item.amount_percent }}</span>
                         </td>
                         <td class="d-none d-sm-table-cell">
                             <span>{{ item.phone_number }}</span>

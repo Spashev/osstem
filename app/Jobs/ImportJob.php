@@ -36,13 +36,14 @@ class ImportJob implements ShouldQueue
         $reader = Reader::createFromPath($inputFileName, 'r');
         $reader->setHeaderOffset(0);
         $records = $reader->getRecords();
+        dump($records);
         foreach ($records as $record) {
             $nomer = $record['CELL'] ? $record['CELL'] : $record['TEL NO'];
             $customer = Customer::where('customer_id', $record['CODE'])->first();
             if ($customer) {
                 $customer->phone = $nomer;
-                $customer->city = $record['(Bill To)'];
-                $customer->district = $record['__EMPTY_1'];
+                $customer->city = $record['(Bill To)']; #новое название
+                $customer->district = $record['district'];
                 $customer->address = $record['address'];
                 $customer->save();
             }

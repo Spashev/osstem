@@ -76,6 +76,7 @@ class Payment extends Model
     public function getCustomerPaid()
     {
         return Payment::where('customer_id', $this->customer_id)
+            ->where('remain', '>', 0)
             ->where('deadline', '<', Carbon::now()->format('Y-m-d'))
             ->get()->sum('paid');
     }
@@ -83,6 +84,7 @@ class Payment extends Model
     public function getCustomerRemain()
     {
         return Payment::where('customer_id', $this->customer_id)
+            ->where('remain', '>', 0)
             ->where('deadline', '<', Carbon::now()->format('Y-m-d'))
             ->get()->sum('remain');
     }

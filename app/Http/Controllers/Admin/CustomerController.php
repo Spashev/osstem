@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerRequest;
 use App\Models\Customer;
 use App\Models\Manager;
+use App\Models\Region;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -21,6 +22,7 @@ class CustomerController extends Controller
     public function customer(Request $request)
     {
         $managers = Manager::all();
+        $regions = Region::all();
         if (request()->has('search_input')) {
             $customers = Customer::where('name', 'LIKE', '%' . $request->search_input . '%')
                 ->orWhere('customer_id', 'LIKE', '%' . $request->search_input . '%')
@@ -30,7 +32,7 @@ class CustomerController extends Controller
             $customers = Customer::paginate(20);
         }
 
-        return view('customer.index', compact('customers', 'managers'));
+        return view('customer.index', compact('customers', 'managers', 'regions'));
     }
 
     /**
@@ -130,14 +132,15 @@ class CustomerController extends Controller
      */
     public function store(CustomerRequest $request)
     {
+        $region = Region::find($request->region);
         Customer::create([
             'customer_id' => $request->customer_id,
             'manager_id' => $request->manager_id,
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'region' => $request->region,
-            'region_id' => $request->region_id,
+            'region' => $region->name,
+            'region_id' => $region->region_id,
             'sms_status' => is_null($request->sms_status) ? 'off' : 'on'
         ]);
         Session::flash('msg', 'customer created');

@@ -119,7 +119,7 @@
                         </div>
                         <div class="form-group">
                             <label for="val-skill">Manager <span class="text-danger">*</span></label>
-                            <select type="text" name="manager_id" class="form-control"  id="val-skill" name="manager_id">
+                            <select type="text" class="form-control"  id="val-skill" name="manager_id">
                                 <option>Select manager</option>
                                 @foreach($managers as $manager)
                                     <option value="{{$manager->id}}">{{ $manager->name }}</option>
@@ -136,12 +136,17 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword3">Region</label>
-                            <input type="text" name="region" class="form-control" id="exampleInputPassword3" placeholder="Region">
+                            <select type="text" class="form-control"  id="val-skill123" name="region">
+                                <option>Select manager</option>
+                                @foreach($regions as $region)
+                                    <option value="{{$region->id}}">{{ $region->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="exampleInputPassword4">Region id</label>
                             <input type="text" name="region_id" class="form-control" id="exampleInputPassword4" placeholder="Region id">
-                        </div>
+                        </div> --}}
                         <div class="custom-control custom-switch custom-control-primary custom-control-lg mb-2">
                         <input type="checkbox" class="custom-control-input" id="example-sw-custom-primary-lg2" name="sms_status"  checked>
                             <label class="custom-control-label" for="example-sw-custom-primary-lg2">Send sms</label>

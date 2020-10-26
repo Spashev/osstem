@@ -30,7 +30,7 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::post('excel/filter', 'ExcelController@filter')->name('excel.filter');
     Route::post('excel/table', 'ExcelController@filters')->name('excel.filters');
     Route::get('payment/{id}/edit', 'ExcelController@edit')->name('excel.edit');
-    Route::get('payment/{id}/update', 'ExcelController@update')->name('excel.update');
+    Route::post('payment/{id}/update', 'ExcelController@update')->name('excel.update');
     Route::get('payment/{payment}/delete', 'ExcelController@delete')->name('excel.delete');
     Route::get('/payments', 'ExcelController@payment')->name('excel.payments');
     //Sms
@@ -47,6 +47,7 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::post('sms/customer-data', 'SmsController@customerData');
     Route::post('sms/status', 'SmsController@smsStatus');
     Route::post('send/sms', 'SmsController@sendSms');
+    Route::get('send/sms/{region}', 'SmsController@sendRegionSms');
     //Notification
     Route::get('notify', 'NotificationContrller@index')->name('notify');
     Route::get('notify/get', 'NotificationContrller@getData');
@@ -57,6 +58,7 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::post('notify/customer-data', 'NotificationContrller@customerData');
     Route::post('notify/status', 'NotificationContrller@smsStatus');
     Route::post('send/notify', 'NotificationContrller@sendSms');
+    Route::get('send/notify/{region}', 'NotificationContrller@sendRegionSms');
     //Analyzer
     Route::get('analyzer', 'AnalyzerController@index')->name('analyze');
     Route::get('analyzer/upload', 'AnalyzerController@upload')->name('analyze.upload');

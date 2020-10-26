@@ -40,6 +40,13 @@
             >
                 <i class="fa fa-fw fa-download mr-1"></i> Download
             </button>
+            <button
+                class="btn btn-outline-secondary mr-1 float-right mb-2"
+                @click="sendRegionSms(region_filter)"
+                v-if="table_flag"
+            >
+                <i class="fa fa-fw fa-paper-plane mr-1"></i> Send
+            </button>
             <table
                 class="table table-borderless table-vcenter"
                 v-if="table_flag"
@@ -374,6 +381,17 @@ export default {
                 $("#exampleModal").modal("hide");
             });
         },
+        sendRegionSms(val) {
+            var vue = this;
+            vue.show_loader = true;
+            axios({
+                method: "get",
+                url: "send/notify/" + val
+            }).then(function(response) {
+                vue.show_loader = false;
+                vue.region_send_sms = response.data.msg;
+            });
+        }
     }
 };
 </script>

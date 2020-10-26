@@ -24,10 +24,12 @@
                 </div>
                 <div class="col-lg-7">
                     <!-- Form Labels on top - Default Style -->
-                <form class="mb-5" action="{{route('admin.excel.update', $payment->id)}}" method="GET">
+                <form class="mb-5" action="{{route('admin.excel.update', $payment->id)}}" method="POST">
+                    @csrf
                         <div class="form-group">
                             <label for="example-select1 wizard-progress-firstname">Customer name</label>
-                            <input class="form-control" readonly type="text" id="wizard-progress-location1" name="customer_name" value="{{$payment->contract->customer->name}}">
+                            <input class="form-control" readonly type="text" id="wizard-progress-location1" value="{{$payment->contract->customer->name}}">
+                            <input class="form-control" readonly type="hidden" id="wizard-progress-location1" name="customer_name" value="{{$payment->contract->customer->id}}">
                         </div>
                         <div class="form-group">
                             <label for="example-select2 wizard-progress-firstname">Manager</label>

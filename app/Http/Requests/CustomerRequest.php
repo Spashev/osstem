@@ -30,8 +30,7 @@ class CustomerRequest extends FormRequest
             'name' => 'required',
             'email' => 'required',
             'phone' => 'required',
-            'region' => 'required',
-            'region_id' => 'required'
+            'region' => 'required'
         ];
     }
 }

@@ -3,6 +3,18 @@
         <div id="loader" v-if="show_loader"></div>
         <div class="block-header animate-bottom" id="myDiv">
             <h3 class="block-title">Confirmation</h3>
+            <div
+                class="alert alert-success d-flex align-items-center"
+                role="alert"
+                v-if="sendSmsRegion"
+            >
+                <div class="flex-00-auto">
+                    <i class="fa fa-fw fa-check"></i>
+                </div>
+                <div class="flex-fill ml-3">
+                    <p class="mb-0">{{ region_send_sms }}!</p>
+                </div>
+            </div>
             <div class="block-options">
                 <div class="block-options-item">
                     <code>table</code>
@@ -62,6 +74,13 @@
                     v-if="table_flag"
                 >
                     <i class="fa fa-fw fa-download mr-1"></i> Download
+                </button>
+                <button
+                    class="btn btn-outline-secondary mr-1 float-right mb-2"
+                    @click="sendRegionSms(region_filter)"
+                    v-if="table_flag"
+                >
+                    <i class="fa fa-fw fa-paper-plane mr-1"></i> Send
                 </button>
                 <table
                     class="table table-bordered table-vcenter"
@@ -412,6 +431,7 @@ export default {
             customer_filter: "",
             region_filter: "",
             data_filter: "",
+            region_send_sms: "",
             customers: [],
             regions: [],
             payments: [],
@@ -419,7 +439,8 @@ export default {
             table_flag: false,
             show_loader: false,
             modal_flag: false,
-            customer_flag: false
+            customer_flag: false,
+            sendSmsRegion: false
         };
     },
     mounted: function() {
@@ -505,6 +526,7 @@ export default {
                 method: "get",
                 url: "sms/get-region/" + val
             }).then(function(response) {
+                console.log(response.data);
                 if (response.data.hasOwnProperty("msg")) {
                     alert(response.data.msg);
                     vue.table_flag = false;
@@ -540,6 +562,7 @@ export default {
         },
         smsStatusEvent(val) {
             var vue = this;
+            console.log(val);
             const form = new FormData();
             form.append("contract_code", val);
             form.append("type", "contract");
@@ -576,7 +599,21 @@ export default {
             }).then(function(response) {
                 console.log(response.data);
                 vue.modal_flag = false;
+                vue.customer_flag = false;
                 $("#exampleModal").modal("hide");
+            });
+        },
+        sendRegionSms(val) {
+            var vue = this;
+            vue.show_loader = true;
+            axios({
+                method: "get",
+                url: "send/sms/" + val
+            }).then(function(response) {
+                vue.show_loader = false;
+                vue.region_send_sms = response.data.msg;
+                vue.payments = [];
+                vue.table_flag = false;
             });
         },
         getData: function() {

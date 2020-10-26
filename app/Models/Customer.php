@@ -43,12 +43,33 @@ class Customer extends Model
 
     public function deadlinePayments()
     {
-        return $this->payments()->where('deadline', '<', Carbon::now()->format('Y-m-d'));
+        return $this->payments()->where('remain', '>', 0)->where('deadline', '<', Carbon::now()->format('Y-m-d'))->where('sms_status', 'on');
     }
 
     public function notifyPayments()
     {
         $end = new Carbon('last day of this month');
         return $this->payments()->where('deadline', '<', $end)->where('remain', '>', 0)->where('sms_status', 'on');
+    }
+
+    public function customerPayments()
+    {
+        return $this->payments()->where('deadline', '<', Carbon::now()->format('Y-m-d'))->where('remain', '>', 0)->where('sms_status', 'on')->get()->unique('customer_id');
+    }
+
+    public function getCustomerPaid()
+    {
+        return $this->payments()->where('sms_status', 'on')
+            ->where('remain', '>', 0)
+            ->where('deadline', '<', Carbon::now()->format('Y-m-d'))
+            ->get()->sum('paid');
+    }
+
+    public function getCustomerRemain()
+    {
+        return $this->payments()->where('sms_status', 'on')
+            ->where('remain', '>', 0)
+            ->where('deadline', '<', Carbon::now()->format('Y-m-d'))
+            ->get()->sum('remain');
     }
 }

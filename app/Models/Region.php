@@ -14,4 +14,9 @@ class Region extends Model
     {
         return $this->hasMany(Customer::class, 'region_id', 'region_id');
     }
+
+    public function getReminCustomers()
+    {
+        return $this->customers->notifyPayments();
+    }
 }

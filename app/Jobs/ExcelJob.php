@@ -51,7 +51,7 @@ class ExcelJob implements ShouldQueue
         $in_charge = $customer_id = NULL;
         $region_id = NULL;
         $updated_item = [];
-        
+
         foreach ($records as $record) {
             $hash = '$_' . $record['CONTRACT NO'] . '_S_' . $record['SEQ'];
             $hash_p = Payment::where('hash', $hash)->get();

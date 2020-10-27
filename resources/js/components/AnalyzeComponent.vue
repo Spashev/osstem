@@ -3,6 +3,29 @@
     <div>
       <form method="POST">
         <div class="form-group form-row row text-center">
+          <div class="col-sm-2">
+            <label>Manager</label>
+            <Select2
+              id="manager"
+              name="manager"
+              placeholder="Select manager"
+              v-model="manager_filter"
+              :options="managers"
+              @change="managerEvent($event)"
+              :disabled="disabled == 1"
+            />
+          </div>
+          <div class="col-sm-2">
+            <label>Region</label>
+            <Select2
+              id="region"
+              name="region"
+              placeholder="Select region"
+              v-model="region_filter"
+              :options="regions"
+              @change="regionEvent($event)"
+            />
+          </div>
           <div class="col-sm-3">
             <label>Customer name</label>
             <select2
@@ -26,29 +49,6 @@
               v-model="contract_filter"
               :options="contracts"
               @change="contractEvent($event)"
-            />
-          </div>
-          <div class="col-sm-2">
-            <label>Manager</label>
-            <Select2
-              id="manager"
-              name="manager"
-              placeholder="Select manager"
-              v-model="manager_filter"
-              :options="managers"
-              @change="managerEvent($event)"
-              :disabled="disabled == 1"
-            />
-          </div>
-          <div class="col-sm-2">
-            <label>Region</label>
-            <Select2
-              id="region"
-              name="region"
-              placeholder="Select region"
-              v-model="region_filter"
-              :options="regions"
-              @change="regionEvent($event)"
             />
           </div>
           <div class="col-sm-3">

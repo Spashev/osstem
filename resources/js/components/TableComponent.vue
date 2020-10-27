@@ -25,6 +25,17 @@
             <form method="POST">
                 <div class="form-group form-row row text-center">
                     <div class="col-sm-4">
+                        <label>Region</label>
+                        <Select2
+                            id="region"
+                            name="region"
+                            placeholder="Select region"
+                            v-model="region_filter"
+                            :options="regions"
+                            @change="regionEvent($event)"
+                        />
+                    </div>
+                    <div class="col-sm-4">
                         <label>Customer name</label>
                         <select2
                             id="customer"
@@ -36,17 +47,6 @@
                         >
                             <option value="">Select one</option>
                         </select2>
-                    </div>
-                    <div class="col-sm-4">
-                        <label>Region</label>
-                        <Select2
-                            id="region"
-                            name="region"
-                            placeholder="Select region"
-                            v-model="region_filter"
-                            :options="regions"
-                            @change="regionEvent($event)"
-                        />
                     </div>
                     <div class="col-sm-4">
                         <label>Date</label>

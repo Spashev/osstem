@@ -83,9 +83,13 @@ class Payment extends Model
 
     public function getCustomerRemain()
     {
-        return Payment::where('customer_id', $this->customer_id)
+        $payments = Payment::where('customer_id', $this->customer_id)
             ->where('remain', '>', 0)
             ->where('deadline', '<', Carbon::now()->format('Y-m-d'))
-            ->get()->sum('remain');
+            ->get();
+        $payments = $payments->filter(function ($value, $key) {
+            return $value->remain > 0 and substr($value->contract->contract_no, 0, 2) !== 'TO' and substr($value->contract->contract_no, 0, 4) !==  'ITEM';
+        });
+        return  $payments->sum('remain');
     }
 }

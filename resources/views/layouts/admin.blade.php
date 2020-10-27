@@ -154,12 +154,12 @@
                                 </li>
                                 <li class="nav-main-item">
                                     <a class="nav-main-link"  href="{{ route('admin.notify') }}">
-                                        <span class="nav-main-link-name">Notify</span>
+                                        <span class="nav-main-link-name">Collection</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
                                     <a class="nav-main-link"  href="{{ route('admin.sms') }}">
-                                        <span class="nav-main-link-name">Confirm</span>
+                                        <span class="nav-main-link-name">Overdue</span>
                                     </a>
                                 </li>
                             </ul>

@@ -11,7 +11,7 @@
 
 About our project.
 
-## Website unionp
+## Website osstem-implant
 
 -   [UnionPartners](http://www.unionp.kz/).
 

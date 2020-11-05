@@ -476,7 +476,7 @@ class ExcelController extends Controller
             if ($request->hasFile('file')) {
                 $file = $request->file('file')->store('upload', 'public');
             }
-            dd($title, $request->file('file'), $file);
+            dd($title, $request->file('file')->store('upload', 'public'));
             $excel = Excel::updateOrCreate(
                 ['title' => $title],
                 ['path' => $file]

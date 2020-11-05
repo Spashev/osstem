@@ -283,9 +283,9 @@ class NotificationContrller extends Controller
                     'customer_name' => $customer->name,
                     'customer_phone' => $customer->phone,
                     'amount' => $sum,
-                    'deadline' => Str::substr(Carbon::now()->format('Y-m-d'), 0, 10),
+                    'deadline' => Str::substr($payment->deadline, 0, 10),
                 ];
-                $text = sprintf($message, $result['amount'], $payment->deadline);
+                $text = sprintf($message, $result['amount'], Carbon::now()->format('Y-m-d'));
                 dump($text);
                 info($text);
                 // $sms = new SmsService();

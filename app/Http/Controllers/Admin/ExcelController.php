@@ -47,9 +47,9 @@ class ExcelController extends Controller
                 'file'          => 'required',
                 'extension'      => 'required|in:csv',
             ]
-        );
+    	);
         if ($validator) {;
-            $title = $request->file('file')->getClientOriginalName();
+	    $title = $request->file('file')->getClientOriginalName();
             if ($request->hasFile('file')) {
                 $file = $request->file('file')->store('upload', 'public');
             }

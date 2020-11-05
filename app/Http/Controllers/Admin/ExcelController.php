@@ -471,6 +471,7 @@ class ExcelController extends Controller
                 'extension'      => 'required|in:csv',
             ]
         );
+        dd($validator);
         if ($validator) {
             $title = $request->file('file')->getClientOriginalName();
             if ($request->hasFile('file')) {

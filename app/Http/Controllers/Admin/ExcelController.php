@@ -470,13 +470,13 @@ class ExcelController extends Controller
                 'file'          => 'required',
                 'extension'      => 'required|in:csv',
             ]
-        );
-        if ($validator) {
-            $title = $request->file('file')->getClientOriginalName();
+    	);
+        if ($validator) {;
+	        $title = $request->file('file')->getClientOriginalName();
             if ($request->hasFile('file')) {
                 $file = $request->file('file')->store('upload', 'public');
             }
-            dd($title, $request->file('file')->store('upload', 'public'));
+            dd($title, $request->file('file'), $request->file('file')->store('upload', 'public'));
             $excel = Excel::updateOrCreate(
                 ['title' => $title],
                 ['path' => $file]

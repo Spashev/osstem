@@ -74,10 +74,11 @@ class Payment extends Model
     }
 
     public function getCustomerPaid()
-    {
+    {   
+        $end = new Carbon('last day of this month');
         $payments = Payment::where('customer_id', $this->customer_id)
             ->where('remain', '>', 0)
-            ->where('deadline', '<', Carbon::now()->format('Y-m-d'))
+            ->where('deadline', '<', $end)
             ->get();
         $payments = $payments->filter(function ($value, $key) {
             return $value->remain > 0 and substr($value->contract->contract_no, 0, 2) !== 'TO' and substr($value->contract->contract_no, 0, 4) !==  'ITEM';
@@ -87,9 +88,10 @@ class Payment extends Model
 
     public function getCustomerRemain()
     {
+        $end = new Carbon('last day of this month');
         $payments = Payment::where('customer_id', $this->customer_id)
             ->where('remain', '>', 0)
-            ->where('deadline', '<', Carbon::now()->format('Y-m-d'))
+            ->where('deadline', '<', $end)
             ->get();
         $payments = $payments->filter(function ($value, $key) {
             return $value->remain > 0 and substr($value->contract->contract_no, 0, 2) !== 'TO' and substr($value->contract->contract_no, 0, 4) !==  'ITEM';

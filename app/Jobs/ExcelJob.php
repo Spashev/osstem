@@ -55,6 +55,7 @@ class ExcelJob implements ShouldQueue
         foreach ($records as $record) {
             $hash = '$_' . $record['CONTRACT NO'] . '_S_' . $record['SEQ'];
             $hash_p = Payment::where('hash', $hash)->get();
+            // info($hash_p);
             if (count($hash_p) == 0) {
                 // dump('New item');
                 if (strpos($record['CONTRACT NO'], '> TOTAL') !== false) {
@@ -117,9 +118,9 @@ class ExcelJob implements ShouldQueue
                         $item->payment_date = $record['PAYMENT DATE'] == '0000/00/00' ? NULL : Carbon::parse($record['DEADLINE'])->format('Y-m-d H:i:s');
                         $item->save();
                         $updated_item[] = $item;
+                        info($item);
                     }
                 }
-                // dump($updated_item);
             }
         }
         if (count($updated_item) > 0) {

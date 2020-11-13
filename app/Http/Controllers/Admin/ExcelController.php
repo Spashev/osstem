@@ -60,6 +60,8 @@ class ExcelController extends Controller
                 ['title' => $title],
                 ['path' => $file]
             );
+            $f = fopen(public_path("upload_file/upload_result.txt"), 'w');
+            fclose($f);
             file_put_contents(public_path("upload_file/upload_result.txt"), "total 100, current 1");
             $result = ExcelJob::dispatch($excel);
             if (isset($result)) {

@@ -33,6 +33,7 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::post('payment/{id}/update', 'ExcelController@update')->name('excel.update');
     Route::get('payment/{payment}/delete', 'ExcelController@delete')->name('excel.delete');
     Route::get('/payments', 'ExcelController@payment')->name('excel.payments');
+    Route::get('progress-bar-status', 'ExcelController@getUpdateProbressbar');
     //Sms
     Route::get('sms', 'SmsController@index')->name('sms');
     Route::get('sms/history', 'SmsController@history')->name('sms.history');

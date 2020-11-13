@@ -17,9 +17,12 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\ExcelFilterRequest;
 use App\Jobs\ImportJob;
+use League\Csv\Reader;
 
 class ExcelController extends Controller
 {
+
+    public $progress = 0;
     /**
      * index
      *
@@ -57,10 +60,32 @@ class ExcelController extends Controller
                 ['title' => $title],
                 ['path' => $file]
             );
+            file_put_contents(public_path("upload_file/upload_result.txt"), "total 100, current 1");
             $result = ExcelJob::dispatch($excel);
             if (isset($result)) {
                 dump($result);
+            }   
+            return response()->json(['success'=>'File Uploaded Successfully']);
+        }
+    }
+
+    public function getUpdateProbressbar(Request $request)
+    {
+        if ($request->type == 'excel') {
+            $file = file_get_contents(public_path('upload_file/upload_result.txt'));
+        } else {
+            $file = file_get_contents(public_path('upload_file/upload_client.txt'));
+        }
+        $pattern = '/\d+/';
+        preg_match_all($pattern, $file, $match);
+        if (count($match[0]) > 0) {
+            $this->progress = ceil((100 / $match[0][0]) * $match[0][1]);
+            if ($this->progress == 100) {
+                return response()->json(['pregress_bar'=>'stop']);
             }
+            return response()->json(['pregress_bar'=>$this->progress]);
+        }else {
+            return response()->json(['pregress_bar'=>ceil($this->progress) + 50]);
         }
     }
 
@@ -72,7 +97,7 @@ class ExcelController extends Controller
     public function download()
     {
         $filename = '/update_payment.csv';
-        $path = public_path('storage/upload' . $filename);
+        $path = public_path('upload_file/' . $filename);
         if (file_exists($path)) {
             return response()->download($path)->deleteFileAfterSend(true);
         } else {

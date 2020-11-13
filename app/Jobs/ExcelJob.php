@@ -22,6 +22,7 @@ class ExcelJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $timeout = 0;
+    public $upload_record_total;
 
     protected $excel;
 
@@ -41,41 +42,58 @@ class ExcelJob implements ShouldQueue
      * @return void
      */
     public function handle()
-    {
+    {   
+        
         $inputFileName = storage_path('app/public/' . $this->excel->path);
         $reader = Reader::createFromPath($inputFileName, 'r');
         $reader->setHeaderOffset(0);
         $records = $reader->getRecords();
 
+        $this->upload_record_total = collect($records)->count();
+        $f = fopen(public_path("upload_file/upload_result.txt"), 'w');
+        fclose($f);
+        file_put_contents(public_path("upload_file/upload_result.txt"), "total " . $this->upload_record_total .", current 1");
+        
         $customer_id = $contract_no = NULL;
         $in_charge = $customer_id = NULL;
         $region_id = NULL;
         $updated_item = [];
+        foreach ($records as $key => $record) {
+            if($key != '') {
+                $format = "total %d, current %d";
+                $text = sprintf($format, $this->upload_record_total, $key);
+                file_put_contents(public_path('upload_file/upload_result.txt'), $text);
+            }
 
-        foreach ($records as $record) {
-            $hash = '$_' . $record['CONTRACT NO'] . '_S_' . $record['SEQ'];
-            $hash_p = Payment::where('hash', $hash)->get();
-            // info($hash_p);
-            if (count($hash_p) == 0) {
-                // dump('New item');
+            $hash = $record['CONTRACT NO'] . '_' . $record['SEQ'];
+            $hash_p = Payment::where('hash', $hash)->first();
+            info($hash_p);
+            info($hash);
+            if (!$hash_p) {
                 if (strpos($record['CONTRACT NO'], '> TOTAL') !== false) {
                     continue;
                 }
 
                 if ($in_charge !== $record['IN-CHARGE']) {
-                    $manager = Manager::updateOrCreate([
-                        'name' => $record['MANAGER'],
-                        'in_charge' => $record['IN-CHARGE']
-                    ]);
-                    $in_charge = $record['IN-CHARGE'];
+                    try {
+                        $manager = Manager::updateOrCreate([
+                            'in_charge' => $record['IN-CHARGE'],
+                            ], [
+                            'name' => $record['MANAGER'],
+                            'region' => $record['REGION'],
+                            'region_id' => $record['ID REGION']
+                        ]);
+                        $in_charge = $record['IN-CHARGE'];
+                    } catch (Exception $e) {
+                        print('Error ' . $e->getMessage());
+                    }
                 }
 
-                if ($region_id !== $record['REGION']) {
-                    $customer = Region::firstOrCreate([
-                        'name' => $record['REGION'],
-                        'region_id' => $record['ID REGION']
-                    ]);
-                    $region_id = $record['REGION'];
+                if ($region_id !== $record['ID REGION']) {
+                        $customer = Region::updateOrCreate([
+                            'region_id' => $record['ID REGION']
+                        ], ['name' => $record['REGION']]);
+                        $region_id = $record['ID REGION'];
                 }
 
                 if ($customer_id !== $record['CUSTOMER']) {
@@ -90,19 +108,19 @@ class ExcelJob implements ShouldQueue
                 }
 
                 if ($contract_no !== $record['CONTRACT NO']) {
-                    $contract = Contract::firstOrCreate([
+                    $contract = Contract::updateOrCreate([
+                        'contract_no' => $record['CONTRACT NO']
+                    ], [
                         'customer_id' => $customer->id,
                         'manager_id' => $manager->id,
-                        'contract_no' => $record['CONTRACT NO']
                     ]);
                 }
-
 
                 Payment::create([
                     'contract_id' => $contract->id,
                     'manager_id' => $manager->id,
                     'customer_id' => $customer->id,
-                    'hash' => '$_' . $record['CONTRACT NO'] . '_S_' . $record['SEQ'],
+                    'hash' => $record['CONTRACT NO'] . '_' . $record['SEQ'],
                     'seq' => $record['SEQ'],
                     'amount' => $record['AMOUNT'],
                     'remain' => $record['REMAIN'],
@@ -111,20 +129,20 @@ class ExcelJob implements ShouldQueue
                     'paid' => $record['PAID']
                 ]);
             } else {
-                foreach ($hash_p as $item) {
-                    if ($item->paid !== $record['PAID']) {
-                        $item->paid = $record['PAID'];
-                        $item->remain = $record['REMAIN'];
-                        $item->payment_date = $record['PAYMENT DATE'] == '0000/00/00' ? NULL : Carbon::parse($record['DEADLINE'])->format('Y-m-d H:i:s');
-                        $item->save();
-                        $updated_item[] = $item;
-                        info($item);
-                    }
+                if ($hash_p->paid !== $record['PAID'] && $hash_p->remain != $record['REMAIN']) {
+                    $hash_p->paid = $record['PAID'];
+                    $hash_p->remain = $record['REMAIN'];
+                    $hash_p->payment_date = $record['PAYMENT DATE'] == '0000/00/00' ? NULL : Carbon::parse($record['DEADLINE'])->format('Y-m-d H:i:s');
+                    $hash_p->save();
+                    $updated_item[] = $hash_p;
+                    info($hash_p, $updated_item);
                 }
             }
         }
         if (count($updated_item) > 0) {
             $fileName = '/update_payment.csv';
+            $f = fopen(public_path("upload_file/" . $fileName), 'w');
+            fclose($f);
             $columns = [
                 'CUSTOMER',
                 'REGION ID',
@@ -140,7 +158,7 @@ class ExcelJob implements ShouldQueue
                 'PERCENT',
                 'AMOUNT PERCENT'
             ];
-            $path = public_path('storage/upload' . $fileName);
+            $path = public_path('upload_file/' . $fileName);
             $file = fopen($path, 'w+');
             fputcsv($file, $columns);
             foreach ($updated_item as $item) {

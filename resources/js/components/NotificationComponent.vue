@@ -55,6 +55,7 @@
                     <th class="text-center" style="width: 50px">#</th>
                     <th>Customer_code</th>
                     <th>Customer name</th>
+                    <th>Amount</th>
                     <th>Total remain</th>
                     <th>Total paid</th>
                     <th class="d-none d-sm-table-cell" style="width: 15%">
@@ -94,6 +95,9 @@
                             >
                                 {{ payment.text }}
                             </a>
+                        </td>
+                        <td class="d-none d-sm-table-cell">
+                            <span>{{ payment.amount }}</span>
                         </td>
                         <td class="d-none d-sm-table-cell">
                             <span>{{ payment.total_remain }}</span>
@@ -310,6 +314,7 @@ export default {
         regionEvent(val) {
             this.customer_flag = false;
             this.show_loader = true;
+            this.modal_flag = false;
             var vue = this;
             axios({
                 method: "get",

@@ -18,7 +18,14 @@ Vue.component(
     "sms-history-component",
     require("./components/SmsHistoryComponent.vue").default
 );
-
+Vue.component(
+    "progress-bar",
+    require("./components/ProgressBarComponent.vue").default
+)
+Vue.component(
+    "customer-progress-bar",
+    require("./components/ProgressBarComponentCustomer.vue").default
+)
 
 import VueGoodTablePlugin from "vue-good-table";
 import "vue-good-table/dist/vue-good-table.css";

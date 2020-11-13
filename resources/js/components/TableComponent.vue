@@ -91,6 +91,7 @@
                             <th class="text-center" style="width: 50px">#</th>
                             <th>Customer_code</th>
                             <th>Customer name</th>
+                            <th>Amount</th>
                             <th>Total remain</th>
                             <th>Total paid</th>
                             <th
@@ -136,6 +137,9 @@
                                 >
                                     {{ payment.text }}
                                 </a>
+                            </td>
+                            <td class="d-none d-sm-table-cell">
+                                <span>{{ payment.amount }}</span>
                             </td>
                             <td class="d-none d-sm-table-cell">
                                 <span>{{ payment.total_remain }}</span>

@@ -167,7 +167,7 @@
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="https://github.com/Spashev/unionp" target="_blank">
                                 <i class="nav-main-link-icon fab fa-github mr-2"></i>
-                                    <span class="nav-main-link-name">GitHub</span>
+                                    <span class="nav-main-link-name">Git</span>
                             </a>
                         </li>
                     </ul>

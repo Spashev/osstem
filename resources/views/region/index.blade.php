@@ -3,7 +3,7 @@
 @section('title', 'Region')
 
 @section('content')
-<div class="block m-3">
+<div class="block m-5">
     <div class="block-header">
         <h3 class="block-title">Region <small>list</small></h3>
     </div>

@@ -16,7 +16,7 @@ class CreateCustomersTable extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('customer_id');
-            $table->integer('manager_id')->nullable();
+            $table->string('manager_id')->nullable();
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
@@ -25,7 +25,7 @@ class CreateCustomersTable extends Migration
             $table->string('district')->nullable();
             $table->string('region');
             $table->string('region_id');
-            $table->string('sms_status')->default('on')->nullable();
+            $table->string('sms_status')->default('on');
         });
     }
 

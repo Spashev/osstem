@@ -86,6 +86,9 @@ Route::middleware('auth')->namespace('Admin')->name('admin.')->group(function ()
     Route::get('/customer/{id}/edit', 'CustomerController@edit')->name('customer.edit');
     Route::post('/customer/{id}/update', 'CustomerController@update')->name('customer.update');
     Route::get('/customer/{customer}/delete', 'CustomerController@delete')->name('customer.delete');
+    //Region
+    Route::get('/region/{id}/delete', 'RegionController@destroy')->name('region.delete');
+    Route::resource('/region', 'RegionController')->names('region');
     //Update
     Route::get('/payment_update', 'ExcelController@download')->name('download');
     Route::post('import', 'ExcelController@import')->name('import');

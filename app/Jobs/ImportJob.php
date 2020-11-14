@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use League\Csv\Reader;
 use App\Models\Customer;
 use App\Models\Region;
+use App\Models\Manager;
 
 class ImportJob implements ShouldQueue
 {
@@ -52,23 +53,37 @@ class ImportJob implements ShouldQueue
             $nomer = $record['CELL'] ? $record['CELL'] : $record['TEL NO'];
             $customer = Customer::where('customer_id', $record['CODE'])->first();
             if ($customer) {
-                info($customer);
                 $customer->phone = $nomer;
                 $customer->city = $record['(Bill To)']; #новое название
                 $customer->district = $record['district'];
                 $customer->address = $record['address'];
                 $customer->save();
-            } else {
-                $manager = Manager::where('in_charge', $record['IN-CHARGE'])->first();
-                $region = Region::where('region_id',$record['CITY'])->first();
-                
-                $customer = Customer::create([
-                    'manager_id' => $manager->in_charge,
-                    'customer_id' => $record["CODE"],
-                    'name' => $record["Doctor's Office"],
-                    'region' => $region->name,
-                    'region_id' => $record['CITY']
-                ]);
+            } else {             
+                $manager = Manager::where('in_charge', $record["IN-CHARGE"])->first();   
+                if($manager) {
+                    $customer = Customer::create([
+                        'manager_id' => $manager->id,
+                        'customer_id' => $record["CODE"],
+                        'name' => $record["Doctor's Office"],
+                        'region' => $record['REGION'],
+                        'region_id' => $record['CITY']
+                    ]);
+                } else {
+                    $region = Region::where('name', $record['REGION'])->first();
+                    $manager = Manager::create([
+                        'name' => $record['MANAGER'],
+                        'region' => $record['REGION'],
+                        'in_charge' => $record['IN-CHARGE'],
+                        'region_id' => $region->id
+                    ]);
+                    $customer = Customer::create([
+                        'manager_id' => $manager->id,
+                        'customer_id' => $record["CODE"],
+                        'name' => $record["Doctor's Office"],
+                        'region' => $record['REGION'],
+                        'region_id' => $record['CITY']
+                    ]);
+                }
             }
         }
         return 'All customer contacts saved successfully';

@@ -165,9 +165,15 @@
                             </ul>
                         </li>
                         <li class="nav-main-item">
+                        <a class="nav-main-link" href="{{ route('admin.region.index')}}">
+                                <i class="nav-main-link-icon fa fa-landmark mr-2"></i>
+                                    <span class="nav-main-link-name">Region</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
                             <a class="nav-main-link" href="https://github.com/Spashev/unionp" target="_blank">
                                 <i class="nav-main-link-icon fab fa-github mr-2"></i>
-                                    <span class="nav-main-link-name">GitHub</span>
+                                    <span class="nav-main-link-name">Git</span>
                             </a>
                         </li>
                     </ul>
@@ -313,7 +319,7 @@
             </main>
             <!-- END Main Container -->
             <!-- Footer -->
-            <footer id="page-footer" class="bg-body-light">
+            <footer id="page-footer" class="bg-body-light mt-5">
                 <div class="content py-3">
                     <div class="row font-size-sm">
                         <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-right">

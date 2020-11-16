@@ -92,8 +92,11 @@ class NotificationContrller extends Controller
                             'id' => $customer->id,
                             'customer_code' => $customer->customer_id,
                             'amount' => $payments->sum('amount'),
+                            'total_remain' => $payments->sum('remain'),
+                            'total_paid' => $payments->sum('paid'),
+                            /* 'amount' => $payments->last()->amount,
                             'total_remain' => $payments->last()->getCustomerRemain(),
-                            'total_paid' => $payments->last()->getCustomerPaid(),
+                            'total_paid' => $payments->last()->getCustomerPaid(), */
                             'sms_status' => $customer->sms_status
                         ];
                     } else if ($customer->notifications->count() > 0) {
@@ -109,9 +112,12 @@ class NotificationContrller extends Controller
                                 'text' => $customer->name,
                                 'id' => $customer->id,
                                 'customer_code' => $customer->customer_id,
-                                'amount' => $payments->last()->amount,
+                                'amount' => $payments->sum('amount'),
+                                'total_remain' => $payments->sum('remain'),
+                                'total_paid' => $payments->sum('paid'),
+                                /* 'amount' => $payments->last()->amount,
                                 'total_remain' => $payments->last()->getCustomerRemain(),
-                                'total_paid' => $payments->last()->getCustomerPaid(),
+                                'total_paid' => $payments->last()->getCustomerPaid(), */
                                 'sms_status' => $customer->sms_status
                             ];
                         }
@@ -128,9 +134,12 @@ class NotificationContrller extends Controller
                             'text' => $customer->name,
                             'id' => $customer->id,
                             'customer_code' => $customer->customer_id,
-                            'amount' => $payments->last()->amount,
+                            'amount' => $payments->sum('amount'),
+                            'total_remain' => $payments->sum('remain'),
+                            'total_paid' => $payments->sum('paid'),
+                            /* 'amount' => $payments->last()->amount,
                             'total_remain' => $payments->last()->getCustomerRemain(),
-                            'total_paid' => $payments->last()->getCustomerPaid(),
+                            'total_paid' => $payments->last()->getCustomerPaid(), */
                             'sms_status' => $customer->sms_status
                         ];
                     } else if ($customer->notifications->count() > 0) {
@@ -146,9 +155,12 @@ class NotificationContrller extends Controller
                                 'text' => $customer->name,
                                 'id' => $customer->id,
                                 'customer_code' => $customer->customer_id,
-                                'amount' => $payments->last()->amount,
+                                'amount' => $payments->sum('amount'),
+                                'total_remain' => $payments->sum('remain'),
+                                'total_paid' => $payments->sum('paid'),
+                                /* 'amount' => $payments->last()->amount,
                                 'total_remain' => $payments->last()->getCustomerRemain(),
-                                'total_paid' => $payments->last()->getCustomerPaid(),
+                                'total_paid' => $payments->last()->getCustomerPaid(), */
                                 'sms_status' => $customer->sms_status
                             ];
                         }

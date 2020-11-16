@@ -248,7 +248,8 @@ class SmsController extends Controller
                             'text' => $customer->name,
                             'id' => $customer->id,
                             'customer_code' => $customer->customer_id,
-                            'amount' => $payments->last()->amount,
+                            /* 'amount' => $payments->last()->amount, */
+                            'amount' => $payments->sum('amount'),
                             'total_remain' => $payments->last()->getRemain(),
                             'total_paid' => $payments->last()->getCustomerPaid(),
                             'sms_status' => $customer->sms_status
@@ -266,7 +267,8 @@ class SmsController extends Controller
                                 'text' => $customer->name,
                                 'id' => $customer->id,
                                 'customer_code' => $customer->customer_id,
-                                'amount' => $payments->last()->amount,
+                               /*  'amount' => $payments->last()->amount, */
+                               'amount' => $payments->sum('amount'),
                                 'total_remain' => $payments->last()->getCustomerRemain(),
                                 'total_paid' => $payments->last()->getCustomerPaid(),
                                 'sms_status' => $customer->sms_status
@@ -285,7 +287,8 @@ class SmsController extends Controller
                             'text' => $customer->name,
                             'id' => $customer->id,
                             'customer_code' => $customer->customer_id,
-                            'amount' => $payments->last()->amount,
+                            /* 'amount' => $payments->last()->amount, */
+                            'amount' => $payments->sum('amount'),
                             'total_remain' => $payments->last()->getCustomerRemain(),
                             'total_paid' => $payments->last()->getCustomerPaid(),
                             'sms_status' => $customer->sms_status
@@ -303,7 +306,8 @@ class SmsController extends Controller
                                 'text' => $customer->name,
                                 'id' => $customer->id,
                                 'customer_code' => $customer->customer_id,
-                                'amount' => $payments->last()->amount,
+                                /* 'amount' => $payments->last()->amount, */
+                                'amount' => $payments->sum('amount'),
                                 'total_remain' => $payments->last()->getCustomerRemain(),
                                 'total_paid' => $payments->last()->getCustomerPaid(),
                                 'sms_status' => $customer->sms_status

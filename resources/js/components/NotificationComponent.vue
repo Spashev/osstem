@@ -9,7 +9,7 @@
             <span class="sr-only">Loading...</span>
         </div>
         <div class="block-header">
-            <h3 class="block-title">Customer</h3>
+            <h3 class="block-title">Collection</h3>
             <div class="block-options">
                 <div class="block-options-item">
                     <code>notifications table</code>

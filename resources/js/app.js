@@ -26,6 +26,10 @@ Vue.component(
     "customer-progress-bar",
     require("./components/ProgressBarComponentCustomer.vue").default
 )
+Vue.component(
+    'calculate-component',
+    require('./components/CalculateComponent.vue').default
+)
 
 import VueGoodTablePlugin from "vue-good-table";
 import "vue-good-table/dist/vue-good-table.css";

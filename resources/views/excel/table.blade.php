@@ -21,7 +21,7 @@
                 <div class="row">
                     
                     <div class="col-md-12 col-lg-12" style="overflow-x: scroll;">
-                        <div class="mb-4 d-flex justify-content-center">
+                        <div class="mb-4">
                             <form action="{{ route('admin.excel.filters') }}" method="post">
                                 @csrf
                                 <div class="form-group form-row">

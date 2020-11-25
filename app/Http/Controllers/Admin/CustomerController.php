@@ -10,6 +10,7 @@ use App\Models\Region;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
@@ -217,5 +218,43 @@ class CustomerController extends Controller
     public function upload()
     {
         return view('customer.upload');
+    }
+
+
+    public function peniya(Customer $customer)
+    {
+        $now = Carbon::now()->format('Y-m-d');
+        $payments = $customer->payments->where('remain', '>', 0)->where('deadline', '<=', $now);
+        $payments = $payments->filter(function ($value, $key) {
+            return $value->remain > 0 and substr($value->contract->contract_no, 0, 2) !== 'TO' and substr($value->contract->contract_no, 0, 4) !==  'ITEM';
+        });
+        $payments = $payments->groupBy('contract_id');
+        $result = [];
+        foreach($payments as $payment) {
+            $sum = 0;
+            $total_remian = 0;
+            $first_delay = Null;
+            foreach($payment as $item) {
+                if(is_null($first_delay)) {
+                    $first_delay = Carbon::now()->diffInDays($item->deadline);
+                }
+                $delayInDays = Carbon::now()->diffInDays($item->deadline);
+                $sum += (($item->percent * $item->remain) / 100) * $delayInDays;
+                $total_remian += $item->remain;
+            }
+            $result[] = [
+                'customer_id' => $customer->customer_id,
+                'name' => $customer->name,
+                'contract_no' => $payment->first()->contract->contract_no,
+                'deadline' => Str::substr($payment->first()->deadline, 0, 10),
+                'amount' => $payment->last()->amount,
+                'delay' => $first_delay,
+                'surcharge' => $sum,
+                'total_remain' => $total_remian
+            ];
+        }
+        // dd($payments->toArray(), $result);//TODO send json to front
+        return response()->json($result, 200);
+
     }
 }

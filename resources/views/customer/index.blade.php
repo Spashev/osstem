@@ -76,7 +76,8 @@
                         </td>
                         <td class="text-center">
                             <div class="btn-group">
-                            <a href="{{route('admin.customer.edit', $customer->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="edit" data-original-title="Edit">
+                                <calculate-component :customer_id="{{$customer->id}}"></calculate-component>
+                                <a href="{{route('admin.customer.edit', $customer->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="edit" data-original-title="Edit">
                                     <i class="fa fa-fw fa-pencil-alt"></i>
                                 </a>
                                 <a href="{{route('admin.customer.delete', $customer->id)}}" class="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="delete" data-original-title="Delete">

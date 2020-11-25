@@ -68,7 +68,8 @@ export default {
             deadline: '',
             delay: '',
             percent: '',
-            total_remain: ''
+            total_remain: '',
+            table_flag: false
         }
     },
     mounted: function() {
@@ -81,7 +82,13 @@ export default {
                 methods: 'get'
             }).then(function(response) {
                 console.log(response.data);
-                vue.data = response.data;
+                if(response.data.hasOwnProperty("msg")) {
+                    alert(response.data.msg);
+                    vue.table_flag = false;
+                } else {
+                    vue.table_flag = true;
+                    vue.data = response.data;
+                }
             });
         }
     }

@@ -45,7 +45,7 @@
                         <th class="text-center" style="width: 80px;">Name</th>
                         <th class="text-center" style="width: 80px;">Email</th>
                         <th class="d-none d-sm-table-cell">Phone</th>
-                        <th class="d-none d-sm-table-cell" style="width: 80px;">Address</th>
+                        <th class="d-none d-sm-table-cell">Address</th>
                         <th class="d-none d-sm-table-cell">Region</th>
                         <th class="d-none d-sm-table-cell">Region ID</th>
                         <th class="d-none d-sm-table-cell">Actions</th>

@@ -254,7 +254,12 @@ class CustomerController extends Controller
             ];
         }
         // dd($payments->toArray(), $result);//TODO send json to front
-        return response()->json($result, 200);
+        if (count($result) == 0) {
+            $result = [
+                'msg' => 'This client has no surcharge'
+            ];
+        }
 
+        return response()->json($result, 200);
     }
 }
